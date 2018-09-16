@@ -31,7 +31,7 @@ class TimesheetInvoice(models.Model):
     min_bill = fields.Float('Min. Bill')
     worked_hours = fields.Float('Worked Hours')
     ideal_hours = fields.Float('Ideal Hours')
-    hours_charged = fields.Float(compute='_get_hours_charged', string='Hours Charged')
+    hours_charged = fields.Float(string='Hours Charged')
     bill_amount = fields.Float('Bill Amount')
     disc_amount = fields.Float('Disc. Amount')
     final_amount = fields.Float('Final Amount')
@@ -44,16 +44,17 @@ class TimesheetInvoice(models.Model):
     additional_hours = fields.Float(string="Additional Hours")
     
     #new field added
+    leave_days = fields.Float(string="Leave Days")
     leave_hours = fields.Float(string="Leave Hours")
     holidays_hours = fields.Float(string="Holiday Hour")
     
     
-    @api.multi
-    def _get_hours_charged(self):
-        # formula : Work Hours+ ideal Hours + Additional Hours 
-        for rec in self:
-            total = float(rec.custom_work_hours.split()[0]) + rec.ideal_hours + rec.additional_hours
-            rec.hours_charged = total
+#     @api.multi
+#     def _get_hours_charged(self):
+#         # formula : Work Hours+ ideal Hours + Additional Hours 
+#         for rec in self:
+#             total = float(rec.custom_work_hours.split()[0]) + rec.ideal_hours + rec.additional_hours
+#             rec.hours_charged = total
             
 
     @api.model
@@ -142,13 +143,14 @@ class Project(models.Model):
                         date_in_between = self._PastweekBoundaries(int(b), int(a))
                         week_start = date_in_between[0]
                         week_end = date_in_between[1]
-
+                        
+                        print"week_start=================",week_start,week_end
+                        
                         #Holiday Count Logic
                         holidays = self.env['public.holiday'].search([
                             ('public_holiday_date', '>=', week_start.strftime(DF)),
                             ('public_holiday_date', '<=', week_end.strftime(DF))])
 
-                        
                         
                         holidays_hours = 0
                         if len(holidays) >= 1.00:
@@ -180,18 +182,39 @@ class Project(models.Model):
 #                             print "ELSE>>>>custom_work_hours***************", custom_work_hours
 
 
-                        domain = [('project_id', '=', proj.id), ('active', '=', True)]
+                        domain = [('project_id', '=', proj.id), ('active', '=', False)]
                         if week_start and week_end:
                             domain.extend([('date', '>=', week_start.strftime(DF)), ('date', '<=', week_end.strftime(DF))])
+                            print"domain========================",domain
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
-
-                        sum_hours = sum(timesheet_lines.mapped('unit_amount'))
-#                         print ">>>", sum_hours
-                        if sum_hours < custom_work_hours:
-                            ideal_time = custom_work_hours - sum_hours
+                        print"timesheet_lines=============",timesheet_lines
+                        worked_hour = 0
+                        idel_hour = 0
+                        break_hour = 0
+                        
+                        for line in timesheet_lines:
+                            if line.type_of_view.billable:
+                                worked_hour += line.unit_amount
+                            elif line.type_of_view.idel:
+                                idel_hour += line.unit_amount
+                            elif line.type_of_view.is_break:
+                                break_hour += line.unit_amount
+                                
+                        ideal_time = idel_hour
+                        
+                        if worked_hour > float(proj.hour_selection):
+                            extra_hours = worked_hour - float(proj.hour_selection)
                         else:
-                            ideal_time = 0.00
-                        if sum_hours:
+                            extra_hours = 0.00
+#                         sum_hours = sum(timesheet_lines.mapped('unit_amount'))
+# #                         print ">>>", sum_hours
+#                         if sum_hours < custom_work_hours:
+#                              = custom_work_hours - sum_hours
+#                         else:
+#                             ideal_time = 0.00
+
+                        
+                        if worked_hour:
                             invoice_lines = self.env['timesheet.invoice'].create({
                                     'analytic_account_id': proj.analytic_account_id.id,
                                     'invoicing_type_id': proj.invoicing_type_id.id,
@@ -201,16 +224,17 @@ class Project(models.Model):
                                     'custom_work_hours': str(int(custom_work_hours)) + str(' Hours'),
                                     'rate_per_hour': proj.rate_per_hour,
                                     'min_bill': custom_work_hours * proj.rate_per_hour,
-                                    'worked_hours': sum_hours,
+                                    'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
-                                    'hours_charged': sum_hours if sum_hours > custom_work_hours else custom_work_hours,
-                                    'bill_amount': (sum_hours if sum_hours > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
-                                    'final_amount': (sum_hours if sum_hours > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
+                                    'additional_hours': extra_hours,
+                                    'hours_charged': worked_hour if worked_hour > custom_work_hours else custom_work_hours,
+                                    'bill_amount': (worked_hour if worked_hour > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
+                                    'final_amount': (worked_hour if worked_hour > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
                                     'holidays': len(holidays),
                                     'leave_hours': leave_hours,
+                                    'leave_days': leave_days,
                                     'holidays_hours': holidays_hours,
                                 })
-                            print"invoice_lines=============",invoice_lines
 
         return True
 
@@ -254,11 +278,11 @@ class Project(models.Model):
                             daily_hours = float(proj.hour_selection) / working_days
                             holidays_hours = daily_hours * len(holidays)
                             custom_work_hours = round((float(proj.hour_selection) - holidays_hours),2)
-                            print "IF>>>>>>custom_work_hours***************",daily_hours, holidays_hours
+#                             print "IF>>>>>>custom_work_hours***************",daily_hours, holidays_hours
                         else:
-                            print "else***************"
+#                             print "else***************"
                             custom_work_hours = round(float(proj.hour_selection),2)
-                            print "ELSE>>>>custom_work_hours***************", custom_work_hours
+#                             print "ELSE>>>>custom_work_hours***************", custom_work_hours
 
                         leave = self.env['hr.holidays'].search([
                             ('date_from', '>=', month_start.strftime(DF)),
@@ -283,13 +307,31 @@ class Project(models.Model):
                             domain.extend([('date', '>=', month_start.strftime(DF)), ('date', '<=', month_end.strftime(DF))])
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
                         
-                        sum_hours = sum(timesheet_lines.mapped('unit_amount'))
-                        print "sum_hours>>>>>>>>>", sum_hours
-                        if sum_hours < float(proj.hour_selection):
-                            ideal_time = float(proj.hour_selection) - sum_hours
+#                         sum_hours = sum(timesheet_lines.mapped('unit_amount'))
+#                         print "sum_hours>>>>>>>>>", sum_hours
+#                         if sum_hours < float(proj.hour_selection):
+#                             ideal_time = float(proj.hour_selection) - sum_hours
+#                         else:
+#                             ideal_time = 0.00
+
+
+                        worked_hour,idel_hour,break_hour = 0,0,0
+                        for line in timesheet_lines:
+                            if line.type_of_view.billable:
+                                worked_hour += line.unit_amount
+                            elif line.type_of_view.idel:
+                                idel_hour += line.unit_amount
+                            elif line.type_of_view.is_break:
+                                break_hour += line.unit_amount
+                                
+                        ideal_time = idel_hour
+                        
+                        if worked_hour > float(proj.hour_selection):
+                            extra_hours = worked_hour - float(proj.hour_selection)
                         else:
-                            ideal_time = 0.00
-                        if sum_hours:
+                            extra_hours = 0.00
+                            
+                        if worked_hour:
                             invoice_lines = self.env['timesheet.invoice'].create({
                                     'analytic_account_id': proj.analytic_account_id.id,
                                     'invoicing_type_id': proj.invoicing_type_id.id,
@@ -300,13 +342,15 @@ class Project(models.Model):
                                     'custom_work_hours': proj.hour_selection + str(' Hours'),
                                     'rate_per_hour': proj.rate_per_hour,
                                     'min_bill': proj.total_rate,
-                                    'worked_hours': sum_hours,
+                                    'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
-                                    'hours_charged': sum_hours if sum_hours > float(proj.hour_selection) else float(proj.hour_selection),
-                                    'bill_amount': (sum_hours if sum_hours > float(proj.hour_selection) else float(proj.hour_selection)) * proj.rate_per_hour,
-                                    'final_amount': (sum_hours if sum_hours > float(proj.hour_selection) else float(proj.hour_selection)) * proj.rate_per_hour,
+                                    'additional_hours': extra_hours,
+                                    'hours_charged': worked_hour if worked_hour > float(proj.hour_selection) else float(proj.hour_selection),
+                                    'bill_amount': (worked_hour if worked_hour > float(proj.hour_selection) else float(proj.hour_selection)) * proj.rate_per_hour,
+                                    'final_amount': (worked_hour if worked_hour > float(proj.hour_selection) else float(proj.hour_selection)) * proj.rate_per_hour,
                                     'holidays': len(holidays),
                                     'holidays_hours': holidays_hours,
+                                    'leave_days': leave_days,
                                     'leave_hours': leave_hours,
                                 })
                             print "invoice_lines>>>>>>>>>>>", invoice_lines
@@ -418,16 +462,29 @@ class Project(models.Model):
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
                         # print "timesheet_lines>>>>>>>>", timesheet_lines
                         # print sum(timesheet_lines.mapped('unit_amount'))
-                        sum_hours = sum(timesheet_lines.mapped('unit_amount'))
-
-                        print "sum_hours@@@@@@@@@@", sum_hours, float(proj.hour_selection)
-
-                        if sum_hours > float(proj.hour_selection):
-                            print "if con got>>>>>>>>>>>>"
-                            extra_hours = sum_hours - float(proj.hour_selection)
-                            print "extra_hours>>>>>>>>>>>", extra_hours
+                        
+                        worked_hour,idel_hour,break_hour = 0
+                        for line in timesheet_lines:
+                            if line.type_of_view.billable:
+                                worked_hour += line.unit_amount
+                            elif line.type_of_view.idel:
+                                idel_hour += line.unit_amount
+                            elif line.type_of_view.is_break:
+                                break_hour += line.unit_amount
+                                
+                        ideal_time = idel_hour
+                        
+                        if worked_hour > float(proj.hour_selection):
+                            extra_hours = worked_hour - float(proj.hour_selection)
                         else:
                             extra_hours = 0.00
+# 
+#                         if sum_hours > float(proj.hour_selection):
+#                             print "if con got>>>>>>>>>>>>"
+#                             extra_hours = sum_hours - float(proj.hour_selection)
+#                             print "extra_hours>>>>>>>>>>>", extra_hours
+#                         else:
+#                             extra_hours = 0.00
 
                         total_charged = float(proj.hour_selection) + extra_hours
 
@@ -441,14 +498,15 @@ class Project(models.Model):
                                 'custom_work_hours': proj.hour_selection + str(' Hours'),
                                 'rate_per_hour': proj.rate_per_hour,
                                 'min_bill': proj.total_rate,
-                                'worked_hours': float(proj.hour_selection),
-                                'ideal_hours': 0.00,
+                                'worked_hours': worked_hour,#float(proj.hour_selection),
+                                'ideal_hours': ideal_time,
                                 'additional_hours': extra_hours,
                                 'hours_charged': total_charged,
                                 'bill_amount': total_charged * proj.rate_per_hour,
                                 'final_amount': total_charged * proj.rate_per_hour,
                                 'holidays': len(holidays),
                                 'holidays_hours': holidays_hours,
+                                'leave_days': leave_days,
                                 'leave_hours': leave_hours,
                             })
 
@@ -535,15 +593,31 @@ class Project(models.Model):
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
                         # print "timesheet_lines>>>>>>>>", timesheet_lines
                         # print sum(timesheet_lines.mapped('unit_amount'))
-                        sum_hours = sum(timesheet_lines.mapped('unit_amount'))
-
-
-                        if sum_hours > float(proj.hour_selection):
-                            # print "if con got>>>>>>>>>>>>"
-                            extra_hours = sum_hours - float(proj.hour_selection)
-                            # print "extra_hours>>>>>>>>>>>", extra_hours
+#                         sum_hours = sum(timesheet_lines.mapped('unit_amount'))
+                        
+                        worked_hour,idel_hour,break_hour = 0
+                        for line in timesheet_lines:
+                            if line.type_of_view.billable:
+                                worked_hour += line.unit_amount
+                            elif line.type_of_view.idel:
+                                idel_hour += line.unit_amount
+                            elif line.type_of_view.is_break:
+                                break_hour += line.unit_amount
+                                
+                        ideal_time = idel_hour
+                        
+                        if worked_hour > float(proj.hour_selection):
+                            extra_hours = worked_hour - float(proj.hour_selection)
                         else:
                             extra_hours = 0.00
+
+
+#                         if sum_hours > float(proj.hour_selection):
+#                             # print "if con got>>>>>>>>>>>>"
+#                             extra_hours = sum_hours - float(proj.hour_selection)
+#                             # print "extra_hours>>>>>>>>>>>", extra_hours
+#                         else:
+#                             extra_hours = 0.00
 
                         total_charged = custom_work_hours + extra_hours
 
@@ -557,8 +631,8 @@ class Project(models.Model):
                                 'rate_per_hour': proj.rate_per_hour,
                                 'min_bill': custom_work_hours * proj.rate_per_hour,
                                 # 'worked_hours': float(proj.hour_selection),
-                                'worked_hours': custom_work_hours,
-                                'ideal_hours': 0.00,
+                                'worked_hours': worked_hour,
+                                'ideal_hours': ideal_time,
                                 'additional_hours': extra_hours,
                                 # 'hours_charged': sum_hours if sum_hours > custom_work_hours else custom_work_hours,
                                 # 'bill_amount': (sum_hours if sum_hours > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
@@ -568,6 +642,8 @@ class Project(models.Model):
                                 'final_amount': total_charged * proj.rate_per_hour,
                                 'holidays': len(holidays),
                                 'holidays_hours': holidays_hours,
+                                'leave_days': leave_days,
+                                'leave_days': leave_days,
                                 'leave_hours': leave_hours,
                             })
                         # print "invoice_lines>>>>>>>>>>>", invoice_lines

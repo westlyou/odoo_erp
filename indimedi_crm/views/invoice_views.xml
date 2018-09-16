@@ -30,6 +30,7 @@
                     <field name="disc_amount"/>
                     <field name="final_amount" sum="Total Amount"/>
                     <field name="holidays"/>
+                    <field name="leave_days"/>
                     <field name="billed" attrs="{'readonly': [('cancelled', '=', True)]}"/>
                     <field name="cancelled" attrs="{'readonly': [('billed', '=', True)]}"/>
                     <field name="sequence_id" invisible="1"/>
