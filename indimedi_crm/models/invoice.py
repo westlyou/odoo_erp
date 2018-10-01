@@ -8,6 +8,8 @@ import calendar
 from dateutil.relativedelta import relativedelta
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 import dateutil.relativedelta
+from odoo.exceptions import UserError
+from odoo.tools.misc import DEFAULT_SERVER_DATE_FORMAT
 
 
 class TimesheetInvoice(models.Model):
@@ -47,16 +49,72 @@ class TimesheetInvoice(models.Model):
     leave_days = fields.Float(string="Leave Days")
     leave_hours = fields.Float(string="Leave Hours")
     holidays_hours = fields.Float(string="Holiday Hour")
+    hours_charged_save = fields.Float(string='Hours Charged')
     
-    
-#     @api.multi
-#     def _get_hours_charged(self):
-#         # formula : Work Hours+ ideal Hours + Additional Hours 
-#         for rec in self:
-#             total = float(rec.custom_work_hours.split()[0]) + rec.ideal_hours + rec.additional_hours
-#             rec.hours_charged = total
+    @api.onchange('additional_hours')
+    def onchange_additional_hours(self):
+        hours_charged = self.hours_charged_save + self.additional_hours
+        self.hours_charged = hours_charged
+        
+                
+    @api.onchange('leave_days', 'holidays')
+    def onchange_leave_days(self):
+        if self.invoicing_type_id.name in ['Weekly', 'Weekly Advance']:
             
-
+            custom_work_hours = round(float(self.hour_selection),2)
+            holidays_hours = 0
+            leave_hours = 0
+            if self.holidays > 0:
+                daily_hours = float(self.hour_selection) / 5
+                holidays_hours = daily_hours * self.holidays
+                
+                custom_work_hours =  round((float(self.hour_selection) - holidays_hours),2)
+            else:
+                custom_work_hours = custom_work_hours
+                
+            if self.leave_days > 0:
+                daily_hours = float(self.hour_selection) / 5
+                leave_hours = daily_hours * self.leave_days
+                custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
+    
+            
+            self.custom_work_hours = str(custom_work_hours) + " Hours"
+            self.leave_hours = leave_hours
+            self.holidays_hours = holidays_hours
+        if self.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
+            start_date = datetime.datetime.strptime(self.invoice_start_date, DEFAULT_SERVER_DATE_FORMAT) 
+            end_date =  datetime.datetime.strptime(self.invoice_end_date, DEFAULT_SERVER_DATE_FORMAT)
+            
+            
+            days = end_date - start_date
+            valid_date_list = {(start_date + datetime.timedelta(days=x)).strftime('%d-%b-%Y')
+                                    for x in range(days.days+1)
+                                    if (start_date + datetime.timedelta(days=x)).isoweekday() <= 5
+                                   }
+            working_days = len(valid_date_list)
+            
+            custom_work_hours = round(float(self.hour_selection),2)
+            holidays_hours = 0
+            leave_hours = 0
+            if self.holidays > 0:
+                daily_hours = float(self.hour_selection) / working_days
+                holidays_hours = daily_hours * self.holidays
+                
+                custom_work_hours =  round((float(self.hour_selection) - holidays_hours),2)
+            else:
+                custom_work_hours = custom_work_hours
+                
+            if self.leave_days > 0:
+                daily_hours = float(self.hour_selection) / working_days
+                leave_hours = daily_hours * self.leave_days
+                custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
+    
+            self.custom_work_hours = str(custom_work_hours) + " Hours"
+            self.leave_hours = leave_hours
+            self.holidays_hours = holidays_hours
+        
+    
+    
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, context=None, orderby=False, lazy=True):
         if 'rate_per_hour' in fields:
@@ -80,7 +138,8 @@ class TimesheetInvoice(models.Model):
 
     @api.multi
     def send_timesheet_invoice(self):
-
+        if not self.billed:
+            raise UserError("You can only send invoice if its billed.")
         email = str(self.project_ids[0].client_email)
         ctx = dict(email_to=email)
         template = self.env.ref(
@@ -90,6 +149,14 @@ class TimesheetInvoice(models.Model):
         self.sent_mail = True
 
 
+    @api.multi
+    def mark_as_billed(self):
+        if self.billed:
+            raise UserError("The invoice is already Billed.")
+        if self.cancelled:
+            raise UserError("You can not mark cancelled invoice as billed.")
+        self.billed = True
+
     sequence_id = fields.Char('Invoice No.', index=True,readonly=True)
 
     @api.model
@@ -98,8 +165,7 @@ class TimesheetInvoice(models.Model):
         vals['sequence_id'] = seq
         return super(TimesheetInvoice, self).create(vals)
 
-
-
+    
 #Schedular for Timesheet Invoice
 class Project(models.Model):
     _inherit = 'project.project'
@@ -159,23 +225,47 @@ class Project(models.Model):
                             custom_work_hours =  round((float(proj.hour_selection) - holidays_hours),2)
                         else:
                             custom_work_hours = round(float(proj.hour_selection),2)
+#                             
+#                         leave = self.env['hr.holidays'].search([
+#                             ('date_from', '>=', week_start.strftime(DF)),
+#                             ('date_to', '<=', week_end.strftime(DF)),
+#                             ('type', '=', 'remove')])
+#                         
+#                         leave_days = abs(sum(leave.mapped('number_of_days')))
+#                         
+#                         leave_hours = 0
+#                         if len(leave) >= 1.00:
+#                             daily_hours = float(proj.hour_selection) / 5
+#                             leave_hours = daily_hours * leave_days
+#                             custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
+
+                        domain = [('project_id', '=', proj.id), ('active', '=', False)]
+                        if week_start and week_end:
+                            domain.extend([('date', '>=', week_start.strftime(DF)), ('date', '<=', week_end.strftime(DF))])
+                        timesheet_lines = self.env['account.analytic.line'].search(domain)
+                        
+                        
+                        employee_ids = []
+                        for line in timesheet_lines:
+                            employee = self.env['hr.employee'].search([('user_id','=', line.user_id.id)])
+                            if employee:
+                                employee_ids.append(employee.id)
+                        
                         leave = self.env['hr.holidays'].search([
                             ('date_from', '>=', week_start.strftime(DF)),
                             ('date_to', '<=', week_end.strftime(DF)),
-                            ('type', '=', 'remove')])
+                            ('type', '=', 'remove'),
+                            ('employee_id', 'in', employee_ids)])
                         
-                        leave_days = leave.mapped('number_of_days')
+                        leave_days = abs(sum(leave.mapped('number_of_days')))
                         
                         leave_hours = 0
                         if len(leave) >= 1.00:
                             daily_hours = float(proj.hour_selection) / 5
                             leave_hours = daily_hours * leave_days
                             custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
-
-                        domain = [('project_id', '=', proj.id), ('active', '=', False)]
-                        if week_start and week_end:
-                            domain.extend([('date', '>=', week_start.strftime(DF)), ('date', '<=', week_end.strftime(DF))])
-                        timesheet_lines = self.env['account.analytic.line'].search(domain)
+                            
+                        
                         worked_hour = 0
                         idel_hour = 0
                         break_hour = 0
@@ -208,13 +298,14 @@ class Project(models.Model):
                                     'invoice_start_date': week_start,
                                     'invoice_end_date': week_end,
                                     'hour_selection': proj.hour_selection,
-                                    'custom_work_hours': str(int(custom_work_hours)) + str(' Hours'),
+                                    'custom_work_hours': str(custom_work_hours) + str(' Hours'),
                                     'rate_per_hour': proj.rate_per_hour,
                                     'min_bill': custom_work_hours * proj.rate_per_hour,
                                     'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
                                     'additional_hours': extra_hours,
                                     'hours_charged': worked_hour if worked_hour > custom_work_hours else custom_work_hours,
+                                    'hours_charged_save': worked_hour if worked_hour > custom_work_hours else custom_work_hours,
                                     'bill_amount': (worked_hour if worked_hour > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
                                     'final_amount': (worked_hour if worked_hour > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
                                     'holidays': len(holidays),
@@ -253,7 +344,6 @@ class Project(models.Model):
                                                 if (start_date + datetime.timedelta(days=x)).isoweekday() <= 5
                                                }
                         working_days = len(valid_date_list)
-                        print "Working Days",working_days
                     
                         #Holiday Count Logic
                         holidays = self.env['public.holiday'].search([
@@ -261,31 +351,39 @@ class Project(models.Model):
                             ('public_holiday_date', '<=', month_end.strftime(DF))])
                         
                         holidays_hours = 0
+                        custom_work_hours = 0
                         if len(holidays) >= 1.00:
                             daily_hours = float(proj.hour_selection) / working_days
                             holidays_hours = daily_hours * len(holidays)
                             custom_work_hours = round((float(proj.hour_selection) - holidays_hours),2)
                         else:
                             custom_work_hours = round(float(proj.hour_selection),2)
-
-                        leave = self.env['hr.holidays'].search([
-                            ('date_from', '>=', month_start.strftime(DF)),
-                            ('date_to', '<=', month_end.strftime(DF)),
-                            ('type', '=', 'remove')])
                         
-                        leave_days = leave.mapped('number_of_days')
                         
-                        leave_hours = 0
-                        if len(leave) >= 1.00:
-                            daily_hours = float(proj.hour_selection) / 5
-                            leave_hours = daily_hours * leave_days
-                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
 
                         domain = [('project_id', '=', proj.id), ('active', '=', False)]
                         if month_start and month_end:
                             domain.extend([('date', '>=', month_start.strftime(DF)), ('date', '<=', month_end.strftime(DF))])
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
                         
+                        employee_ids = []
+                        for line in timesheet_lines:
+                            employee = self.env['hr.employee'].search([('user_id','=', line.user_id.id)])
+                            if employee:
+                                employee_ids.append(employee.id)
+                        
+                        leave = self.env['hr.holidays'].search([
+                            ('date_from', '>=', month_start.strftime(DF)),
+                            ('date_to', '<=', month_end.strftime(DF)),
+                            ('type', '=', 'remove'),
+                            ('employee_id', 'in', employee_ids)])
+                        
+                        leave_days = abs(sum(leave.mapped('number_of_days')))
+                        leave_hours = 0
+                        if len(leave) >= 1.00:
+                            daily_hours = float(proj.hour_selection) / working_days
+                            leave_hours = daily_hours * leave_days
+                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
 #                         sum_hours = sum(timesheet_lines.mapped('unit_amount'))
 #                         print "sum_hours>>>>>>>>>", sum_hours
 #                         if sum_hours < float(proj.hour_selection):
@@ -318,13 +416,14 @@ class Project(models.Model):
                                     'invoice_end_date': month_end,
                                     'hour_selection': proj.hour_selection,
                                     # 'custom_work_hours': str(custom_work_hours) + str(' Hours'),
-                                    'custom_work_hours': proj.hour_selection + str(' Hours'),
+                                    'custom_work_hours':  str(custom_work_hours) + " Hours", #proj.hour_selection + str(' Hours'),
                                     'rate_per_hour': proj.rate_per_hour,
                                     'min_bill': proj.total_rate,
                                     'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
                                     'additional_hours': extra_hours,
                                     'hours_charged': worked_hour if worked_hour > float(proj.hour_selection) else float(proj.hour_selection),
+                                    'hours_charged_save': worked_hour if worked_hour > custom_work_hours else custom_work_hours,
                                     'bill_amount': (worked_hour if worked_hour > float(proj.hour_selection) else float(proj.hour_selection)) * proj.rate_per_hour,
                                     'final_amount': (worked_hour if worked_hour > float(proj.hour_selection) else float(proj.hour_selection)) * proj.rate_per_hour,
                                     'holidays': len(holidays),
@@ -405,25 +504,35 @@ class Project(models.Model):
                         else:
                             custom_work_hours = round(float(proj.hour_selection),2)
                         
-                        leave = self.env['hr.holidays'].search([
-                            ('date_from', '>=', month_start.strftime(DF)),
-                            ('date_to', '<=', month_end.strftime(DF)),
-                            ('type', '=', 'remove')])
                         
-                        leave_days = leave.mapped('number_of_days')
-                        
-                        leave_hours = 0
-                        if len(leave) >= 1.00:
-                            daily_hours = float(proj.hour_selection) / 5
-                            leave_hours = daily_hours * leave_days
-                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
-                       
                         domain = [('project_id', '=', proj.id), ('active', '=', False)]
                         if month_start and month_end:
                             domain.extend([('date', '>=', date11.strftime(DF)), ('date', '<=', date22.strftime(DF))])
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
                         
-                        worked_hour,idel_hour,break_hour = 0
+                        
+                        employee_ids = []
+                        for line in timesheet_lines:
+                            employee = self.env['hr.employee'].search([('user_id','=', line.user_id.id)])
+                            if employee:
+                                employee_ids.append(employee.id)
+                        
+                        leave = self.env['hr.holidays'].search([
+                            ('date_from', '>=', month_start.strftime(DF)),
+                            ('date_to', '<=', month_end.strftime(DF)),
+                            ('type', '=', 'remove'),
+                            ('employee_id', 'in', employee_ids)])
+                        
+                        leave_days = abs(sum(leave.mapped('number_of_days')))
+                        
+                        leave_hours = 0
+                        if len(leave) >= 1.00:
+                            daily_hours = float(proj.hour_selection) / working_days
+                            leave_hours = daily_hours * leave_days
+                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
+                            
+                        
+                        worked_hour,idel_hour,break_hour = 0,0,0
                         for line in timesheet_lines:
                             if line.type_of_view.billable:
                                 worked_hour += line.unit_amount
@@ -455,13 +564,14 @@ class Project(models.Model):
                                 'invoice_end_date': month_end,
                                 'hour_selection': proj.hour_selection,
                                 # 'custom_work_hours': str(custom_work_hours) + str(' Hours'),
-                                'custom_work_hours': proj.hour_selection + str(' Hours'),
+                                'custom_work_hours':  str(custom_work_hours) + " Hours", #proj.hour_selection + str(' Hours'),
                                 'rate_per_hour': proj.rate_per_hour,
                                 'min_bill': proj.total_rate,
                                 'worked_hours': worked_hour,#float(proj.hour_selection),
                                 'ideal_hours': ideal_time,
                                 'additional_hours': extra_hours,
                                 'hours_charged': total_charged,
+                                'hours_charged_save': total_charged,
                                 'bill_amount': total_charged * proj.rate_per_hour,
                                 'final_amount': total_charged * proj.rate_per_hour,
                                 'holidays': len(holidays),
@@ -521,26 +631,34 @@ class Project(models.Model):
                         else:
                             custom_work_hours = round(float(proj.hour_selection),2)
 
-                        leave = self.env['hr.holidays'].search([
-                            ('date_from', '>=', week_start.strftime(DF)),
-                            ('date_to', '<=', week_end.strftime(DF)),
-                            ('type', '=', 'remove')])
-                        
-                        leave_days = leave.mapped('number_of_days')
-                        
-                        leave_hours = 0
-                        if len(leave) >= 1.00:
-                            daily_hours = float(proj.hour_selection) / 5
-                            leave_hours = daily_hours * leave_days
-                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
-
-
 
                         domain = [('project_id', '=', proj.id), ('active', '=', False)]
                         if prev_sunday and prev_saturday:
                             domain.extend([('date', '>=', prev_sunday.strftime(DF)), ('date', '<=', prev_saturday.strftime(DF))])
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
 #                         sum_hours = sum(timesheet_lines.mapped('unit_amount'))
+
+                        employee_ids = []
+                        for line in timesheet_lines:
+                            employee = self.env['hr.employee'].search([('user_id','=', line.user_id.id)])
+                            if employee:
+                                employee_ids.append(employee.id)
+                        
+                        leave = self.env['hr.holidays'].search([
+                            ('date_from', '>=', week_start.strftime(DF)),
+                            ('date_to', '<=', week_end.strftime(DF)),
+                            ('type', '=', 'remove'),
+                            ('employee_id', 'in', employee_ids)])
+                        
+                        leave_days = abs(sum(leave.mapped('number_of_days')))
+                        
+                        leave_hours = 0
+                        if len(leave) >= 1.00:
+                            daily_hours = float(proj.hour_selection) / 5
+                            leave_hours = daily_hours * leave_days
+                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
+                          
+                        
                         
                         worked_hour,idel_hour,break_hour = 0
                         for line in timesheet_lines:
@@ -574,7 +692,7 @@ class Project(models.Model):
                                 'invoice_start_date': week_start,
                                 'invoice_end_date': week_end,
                                 'hour_selection': proj.hour_selection,
-                                'custom_work_hours': str(int(custom_work_hours)) + str(' Hours'),
+                                'custom_work_hours':  str(custom_work_hours) + " Hours", #proj.hour_selection + str(' Hours'),
                                 'rate_per_hour': proj.rate_per_hour,
                                 'min_bill': custom_work_hours * proj.rate_per_hour,
                                 # 'worked_hours': float(proj.hour_selection),
@@ -585,6 +703,7 @@ class Project(models.Model):
                                 # 'bill_amount': (sum_hours if sum_hours > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
                                 # 'final_amount': (sum_hours if sum_hours > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
                                 'hours_charged': total_charged,
+                                'hours_charged_save': total_charged,
                                 'bill_amount': total_charged * proj.rate_per_hour,
                                 'final_amount': total_charged * proj.rate_per_hour,
                                 'holidays': len(holidays),
