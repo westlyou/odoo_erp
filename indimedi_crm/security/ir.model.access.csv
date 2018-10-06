@@ -73,6 +73,8 @@ access_project_project_sale_manager,project.project.sales.manager,model_project_
 access_project_project_salesman,project.project.salesman,model_project_project,sales_team.group_sale_salesman,1,1,1,0
 access_project_task_sales_manager,project.task.sales.manager,model_project_task,sales_team.group_sale_manager,1,1,1,0
 access_project_task_salesman,project.task.salesman,model_project_task,sales_team.group_sale_salesman,1,1,1,0
+project.access_project_task,project.task,model_project_task,project.group_project_user,1,1,0,0
+access_project_task_gm,project.task.gm,model_project_task,indimedi_crm.group_project_general_manager,1,1,1,1
 
 access_credentials_task_salesman,credentials.task.salesman,model_credentials_task,sales_team.group_sale_salesman,1,1,1,1
 access_credentials_task_sales_manager,credentials.sales.manager,model_credentials_task,sales_team.group_sale_manager,1,1,1,1

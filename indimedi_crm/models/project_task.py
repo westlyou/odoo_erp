@@ -48,29 +48,29 @@ class Project(models.Model):
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
-    jd_us_name_id = fields.Many2one(related='project_id.jd_us_name_id', string="US Name", store=True)
-    jd_manager_id = fields.Many2one(related='project_id.user_id', string="Manager", store=True)
+    jd_us_name_id = fields.Many2one(related='project_id.jd_us_name_id', string="US Name", track_visibility='onchange' ,store=True)
+    jd_manager_id = fields.Many2one(related='project_id.user_id', string="Manager", track_visibility='onchange',store=True)
     jd_profile = fields.Char(string="Designation")
     # date = fields.Date(string="Date",required=True,default=lambda self: self._context.get('date', fields.Date.context_today(self)))
     # for task date in task form
     task_date = fields.Date(string="Date",required=True,default=lambda self: self._context.get('date', fields.Date.context_today(self)))
     client_reporting_id = fields.Many2one('res.partner', string="Client Reporting", track_visibility='onchange')
-    task_id = fields.Many2one('project.task')
+    task_id = fields.Many2one('project.task', track_visibility='onchange')
     email_id = fields.Char(string="Email Id", placeholder="mymail@mail.com")
     phone = fields.Char('Phone')
     profile_id = fields.Char('Designation')
     total_all_time = fields.Char(string="Total")
-    partner_ids = fields.Many2many('res.partner', string='Mail To', track_visibility='onchange')
-    credential_ts = fields.One2many('credentials.timesheet','credential_task_id',string="Credentials")
-    project_general_manager = fields.Many2one(related='project_id.project_general_manager', string="General Manager", store=True)
-    task_sales_manager_id = fields.Many2one(related='project_id.sales_manager_id', string="Sales Manager", store=True)
+    partner_ids = fields.Many2many('res.partner', string='Mail To')
+    credential_ts = fields.One2many('credentials.timesheet', 'credential_task_id', string="Credentials")
+    project_general_manager = fields.Many2one(related='project_id.project_general_manager', string="General Manager", track_visibility='onchange' ,store=True)
+    task_sales_manager_id = fields.Many2one(related='project_id.sales_manager_id', string="Sales Manager", track_visibility='onchange' ,store=True)
     mail_work = fields.Char(string='Mail Work')
-    timesheet_email_id = fields.Many2one(related='project_id.timesheet_email_id', string="Timesheet Email", store=True)
-    timesheet_phone = fields.Char(related='project_id.timesheet_phone', string="Employee Phone", store=True)
+    timesheet_email_id = fields.Many2one(related='project_id.timesheet_email_id', string="Timesheet Email", track_visibility='onchange',store=True)
+    timesheet_phone = fields.Char(related='project_id.timesheet_phone', string="Employee Phone", track_visibility='onchange',store=True)
     user_id = fields.Many2one(related='project_id.jd_ea_working_id', string='Assigned to',
         default=lambda self: self.env.uid, index=True, track_visibility='always', store=True)
-    partner_id = fields.Many2one(related='project_id.partner_id', string='Customer', store=True)
-    cc_partner_ids = fields.Many2many('res.partner','timesheet_cc_partner_rel', 'partner_id','cc_partner_id', string="Mail CC", track_visibility='onchange', store=True)
+    partner_id = fields.Many2one(related='project_id.partner_id', string='Customer', track_visibility='onchange',store=True)
+    cc_partner_ids = fields.Many2many('res.partner','timesheet_cc_partner_rel', 'partner_id','cc_partner_id', string="Mail CC", store=True)
 
     @api.model
     def create(self, vals):
@@ -87,8 +87,9 @@ class ProjectTask(models.Model):
 
     @api.multi
     def unlink(self):
-        for rec in self:
-            rec.project_id.active = False
+        if self.project_id:
+            for rec in self:
+                rec.project_id.active = False
         return super(ProjectTask, self).unlink()
 
     # @api.onchange('task_date')

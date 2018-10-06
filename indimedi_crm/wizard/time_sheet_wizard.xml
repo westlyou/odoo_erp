@@ -10,6 +10,8 @@
                         <field name="project_task" width="30%%" string="Client" options="{'no_create_edit': True, 'no_open': True, 'no_create': True}"/>
                         <field name="email_id" invisible="1"/>
                         <field name="contact_partner_ids" invisible="1"/>
+                        <field name="mail_date" invisible="1"/>
+                        <field name="daily_sub_date" invisible="1"/>
                     </group>
                     <group col="4">
                         <field name="start_date"/>
@@ -50,13 +52,28 @@
                     <field name="project_task" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_ids']" position="replace">
-                    <field name="partner_ids" widget="many2many_tags_email" placeholder="Add contacts to notify..." context="{'force_email':True, 'show_email':True}" attrs="{'invisible': [('composition_mode', '!=', 'comment')]}" domain="['|','|',('parent_id', '=', mail_partner_id),('user_ids','=',mail_user_general_manager),('user_ids','=',mail_lead_owner)]" options="{'no_create': True}"/>
+                    <field name="partner_ids" widget="many2many_tags_email" placeholder="Add contacts to notify..." context="{'force_email':True, 'show_email':True}" attrs="{'invisible': [('composition_mode', '!=', 'comment')], 'readonly': True}" domain="['|','|',('parent_id', '=', mail_partner_id),('user_ids','=',mail_user_general_manager),('user_ids','=',mail_lead_owner)]" options="{'no_create': True}"/>
                 </xpath>
                 <xpath expr="//field[@name='email_cc']" position="replace">
-                    <field name="email_cc" widget="many2many_tags_email" placeholder="Add contacts in cc to notify..." context="{'force_email':True, 'show_email':True}" attrs="{'invisible': [('composition_mode', '!=', 'comment')]}" domain="['|','|',('parent_id', '=', mail_partner_id),('user_ids','=',mail_user_general_manager),('user_ids','=',mail_lead_owner)]" options="{'no_create': True}"/>
+                    <field name="email_cc" widget="many2many_tags_email" placeholder="Add contacts in cc to notify..." context="{'force_email':True, 'show_email':True}" attrs="{'invisible': [('composition_mode', '!=', 'comment')], 'readonly': True}" domain="['|','|',('parent_id', '=', mail_partner_id),('user_ids','=',mail_user_general_manager),('user_ids','=',mail_lead_owner)]" options="{'no_create': True}"/>
                 </xpath>
                 <xpath expr="///field[@name='email_bcc']" position="attributes">
                     <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="email_compose_message_wizard_form_timesheet_readonly" model="ir.ui.view">
+            <field name="name">email.compose.message.wizard.form.timesheet.readonly</field>
+            <field name="model">mail.compose.message</field>
+            <field name="inherit_id" ref="indimedi_crm.email_compose_message_wizard_form_mail_inherit_timesheet"/>
+            <field name="groups_id" eval="[(6, 0, [ref('indimedi_crm.group_project_general_manager'), ref('project.group_project_manager')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_ids']" position="attributes">
+                    <attribute name="readonly">False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='email_cc']" position="attributes">
+                    <attribute name="readonly">False</attribute>
                 </xpath>
             </field>
         </record>

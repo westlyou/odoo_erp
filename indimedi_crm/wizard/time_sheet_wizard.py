@@ -56,8 +56,9 @@ class TimeSheets(models.TransientModel):
     project_task = fields.Many2one('project.task',string="Task", required=True)
     email_id = fields.Char(string='Email')
     contact_partner_ids = fields.Many2one('res.partner', string="Partners")
-    mail_date = fields.Date('Mail Date', default=datetime.today().strftime("%m-%d-%Y"))
+    mail_date = fields.Date('Mail Date', default=datetime.today().strftime(DF))
     mail_sub_date = datetime.today().strftime("%m-%d-%Y")
+    daily_sub_date = fields.Date('Mail Date', default=fields.Date.context_today)
 
     @api.multi
     def print_report(self, data):
