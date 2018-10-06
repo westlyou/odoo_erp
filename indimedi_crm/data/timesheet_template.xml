@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="email_template_worksheets" model="mail.template">
+            <field name="name">Timesheets Of Work</field>
+            <field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+            <field name="subject">Timesheet - ${object.mail_sub_date} - ${object.project_task.jd_us_name_id.name}</field>
+            <!-- <field name="email_to">${object.email|safe}</field> -->
+            <!-- <field name="email_cc">${object.email}</field> -->
+            <field name="model_id" ref="indimedi_crm.model_time_sheet_wizard"/>
+            <field name="report_template" ref="indimedi_crm.timesheet_report_wizards"/>
+            <field name="report_name">Timesheet_Report</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="user_signature" eval="False"/>
+            <field name="body_html">
+                <![CDATA[
+                <div>
+                    <div class="col-md-12">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span><strong style="color:red;">Employee:</strong>${object.project_task.jd_us_name_id.name}</span>
+                                    </td>
+                                    <td style="width:100px;"></td>
+                                    <td style="text-align:left;">
+                                        <span class="text-left"><strong style="color:red;">Employee phone:</strong>
+                                        %if object.project_task.timesheet_phone:
+                                            ${object.project_task.timesheet_phone}
+                                        %endif
+                                        </span>
+                                    </td>
+                                </tr>
+                                </br>
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span><strong style="color:red;">Designation:</strong>${object.project_task.profile_id}</span>
+                                    </td>
+                                    <td></td>
+                                    <td style="text-align:left;">
+                                        <span><strong style="color:red;">Employee email:</strong>
+                                        %if object.project_task.timesheet_email_id.email:
+                                            ${object.project_task.timesheet_email_id.email}
+                                        %endif
+                                        </span>
+                                    </td>
+                                </tr>
+                                </br>
+                                <tr>
+                                   <td>
+                                        <span class="text-left"><strong style="color:red;">Client:</strong>${object.project_task.project_id.client_name}</span>                                        
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <span class="text-left"><strong style="color:red;">Client Reporting:</strong>
+                                            %if object.project_task.client_reporting_id.name:
+                                                ${object.project_task.client_reporting_id.name}
+                                            %endif
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/>
+                    <br/>
+                    <table class="text-center" border="2" style="vertical-align:middle;width:100%; ">
+                        <thead style="border: solid 2px;">
+                            <tr style="border: solid 1px;">
+                                <th style="color:red; border: solid 1px; text-align: center;"> Client Name </th>
+                                <th style="color:red; border: solid 1px; text-align: center;"> Type of Work </th>
+                                <th style="color:red; border: solid 1px; text-align: center;"> Date </th>
+                                <th style="color:red; border: solid 1px; text-align: center;"> Start Time </th>
+                                <th style="color:red; border: solid 1px; text-align: center;"> Stop Time </th>
+                                <th style="color:red; border: solid 1px; text-align: center;"> Total Hours </th>
+                                <th style="color:red; border: solid 1px; text-align: center;"> Remarks </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="tbody" style="border: solid 2px; text-align: center;">
+                            % set total_price = []
+                            %for l in object.report_data()
+                                <tr style="border: solid 1px;">
+                                    <td style="border: solid 1px;">
+                                        % if l.client_client_id.name:
+                                            ${l.client_client_id.name}
+                                        % endif
+                                    </td>
+                                    <td style="border: solid 1px;">
+                                        ${l.type_of_view.name}
+                                    </td>
+                                    <td style="border: solid 1px;">
+                                        <span>${l.date.split('-')[1] + '-' + l.date.split('-')[2] + '-' + l.date.split('-')[0]}</span><br/>
+                                    </td>
+                                    <td style="border: solid 1px;">
+                                        ${l.start_time_temp}
+                                    </td>
+                                    <td style="border: solid 1px;">
+                                        ${l.stop_time_temp}
+                                    </td>
+                                    <td style="border: solid 1px;">
+                                        ${l.total_time}
+                                    </td>
+                                    <td class="text-right" style="border: solid 1px;">
+                                        ${l.name}
+                                    </td>
+                                </tr>
+                                % if total_price.append(l.unit_amount)
+                                % endif
+                            %endfor
+                            <tr border="1">
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td><strong style="color:red;">Total:</strong></td>
+                                <td>
+                                    ${object.project_task.total_all_time}
+                                <td/>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <p><strong>Thanks and regards,</strong></p>
+                        % if object.project_task.jd_us_name_id.name:
+                            ${object.project_task.jd_us_name_id.name | safe}
+                        % endif
+                </div>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>

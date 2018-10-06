@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="payment_action"> 
+<form action="/payment_page" method="get"> 
+    <center>
+      <button>
+      <a href="http://www.entigrity.com/payment/">Payment</a>
+    </button>
+	</center>
+</form> 
+</template>
+</odoo>

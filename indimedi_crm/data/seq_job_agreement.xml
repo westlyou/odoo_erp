@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences for Job Agreement -->
+        <record id="seq_job_agreement" model="ir.sequence">
+            <field name="name">agreement_sequence</field>
+            <field name="code">job.description</field>
+            <field name="prefix">Ref: /%(year)s/%(month)s/</field>
+            <field eval="False" name="company_id"/>
+            <field name="padding">0</field>
+        </record>
+    </data>
+</odoo>

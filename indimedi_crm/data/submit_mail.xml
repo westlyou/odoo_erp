@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+		<record id="email_template_agreement_submitted" model="mail.template">
+			<field name="name">Agreement Submitted</field>			
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="subject">Entigrity Client Service Agreement</field>
+			<field name="email_to"> ${ctx['email_to']|safe} </field> 
+			<field name="email_cc"> ${object.email} </field>
+			<field name="reply_to"> preferred Reply address</field>
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<field name="auto_delete" eval="True"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html">
+				<![CDATA[
+					<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; 	font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); ">
+						<center><b>SERVICE AGREEMENT SUBMITTED</b></center><br/>
+						<p>Hello Agreement,</p>
+    					<p>Your Document has been signed by 
+    						%if object.agree_name:
+    							${object.agree_name}
+    						%endif
+    						%if not object.agree_name:
+    							${object.crm_id.name}
+    						%endif
+    						and now it <b>executed</b></p>
+    					<table>
+    						<tr>
+								<td style="vertical-align: initial;">
+								    <img src="/logo.png?company=${user.company_id.id}" style="padding: 0px; margin-right: 30px; height: auto; width: 80px;" alt="${user.company_id.name}">
+								</td>
+								<td style="margin-left:10px;">
+									<p style="float:right;">
+										<p><b><h4>Entigrity Client Service Agreement - 
+										%if object.agree_name:
+    										${object.agree_name}
+    									%endif
+			    						%if not object.agree_name:
+			    							${object.crm_id.name}
+			    						%endif 
+			    						</h4></b></p>
+										<p>${object.name}</p>
+										<p>Status: Executed</p>
+										<p>Executed: ${format_tz(object.execute_date,tz='UTC',format='%d/%m/%Y %H:%M')}</p>
+										<p>Sender: Agreement Entigrity</p> 					
+									</p>
+								</td>
+							</tr>
+						</table>	 
+					</div>
+				]]>
+																																																																																																																																																			
+			</field>
+		</record>
+	</data>
+</odoo>

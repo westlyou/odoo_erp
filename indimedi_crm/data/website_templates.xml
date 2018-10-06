@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="entigrity_layout" inherit_id="web.layout" name="entigrity_layout" priority="17">
+	    <xpath expr="//head//link" position="after">
+	        <link rel="shortcut icon" href="/indimedi_crm/static/src/img/favicon.ico" type="image/x-icon"/>
+	    </xpath>
+	</template>
+
+</odoo>

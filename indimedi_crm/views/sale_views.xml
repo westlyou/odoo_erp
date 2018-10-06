@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.menu" id="sale.menu_sale_order">
+        <field name="action" eval="False"/>
+    </record>
+
+     <record model="ir.actions.act_window" id="hr_timesheet.act_hr_timesheet_line">
+        <field name="name">Timesheets</field>
+    </record>
+
+     <record model="ir.actions.act_window" id="hr_timesheet.act_hr_timesheet_report">
+        <field name="name">Timesheets</field>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_sale_quotations">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_product_template_action">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sales_team.menu_partner_form">
+        <field name="name">Contacts</field>
+    </record>
+
+    <record model="ir.ui.menu" id="project.menu_main_pm">
+        <field name="name">Assignment</field>
+    </record>
+
+    <record model="ir.ui.menu" id="sales_team.menu_base_partner">
+        <field name="name">Pre Sales</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="hr_timesheet.act_hr_timesheet_line_by_project">
+        <field name="name">Timesheets</field>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_timesheet.menu_hr_working_hours">
+        <field name="name">Detailed Timesheets</field>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_timesheet.menu_hr_activity_analysis">
+        <field name="name">Timesheet Analysis</field>
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="project.menu_projects_config">
+        <field name="name">Assignments</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="project.open_view_project_all">
+        <field name="name">Assignments</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="project.open_view_project_all_config">
+        <field name="name">Assignments</field>
+    </record>
+
+    <!-- for hide dashboard in project -->
+
+
+    <record model="ir.ui.menu" id="sale.menu_sale_order_invoice">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_sale_order_upselling">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_attribute_action">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_variants_action">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_product_category_action_form">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_product_uom_form_action">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_product_uom_categ_form_action">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="crm.crm_activity_report_menu">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="crm.crm_opportunity_report_menu">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_report_product_all">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="crm.crm_opportunity_report_menu_lead">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="calendar.mail_menu_calendar">
+        <field name="action" eval="False"/>
+    </record>
+
+    <record id="make_invisible" model="res.groups">
+        <field name="name">Invisible</field>
+    </record>
+
+    <record model="ir.ui.menu" id="utm.menu_link_tracker_root">
+        <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+    </record>
+
+    <record model="ir.ui.menu" id="crm.menu_crm_config_lead">
+        <field name="name">Lead</field>
+    </record>
+
+    <record model="ir.ui.menu" id="crm.crm_activity_menu">
+       <field name="action" eval="False"/>
+    </record>
+
+ <!--    <record model="ir.ui.menu" id="project.open_view_project_all">
+        <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+    </record>
+ -->
+<!--     <record model="ir.ui.menu" id="project.open_view_project_all">
+        <field name="action" eval="False"/>
+    </record> -->
+</odoo>

@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="post_sales_menu" name="Post Sales"/>
+
+    <record id="view_customer_agreement_kanban" model="ir.ui.view">
+        <field name="name">job.description.kanban</field>
+        <field name="model">job.description</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="agreement_stage_id" class="o_kanban_small_column" create="false">
+                <field name="agreement_stage_id" />
+                <field name="name" string="Agreement ID"/>
+                <field name="interview_start_date" string="Interview Date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <!-- title -->
+                            <h3><strong><field name="jd_company"/></strong></h3>
+                            <field name="name"/>
+                            <br/>
+                            <field name="stage_name"/>
+                            <br/>
+                            <field name="interview_start_date" attrs="{'invisible':[('stage_name','not in','Interview Scheduled')]}"/>
+                            <br/>
+                            <field name="jd_ea_working_id" attrs="{'required':[('stage_name','=','Employee Selected')]}" invisible="1"/>
+                            <br/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_customer_agreement_tree" model="ir.ui.view">
+        <field name="name">job.description.tree</field>
+        <field name="model">job.description</field>
+        <field name="arch" type="xml">
+            <tree string="Agreement" create="false">
+                <field name="name" string="Agreement ID"/>
+                <field name="execute_date" invisible="1"/>
+                <field name="jd_company"/>
+                <field name="agreement_stage_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_customer_agreement_form" model="ir.ui.view">
+        <field name="name">job.description.form</field>
+        <field name="model">job.description</field>
+        <field name="arch" type="xml">
+            <form string="Agreement" create="false">
+                <header>
+                    <field name="agreement_stage_id" widget="statusbar" clickable="True"/>      
+                </header>
+                <h1>
+                    <field name="name" readonly="1" class="oe_inline"/>
+                </h1>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="jd_company"/>
+                            <field name="execute_date" invisible="1"/>
+                            <field name="stage_name" invisible="0"/>
+                            <label for="jd_street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="jd_street" placeholder="Building No. ..." class="o_address_street"/>
+                                <field name="jd_street2" placeholder="Street ..." class="o_address_street"/>
+                                <field name="jd_street3" placeholder="Suite/Room No. ..." class="o_address_street"/>
+                                <field name="jd_city" placeholder="City" class="o_address_city"/>
+                                <field name="jd_state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}"/>
+                                <field name="jd_zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="jd_country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="jd_website"/>
+                            <field name="jd_assigned_to"/>
+                            <field name="jd_phone"/>
+                            <field name="jd_fax"/>
+                            <field name="stage_hide" invisible="1"/>
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="jd_email"/>
+                        <field name="jd_google_page"/>
+                        <field name="jd_twitter_id"/>
+                        <field name="jd_facebook_page"/>
+                    </group>
+                    <notebook>
+                        <page name="contact_details" string="Contacts &amp; Addresses">
+                            <field name="agreement_partner_id" invisible="1"/>
+                            <field name="child_ids" mode="kanban">
+                                <kanban>
+                                    <field name="color"/>
+                                    <field name="name"/>
+                                    <field name="primary_contact"/>
+                                    <field name="title"/>
+                                    <field name="type"/>
+                                    <field name="email"/>
+                                    <field name="parent_id"/>
+                                    <field name="is_company"/>
+                                    <field name="designation_id"/>
+                                    <field name="phone"/>
+                                    <field name="street"/>
+                                    <field name="street2"/>
+                                    <field name="zip"/>
+                                    <field name="city"/>
+                                    <field name="country_id"/>
+                                    <field name="mobile"/>
+                                    <field name="fax"/>
+                                    <field name="state_id"/>
+                                    <field name="image"/>
+                                    <field name="lang"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <t t-set="color" t-value="kanban_color(record.color.raw_value)"/>
+                                            <div t-att-class="color + (record.title.raw_value == 1 ? ' oe_kanban_color_alert' : '') + ' oe_kanban_global_click'">
+                                                <a t-if="!read_only_mode" type="delete" class="fa fa-times pull-right"/>
+                                                <div class="o_kanban_image">
+                                                    <img t-if="record.image.raw_value" t-att-src="'data:image/png;base64,'+record.image.raw_value"/>
+                                                    <t t-if="!record.image.raw_value">
+                                                        <img t-if="record.type.raw_value === 'delivery'" t-att-src='_s + "/base/static/src/img/truck.png"'/>
+                                                        <img t-if="record.type.raw_value === 'invoice'" t-att-src='_s + "/base/static/src/img/money.png"'/>
+                                                        <t t-if="record.type.raw_value !== 'invoice' &amp;&amp; record.type.raw_value !== 'delivery'">
+                                                            <img t-if="record.is_company.raw_value === true" t-att-src='_s + "/base/static/src/img/company_image.png"'/>
+                                                            <img t-if="record.is_company.raw_value === false" t-att-src='_s + "/base/static/src/img/avatar.png"'/>
+                                                        </t>
+                                                    </t>
+                                                </div>
+                                                <div class="oe_kanban_details">
+                                                    <field name="name"/>
+                                                    <div style="color: blue;" t-if="record.primary_contact.raw_value">Primary Contact<label for="primary_contact"/></div>
+                                                    <div t-if="record.designation_id.raw_value"><field name="designation_id"/></div>
+                                                    <div t-if="record.email.raw_value"><field name="email"/></div>
+                                                    <div t-if="record.type.raw_value != 'contact'">
+                                                        <div>
+                                                            <field name="zip"/>
+                                                            <field name="city"/>
+                                                        </div>
+                                                        <field t-if="record.state_id.raw_value" name="state_id"/>
+                                                        <field name="country_id"/>
+                                                    </div>
+                                                    <div t-if="record.phone.raw_value">Phone: <field name="phone"/></div>
+                                                    <div t-if="record.mobile.raw_value">Mobile: <field name="mobile"/></div>
+                                                    <div t-if="record.fax.raw_value">Fax: <field name="fax"/></div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form string="Contact / Address">
+                                    <sheet>
+                                        <field name="type" required="1" widget="radio" options="{'horizontal': true}"/>
+                                        <hr/>
+                                        <group>
+                                            <group attrs="{'invisible': [('type','=', 'contact')]}">
+                                                <label for="street" string="Address"/>
+                                                <div>
+                                                    <div class="o_address_format" name="div_address">
+                                                        <field name="street" placeholder="Street..." class="o_address_street"/>
+                                                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                                        <field name="city" placeholder="City" class="o_address_city"/>
+                                                        <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}' context="{'country_id': country_id, 'zip': zip}"/>
+                                                        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                                        <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                                                    </div>
+                                                </div>
+                                            </group>
+                                            <group>
+                                                <field name="name" string="Contact Name" attrs="{'required' : [('type', '=', 'contact')]}"/>
+                                                <field name="primary_contact"/>
+                                                <field name="title" placeholder="e.g. Mr."
+                                                    attrs="{'invisible': [('type','&lt;&gt;', 'contact')]}"/>
+                                                <field name="designation_id" placeholder="e.g. Sales Director"
+                                                    attrs="{'invisible': [('type','&lt;&gt;', 'contact')]}"/>
+                                                <field name="email"/>
+                                                <field name="phone" widget="phone"/>
+                                                <field name="mobile" widget="phone"/>
+                                                <field name="comment" placeholder="internal note..."/>
+                                            </group>
+                                        </group>
+                                        <field name="supplier" invisible="True"/>
+                                        <field name="customer" invisible="True"/>
+                                        <field name="lang" invisible="True"/>
+                                        <field name="image" invisible="True"/>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page name='agreement_job_description' string="Agreement and Job Description">
+                            <form>
+                                <h1>
+                                    <field name="name" readonly="1" class="oe_inline"/>
+                                </h1>
+                                <group string="Agreement" col="4">
+                                    <field name="multi_agreement" readonly="1"/>
+                                    <field name="generation_date" readonly="1"/>
+                                    <!-- <field name="general_manager" readonly="1"/> -->
+                                    <field name="agreement_general_manager" readonly="1"/>
+                                    <field name="is_gm" invisible="1" />
+                                    <field name="stage_id" invisible="1"/>
+                                </group>
+                                <group string="Job Description">
+                                    <field name="job_profile_id" style="width:50%;" readonly="1"/>
+                                    <field name="experience_id" style="width:50%;" readonly="1"/>
+                                    <field name="nature_experience_ids" widget="many2many_tags" readonly="1" />
+                                    <field name="task_tobe_done" readonly="1"/>
+                                    <field name="s_accounting_ids" style="width:50%;" widget="many2many_tags" readonly="1"/>
+                                    <field name="s_tax_id_ids" style="width:50%;" widget="many2many_tags" readonly="1"/>
+                                    <field name="hiring_model" style="width:50%;" required="1" readonly="1"/>
+                                    <field name="permanent_hour_selection" style="width:50%;" attrs="{'invisible': ['|',('hiring_model', '=', 'temporary'),('hiring_model', 'in', False)]}" readonly="1"/>
+                                    <field name="temporary_hour_selection" style="width:50%;" attrs="{'invisible': ['|',('hiring_model', 'in', 'permanent'),('hiring_model', 'in', False)]}" readonly="1"/>
+                                    <field name="hour_selection" style="width:50%;" attrs="{'invisible': [('hiring_model', 'in', ('permanent', 'temporary',False))]}" readonly="1"/>
+                                </group>
+                                <group col="4">
+                                    <field name="time_from" style="margin-right:10%" attrs="{'invisible':[('hour_selection','not in',('20_10','40_20'))]}" readonly="1"/>
+                                    <label for="time_to" style="margin-left:50%" attrs="{'invisible':[('hour_selection','not in',('20_10','40_20'))]}" readonly="1"/>
+                                    <field name="time_to" nolabel="1" style="width:95%;" attrs="{'invisible':[('hour_selection','not in',('20_10','40_20'))]}" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="hiring_period" style="width:50%;" readonly="1"/>
+                                    <!-- Lead Origin Fields -->
+                                    <field name="rate_per_hour" style="width:10%;" readonly="1" invisible="1"/>
+                                    <field name="jd_invoicing" widget="selection" readonly="1" invisible="1"/>
+                                    <!--  -->
+                                    <field name="jd_invoicing_post" widget="selection" readonly="1"/>
+                                    <field name="rate_per_hour_jd" style="width:10%;" readonly="1"/>
+                                    <field name="total_rate" style="width:10%;" readonly="1"/>
+                                </group>
+                                <div colspan="3">
+                                    <label string="Communication Skills:"/>
+                                    <label for="writing_skill" style="margin-left:10%"/>
+                                    <field name="writing_skill" widget="radio" options="{'horizontal': false}" style="margin-left:5%" readonly="1"/>
+                                    <label for="speaking_skill" style="margin-left:10%"/>
+                                    <field name="speaking_skill" widget="radio" options="{'horizontal': false}" style="margin-left:5%" readonly="1"/>
+                                </div>
+                                <group>
+                                    <field name="comm_medium_ids" style="width:50%;" widget="many2many_tags" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="soft_access" style="width:35%;" readonly="1"/>
+                                    <field name="soft_remote_id" attrs="{'invisible': ['|',('soft_access','in','cloud'),'|',('soft_access','in','local'),('soft_access','in',False)]}" style="width:35%;" readonly="1"/>
+                                    <field name="soft_cloud_id" attrs="{'invisible': ['|',('soft_access','in','remote'),'|',('soft_access','in','local'),('soft_access','in',False)]}" style="width:35%;" readonly="1"/>
+                                    <field name="soft_local_id" attrs="{'invisible': ['|',('soft_access','in','cloud'),'|',('soft_access','in','remote'),('soft_access','in',False)]}" style="width:35%;" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="doc_access" style="width:35%;" readonly="1"/>
+                                    <field name="doc_remote_id" attrs="{'invisible': ['|',('doc_access','in','cloud'),'|',('doc_access','in','sharing'),('doc_access','in',False)]}" style="width:35%;" readonly="1"/>
+                                    <field name="doc_cloud_id" attrs="{'invisible': ['|',('doc_access','in','remote'),'|',('doc_access','in','sharing'),('doc_access','in',False)]}" style="width:35%;" readonly="1"/>
+                                    <field name="doc_sharing_id" attrs="{'invisible': ['|',('doc_access','in','cloud'),'|',('doc_access','in','remote'),('doc_access','in',False)]}" style="width:35%;" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="reporting_id" widget="selection" style="width:35%;" readonly="1"/>
+                                </group>
+                                <group style="width:48.5%">
+                                    <field name="tentative_date" readonly="1"/>
+                                </group>
+                                <group col="6">
+                                    <field name="timezone_id" readonly="1"/>
+                                    <field name="from_timezone_id" readonly="1"/>
+                                    <field name="to_timezone_id" readonly="1"/>
+                                </group>
+                            </form>
+                        </page>
+                        <page name="interview_process" string="Interview Process">
+        <!--                         <header>
+                                <button string="Send Resume" name="action_resume_send" class="oe_highlight" type="object"/>
+                            </header> -->
+                            <group col="4">
+                                <field name="interview_start_date"/>
+                                <field name="interview_stop_date"/>
+                            </group>
+                            <group>
+                                 <button type="object" name="send_resumes_post_sales" string="Send Resumes" class="oe_highlight"/>
+                            </group>
+                            <group>
+                                <field name="resume_post_sales" nolabel="1" options="{'no_create_edit': True, 'no_create': True}">
+                                    <tree name="resume_details_tree">
+                                        <field name="name" invisible="1"/>
+                                        <field name="employee_name" string="Employee"/>
+                                        <field name="profile" string="Profile"/>
+                                        <field name="resume" invisible="1"/>
+                                        <field name="sourcebl" string="File" invisible="1"/>
+                                        <field name="datas_attachments" filename="datas_attachments_fname"/>
+                                        <field name="datas_attachments_fname" class="oe_inline oe_right" invisible="1"/>
+                                    </tree> 
+                                    <!-- <form name="resume_details_form" string="Details">
+                                        <group name="resume" string="Resume Details">
+                                            <field name="profile" string="Profile"/>
+                                            <field name="employee_name" string="Employee" invisible="1"/>
+                                            <field name="resume" string="Resume"/>
+                                            <field name="name" invisible="1"/>
+                                            <field name="sourcebl" string="File" invisible="1"/>
+                                        </group>
+                                    </form> -->
+                                </field>
+                            </group>
+                        </page>
+                        <page name="hr_details" string="HR Details" attrs="{'invisible': [('stage_hide', '=', False)]}">
+                            <group>
+                                <group>
+                                    <field name="jd_ea_working_id" attrs="{'required':['|',('stage_name','=','Employee Selected'),('stage_name','=','Assignment Of Employee')]}"/>
+                                    <field name="jd_us_name_id" attrs="{'required':['|',('stage_name','=','Employee Selected'),('stage_name','=','Assignment Of Employee')]}"/>
+                                    <field name="jd_manager_id" attrs="{'required':['|',('stage_name','=','Employee Selected'),('stage_name','=','Assignment Of Employee')]}"/>
+                                </group>
+                                    <group string="Entigrity">
+                                    <field name="jd_post_timesheet_phone" widget="phone" attrs="{'required':['|',('stage_name','=','Employee Selected'),('stage_name','=','Assignment Of Employee')]}"/>
+                                    <field name="jd_post_timesheet_email" context="{'default_timesheet_mail': True}" domain="[('timesheet_mail', '=', True)]" options='{"no_open": True, "no_create_edit": True}' placeholder="timesheet@mail.com" attrs="{'required':['|',('stage_name','=','Employee Selected'),('stage_name','=','Assignment Of Employee')]}"/>
+                                    <field name="jd_entigrity_password"/>
+                                </group>
+                                <group string="Skype Details">
+                                    <field name="jd_skype_email"/>
+                                    <field name="jd_skype_password"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="work_protocol" string="Work Protocol" attrs="{'invisible': [('stage_hide', '=', False)]}">
+                            <group>
+                                <!-- <field name="credentials_agreement" nolabel="1">
+                                    <tree name="credentials_agreement" editable="bottom">
+                                        <field name="cred_agreement" required="1"/>
+                                        <field name="cred_agreement_description" string="Description" required="1"/>
+                                    </tree>
+                                </field> -->
+                                <field name="agreements_credentials" nolabel="1">
+                                    <tree name="agreement_credentials" editable="bottom">
+                                        <field name="cred_agreement_post" required="1"/>
+                                        <field name="cred_agreement_description_post" string="Description" required="1"/>
+                                    </tree>
+                                </field>
+
+                            </group>
+                            <group>
+                                <group string="Client Credentials">
+                                    <field name="types"/>
+                                    <field name="client_credential_email_id"/>
+                                    <field name="client_credential_password"/>
+                                </group>
+                                <group string="Account Software">
+                                    <field name="as_id"/>
+                                    <field name="as_password"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Tax Software">
+                                    <field name="tax_software_id"/>
+                                    <field name="tax_software_password"/>
+                                </group>
+                                <group string="Remote Desktop">
+                                    <field name="remote_id"/>
+                                    <field name="remote_password"/>
+                                </group>
+                            </group>
+                            <group string="Description">
+                                    <field name="jd_description"/>
+                            </group>
+                        </page>
+                        <page name="billing_details" string="Billing Details" attrs="{'invisible': [('stage_hide', '=', False)]}">
+                            <group col="4">
+                                <field name='start_date_billing' attrs="{'required':[('stage_name','=','Employee Selected')]}"/>
+                                <field name="jd_invoicing_bill" widget="selection"/>
+                                <!-- <field name="rate_per_hour" string="Rate"/> -->
+                                <field name="rate_per_hour_inv"/>
+                                <!-- <field name="jd_minimum_hours"/> -->
+                                <field name="permanent_hour_jd" attrs="{'invisible': [('hiring_model','=','temporary')]}"/>
+                                <field name="temporary_hour_jd" attrs="{'invisible': [('hiring_model','=','permanent')]}"/>
+                            </group>
+                        </page>
+                        <page name="feedback_call" string="Feedback Call" attrs="{'invisible': [('stage_hide', '=', False)]}">
+                            <group>
+                                <group>
+                                    <field name="jd_feedback_response"/>
+                                    <field name="jd_feedback_response_remark" attrs="{'invisible': [('jd_feedback_response','in',False)]}"/>
+                                </group>
+                                <group>
+                                    <field name="jd_feedback_work_product"/>
+                                     <field name="jd_feedback_work_product_remark" attrs="{'invisible': [('jd_feedback_work_product','in',False)]}"/>
+                                </group>
+                                <group>
+                                    <field name="jd_feedback_work_flow"/>
+                                    <field name="jd_feedback_work_flow_remark" attrs="{'invisible': [('jd_feedback_work_flow','in',False)]}"/>
+                                </group>
+                                <group>
+                                    <field name="jd_call_overall_remarks"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_customer_agreement_calendar" model="ir.ui.view">
+        <field name="name">job.description.calendar</field>
+        <field name="model">job.description</field>
+        <field name="type">calendar</field>
+        <field name="arch" type="xml">
+            <calendar string="Interview Scheduled" color="jd_company" date_start="interview_start_date" date_stop="interview_stop_date">
+                <field name="jd_company"/>
+                <field name="name"/>
+                <!-- <field name="interview_start_date"/> -->
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_customer_agreement_search" model="ir.ui.view">
+        <field name="name">Agreement Search</field>
+        <field name="model">job.description</field>
+        <field name="arch" type="xml">
+            <search string="Search Agreement">
+                <field name="jd_company"/>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="customer_agreement_action" model="ir.actions.act_window">
+        <field name="name">Agreement</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">job.description</field>
+        <field name="view_mode">kanban,tree,form,calendar</field>
+        <field name="context">{'group_by': 'agreement_stage_id'}</field>
+        <field name="search_view_id" ref="view_customer_agreement_search"/>
+        <field name="domain">[('active','=',False)]</field>
+    </record>
+
+    <record id="view_agreement_stages_tree" model="ir.ui.view">
+        <field name="name">agreement.stage.tree</field>
+        <field name="model">agreement.stage</field>
+        <field name="arch" type="xml">
+            <tree string="Agreement Stage">
+                <field name="name"/>
+                <field name="default"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_agreement_stages_form" model="ir.ui.view">
+        <field name="name">agreement.stage.form</field>
+        <field name="model">agreement.stage</field>
+        <field name="arch" type="xml">
+            <form string="Agreement Stage">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="default"/>
+                        <field name="last_stage" string="Only Click to Make this stage to Last"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="agreement_stage_action" model="ir.actions.act_window">
+        <field name="name">Agreement Stages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">agreement.stage</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref='view_agreement_stages_tree'/>
+    </record>
+
+
+
+    <menuitem id="menu_customer_agreement" name="Agreement" parent="post_sales_menu" />
+    <menuitem id="menu_customer_agreement_child" action="customer_agreement_action" name="Agreement" parent="menu_customer_agreement" />
+
+
+    <menuitem id="menu_agreement_configuration" name="Configuration" parent="post_sales_menu" />
+    <menuitem id="menu_agreement_stage" action="agreement_stage_action" name="Agreement Stages" parent="menu_agreement_configuration" />
+
+</odoo>

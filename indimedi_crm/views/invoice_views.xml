@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="seq_tiesheet_invice" model="ir.sequence">
+            <field name="name">timesheet_invoice_seq</field>
+            <field name="code">timesheet.invoice</field>
+            <field name="prefix"></field>
+            <field name="padding">1</field>
+        </record>
+
+        <record id="view_timesheet_invoice_tree" model="ir.ui.view">
+            <field name="name">timesheet.invoice.tree</field>
+            <field name="model">timesheet.invoice</field>
+            <field name="arch" type="xml">
+                <tree editable="top" string="Timesheet Invoice" create="false">
+                    <field name="analytic_account_id" readonly="1" options='{"no_open": True, "no_create_edit": True, "no_create": True}' placeholder="timesheet@mail.com"/>
+                    <field name="partner_id" invisible="1" readonly="1"/>
+                    <field name="invoicing_type_id" widget="selection" readonly="1"/>
+                    <field name="invoice_start_date" readonly="1"/>
+                    <field name="invoice_end_date" readonly="1"/>
+                    <field name="hour_selection" readonly="1" invisible="1"/>
+                    <field name="custom_work_hours" readonly="1" invisible="0"/>
+                    <field name="rate_per_hour" readonly="1"/>
+                    <field name="min_bill" readonly="1"/>
+                    <field name="worked_hours" readonly="1"/>
+                    <field name="ideal_hours" readonly="1"/>
+                    <field name="additional_hours" readonly="1"/>
+                    <field name="hours_charged"/>
+                    <field name="bill_amount"/>
+                    <field name="disc_amount"/>
+                    <field name="final_amount" sum="Total Amount"/>
+                    <field name="holidays"/>
+                    <field name="billed" attrs="{'readonly': [('cancelled', '=', True)]}"/>
+                    <field name="cancelled" attrs="{'readonly': [('billed', '=', True)]}"/>
+                    <field name="sequence_id" invisible="1"/>
+                    <field name="sent_mail"/>
+                    <field name="invoice_date" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_not_billed_timesheet_action" model="ir.actions.act_window">
+            <field name="name">Not Billed</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">timesheet.invoice</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref='view_timesheet_invoice_tree'/>
+            <field name="domain">[('billed', '=', False),('cancelled', '=', False)]</field>
+        </record>
+
+        <record id="view_billed_timesheet_action" model="ir.actions.act_window">
+            <field name="name">Billed</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">timesheet.invoice</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref='view_timesheet_invoice_tree'/>
+            <field name="domain">[('billed', '=', True),('cancelled', '=', False)]</field>
+        </record>
+
+        <record id="view_cancelled_timesheet_action" model="ir.actions.act_window">
+            <field name="name">Cancelled</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">timesheet.invoice</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref='view_timesheet_invoice_tree'/>
+            <field name="domain">[('cancelled', '=', True)]</field>
+        </record>
+
+        <record id="view_timesheet_invoice_search" model="ir.ui.view">
+            <field name="name">Timesheet Invoice Search</field>
+            <field name="model">timesheet.invoice</field>
+            <field name="arch" type="xml">
+                <search string="Search Activity">
+                    <field name="analytic_account_id"/>
+                    <field name="invoicing_type_id"/>
+                    <filter string="Weekly" name="weekly" domain="[('invoicing_type_id', '=', 'Weekly')]"/>
+                    <filter string="Weekly Advance" name="weekly_advance" domain="[('invoicing_type_id', '=', 'Weekly Advance')]"/>
+                    <separator/>
+                    <filter string="Monthly" name="monthly" domain="[('invoicing_type_id', '=', 'Monthly')]"/>
+                    <filter string="Monthly Advance" name="monthly_advance" domain="[('invoicing_type_id', '=', 'Monthly Advance')]"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Client" domain="[]" context="{'group_by':'analytic_account_id'}" name="invoice_policy"/>
+                        <filter string="Invoicing Policy" domain="[]" context="{'group_by':'invoicing_type_id'}" name="invoice_policy"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+
+        <record model="ir.actions.server" id="action_timesheet_invoice">
+            <field name="name">Send Email</field>
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice"/>
+            <field name="code">
+if records:
+    for i in records:
+        action = i.send_timesheet_invoice()
+
+            </field>
+        </record>
+
+        <record model="ir.values" id="val_timesheet_invoice">
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice" />
+            <field name="name">Send Email</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.server,' +str(ref('action_timesheet_invoice'))" />
+            <field name="key">action</field>
+            <field name="model">timesheet.invoice</field>
+        </record>
+
+
+
+
+        <menuitem id="timesheet_invoice_menu" name="Timesheet Invoicing" sequence="56" groups="group_timesheet_invoice_manager"/>
+
+        <menuitem id="timesheet_invoice_child_menu" parent="timesheet_invoice_menu" name="Timesheet Invoicing" sequence="1"/>
+
+        <menuitem id="not_billed_timesheet_invoice_menu" action="view_not_billed_timesheet_action"
+            parent="timesheet_invoice_child_menu" name="Not Billed" sequence="1"/>
+
+        <menuitem id="billed_timesheet_invoice_menu" action="view_billed_timesheet_action"
+            parent="timesheet_invoice_child_menu" name="Billed" sequence="2"/>
+
+        <menuitem id="cancelled_timesheet_invoice_menu" action="view_cancelled_timesheet_action"
+            parent="timesheet_invoice_child_menu" name="Cancelled" sequence="3"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="view_employee_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.forms</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='passport_id']" position="before">
+                <field name="pan_id"/>
+            </xpath>
+            <xpath expr="//field[@name='address_home_id']" position="before">
+                <field name="emp_street" placeholder="Building No. ..." class="o_address_street"/>
+                <field name="emp_street2" placeholder="Street ..." class="o_address_street"/>
+                <field name="emp_street3" placeholder="Suite/Room No. ..." class="o_address_street"/>
+                <field name="emp_zip" placeholder="City" class="o_address_city"/>
+                <field name="emp_city" placeholder="State" class="o_address_state" options="{'no_create_edit': True, 'no_open': True, 'no_create': True}"/>
+                <field name="emp_state_id" placeholder="Zip" class="o_address_zip"/>
+                <field name="emp_country_id" placeholder="Country" class="o_address_country" options="{'no_create_edit': True, 'no_open': True, 'no_create': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='address_home_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='hr_settings']" position="after">
+                <!-- <page name="resume_doc" string="Resume Details">
+                    <group>
+                        <field name="document_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="datas"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page> -->
+                <page name="resume_details" string="Resume Details">
+                    <group>
+                        <field name="resume_details" nolabel="1">
+                            <tree name="resume_details_tree" editable="bottom">
+                                <field name="employee_name" readonly="1"/>
+                                <field name="profile" string="Profile" required="1"/>
+                                <!-- <field name="resume" widget="ckeditor" invisible="1"/> -->
+                                <field name="sourcebl" string="File" invisible="1"/>
+                                <field name="datas_attachments" filename="datas_attachments_fname"/>
+                                <field name="datas_attachments_fname" class="oe_inline oe_right" invisible="1"/>
+                                <field name="name" invisible="1"/>
+                                <!-- <button string="Send Resumes" name="action_resume2_send" class="oe_highlight" type="object"/> -->
+                            </tree>
+                            <!-- <form name="resume_details_form" string="Details">
+                                <group name="resume" string="Resume Details">
+                                    <field name="profile" string="Profile"/>
+                                    <field name="resume" widget="ckeditor" string="Resume"/>
+                                    <field name="name" invisible="1"/>
+                                    <field name="sourcebl" string="File" invisible="1"/>
+                                </group>
+                            </form> -->
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

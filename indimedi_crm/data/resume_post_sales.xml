@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+		<record id="email_resume_post_sales" model="mail.template">
+			<field name="name">Resumes</field>
+			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+			<field name="subject">Resumes</field>
+			<field name="email_to">${ctx['email_to']|safe}</field> 
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<!-- <field name="report_template" ref="indimedi_crm.timesheet_report_wizards"/> -->
+			<field name="auto_delete" eval="True"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html">
+				<![CDATA[
+				<div>
+					<p>Success</p>
+				</div>
+				]]>
+																																																																																																																																																			
+			</field>
+		</record>
+	</data>
+</odoo>

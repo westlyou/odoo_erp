@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record model="ir.rule" id="project.project_project_manager_rule">
+            <field name="name">Project: project manager: see all</field>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="active" eval="False"/>
+            <field name="groups" eval="[(4,ref('project.group_project_manager'))]"/>
+        </record>
+
+        <record model="ir.rule" id="project_manager_all_project_tasks_rule">
+            <field name="name">Project/Task: project manager: see all</field>
+            <field name="model_id" ref="model_project_task"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="active" eval="False"/>
+            <field name="groups" eval="[(4,ref('project.group_project_manager'))]"/>
+        </record>
+
+        <record model="ir.rule" id="project.project_public_members_rule">
+            <field name="name">Project: employees: following required for follower-only projects</field>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="domain_force">['|','|','|','|',('message_partner_ids', 'in', [user.partner_id.id]),('user_id', '=', user.id),('sales_manager_id','=', user.id),('jd_ea_working_id','=', user.id),('jd_us_name_id','=', user.id)]</field>
+            <field name="groups" eval="[(4,ref('project.group_project_manager')),(4,ref('project.group_project_user')),
+            (4,ref('sales_team.group_sale_manager')),(4,ref('sales_team.group_sale_salesman'))]"/>
+        </record>
+
+        <record model="ir.rule" id="project.task_visibility_rule">
+            <field name="name">Project/Task: employees: follow required for follower-only projects</field>
+            <field name="model_id" ref="model_project_task"/>
+            <field name="domain_force">['|','|','|','|',('message_partner_ids', 'in', [user.partner_id.id]),('user_id', '=', user.id),('task_sales_manager_id','=', user.id),('manager_id','=', user.id),('jd_us_name_id','=', user.id)]</field>
+            <field name="groups" eval="[(4,ref('project.group_project_manager')),(4,ref('project.group_project_user')),
+             (4,ref('sales_team.group_sale_manager')),(4,ref('sales_team.group_sale_salesman'))]"/>
+        </record>
+
+        <record model="ir.rule" id="timesheet_analysis_rule">
+            <field name="name">Timesheet Analysis of Analytic Account</field>
+            <field name="model_id" ref="model_account_analytic_line"/>
+            <field name="domain_force">['|','|','|',('project_id.user_id', '=', user.id),('project_id.sales_manager_id','=', user.id),('project_id.jd_ea_working_id','=', user.id),('project_id.jd_us_name_id','=', user.id)]</field>
+            <field name="groups" eval="[(4,ref('project.group_project_manager')),(4,ref('project.group_project_user')),
+            (4,ref('sales_team.group_sale_manager')),(4,ref('sales_team.group_sale_salesman'))]"/>
+        </record>
+
+        <!-- General Manager and Groups and Rule -->
+
+        <record id="group_project_general_manager" model="res.groups">
+            <field name="name">General Manager</field>
+            <field name="category_id" ref="base.module_category_project_management"/>
+            <field name="implied_ids" eval="[(4, ref('project.group_project_manager'))]"/>
+            <field name="comment">The user will have access to all records of all the Project Task and Timesheet.</field>
+        </record>
+
+        <record model="ir.rule" id="project_project_general_manager_rule">
+            <field name="name">Project: project general manager: see all</field>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="active" eval="True"/>
+            <field name="groups" eval="[(4,ref('group_project_general_manager'))]"/>
+        </record>
+
+        <record model="ir.rule" id="project_general_manager_all_project_tasks_rule">
+            <field name="name">Project/Task: project general manager: see all</field>
+            <field name="model_id" ref="model_project_task"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="active" eval="True"/>
+            <field name="groups" eval="[(4,ref('group_project_general_manager'))]"/>
+        </record>
+
+        <record model="ir.rule" id="timesheet_analysis_general_manager_rule">
+            <field name="name">Timesheet Analysis of Analytic Account: General Manager</field>
+            <field name="model_id" ref="model_account_analytic_line"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4,ref('group_project_general_manager'))]"/>
+        </record>
+
+        <record model="ir.module.category" id="base.module_category_hr_timesheet">
+            <field name="name">Timesheets</field>
+            <field name="description">Helps you manage the timesheets.</field>
+            <field name="sequence">3</field>
+        </record>
+
+    </data>
+</odoo>

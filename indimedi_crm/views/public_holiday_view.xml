@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_public_holiday_tree" model="ir.ui.view">
+            <field name="name">public.holiday.tree</field>
+            <field name="model">public.holiday</field>
+            <field name="arch" type="xml">
+                <tree string="Public Holidays">
+                    <field name="public_holiday_date" string="Date" required="1"/>
+                    <field name="name" string="Holiday Name" required="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_public_holiday_form" model="ir.ui.view">
+            <field name="name">public.holiday.form</field>
+            <field name="model">public.holiday</field>
+            <field name="arch" type="xml">
+                <form name="public_holiday">
+                    <sheet>
+                        <group string="Public Holidays" style="width:50%">
+                            <field name="public_holiday_date" string="Date" required="1"/>
+                            <field name="name" string="Holiday Name" required="1"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+ 
+        <record id="public_holiday_action" model="ir.actions.act_window">
+            <field name="name">Public Holidays</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">public.holiday</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref='view_public_holiday_tree'/>
+            <field name="context">{'search_default_current_year':1}</field>
+        </record>
+
+        <record id="view_public_holiday_search" model="ir.ui.view">
+            <field name="name">Public Holiday Search</field>
+            <field name="model">public.holiday</field>
+            <field name="arch" type="xml">
+                <search string="Search Activity">
+                    <field name="name"/>
+                    <filter string="Current Month" name="current_month" domain="[('public_holiday_date','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')), ('public_holiday_date','&gt;=',time.strftime('%%Y-%%m-01'))]"/>
+                    <filter string="Previous Month" name="prev_month" domain="[('public_holiday_date','&gt;=',(context_today()-relativedelta(months=1)).strftime('%%Y-%%m-01')),('public_holiday_date','&lt;',time.strftime('%%Y-%%m-01'))]"/>
+                    <separator />
+                    <filter string="Current Year" name="current_year" domain="[('public_holiday_date','&lt;=', time.strftime('%Y-12-31')),('public_holiday_date','&gt;=',time.strftime('%Y-01-01'))]"/>
+                    <filter string="Last Year" name="last_year" domain="[('public_holiday_date','&gt;=',(context_today()-relativedelta(years=1)).strftime('%%Y-01-01')),('public_holiday_date','&lt;', time.strftime('%%Y-01-01'))]"/>
+                    <separator />
+                </search>
+            </field>
+        </record>
+
+        <menuitem id="menu_public_holiday" action="public_holiday_action" name="Public Holidays" sequence="81"/>
+
+    </data>
+</odoo>

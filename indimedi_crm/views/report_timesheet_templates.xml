@@ -1,0 +1,163 @@
+<odoo>
+    <data>
+        <report id="timesheet_report_wizards"
+                model="time.sheet.wizard"
+                menu="False"
+                string="Timesheet Entries"
+                report_type="qweb-pdf"
+                name="indimedi_crm.report_timesheet_wizard"
+                file="indimedi_crm.report_timesheet_wizard"
+        />
+        
+        <template id="report_timesheet_wizard">
+            <t t-call="report.html_container"/>  
+               <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2>
+                                    <span>Timesheet Entries</span>
+                                </h2>
+                            </div>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+<!--                         <div class="row">
+                            <div name="invoice_address" class="col-md-8 col-md-pull-4">
+                                <span class="text-left"><strong style="color:red;">Employee phone:</strong>
+                                </span>
+                                <span t-field="o.project_task.jd_us_name_id.name"/> 
+                                <br></br>
+                                <span><strong style="color:red;">Designation:</strong>
+                                </span>
+                                <span t-field="o.project_task.profile_id"/>
+                                <br></br>
+                                <span></span>
+                            </div>
+                            <div  class="col-md-4 col-md-push-8">
+                                <span class="text-left"><strong style="color:red;">Employee phone:</strong>
+                                <span t-field="o.project_task.jd_us_name_id.name"/> 
+                                </span>
+                                <br></br>
+                                <span><strong style="color:red;">Designation:</strong>
+                                <span t-field="o.project_task.profile_id"/>
+                                </span>
+                                <br></br>
+                                <span></span>
+                                <br></br>
+                            </div>
+                        </div> -->
+                        
+                    <div class="col-md-12">
+                        <table>
+                            <tbody>
+                                <tr></tr>
+                                <tr>
+                                    <td>
+                                        <span><strong style="color:red;">Employee:</strong></span>
+                                        <span t-field="o.project_task.jd_us_name_id.name"></span>
+                                    </td>
+                                    <td style="width:100px;"></td>
+                                    <td style="text-align:left;">
+                                        <span class="text-left"><strong style="color:red;">Employee phone:</strong>
+                                        </span>
+                                        <span t-field=" o.project_task.timesheet_phone"/>
+                                    </td>
+                                </tr>
+                                <br></br>
+                                <tr></tr>
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span><strong style="color:red;">Designation:</strong>
+                                        </span>
+                                            <span t-field="o.project_task.profile_id"></span>
+                                    </td>
+                                    <td></td>
+                                    <td style="text-align:left;">
+                                        <span><strong style="color:red;">Employee email:</strong>
+                                        </span>
+                                        <span t-field="o.project_task.timesheet_email_id.email"/>
+                                    </td>
+                                </tr>
+                                <br></br>
+                                <tr></tr>
+                                <tr>
+                                    <td>
+                                        <span class="text-left"><strong style="color:red;">Client:</strong>
+                                        </span>
+                                        <span t-field=" o.project_task.project_id.client_name"></span>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <span class="text-left"><strong style="color:red;">Client Reporting:</strong>
+                                        </span>
+                                        <span t-field=" o.project_task.client_reporting_id.name"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br></br>
+                    <br></br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-condensed" style="vertical-align:middle;border-collapse: collapse;">
+                                    <thead style="border: solid 1px;">
+                                        <tr style="border: solid 1px;">
+                                            <th style="color:red; border: solid 1px;">Client Name</th>
+                                            <th style="color:red; border: solid 1px;">Type of Work</th>
+                                            <th style="color:red; border: solid 1px;">Date</th>
+                                            <th style="color:red; border: solid 1px;">Start Time</th>
+                                            <th style="color:red; border: solid 1px;">Stop Time</th>
+                                            <th style="color:red; border: solid 1px;">Total Hours</th>
+                                            <th style="color:red; border: solid 1px;" class="text-right">Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="border: solid 1px;">
+                                        <t t-set="total" t-value="0"/>
+                                        <t t-foreach="o.report_data()" t-as="l">
+                                            <tr style="border: solid 1px;">
+                                                <td style="border: solid 1px;">
+                                                   <span t-field="l.client_client_id"/>
+                                                </td>
+                                                <td style="border: solid 1px;">
+                                                   <span t-field="l.type_of_view"/>
+                                                </td >
+                                                <td style="border: solid 1px;">
+                                                   <span t-field="l.date"/>
+                                                </td>
+                                                <td style="border: solid 1px;">
+                                                   <span t-field="l.start_time_temp"/>
+                                                </td>
+                                                <td style="border: solid 1px;">
+                                                <span t-field="l.stop_time_temp"/>
+                                                </td>
+                                                <td class="text-right" style="border: solid 1px;">
+                                                    <span t-esc="'%s:%02.0f' % tuple(int(round(x)) for x in divmod(l.unit_amount*60,60))"/>                                                
+                                                </td>
+                                                <td style="border: solid 1px;">
+                                                    <span t-field="l.name" t-options="{'widget': 'text'}"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td />
+                                            <td />
+                                            <td />
+                                            <td />
+                                            <td class="text-right"><strong>Total:</strong></td>
+                                            <td class="text-right"><strong t-esc="o.project_task.total_all_time"/></td>
+                                            <td />
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+        </template>
+    </data>
+</odoo>
