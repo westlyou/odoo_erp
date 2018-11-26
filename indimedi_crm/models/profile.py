@@ -14,7 +14,7 @@ class MailMail(models.Model):
         if not values.get('mail_message_id'):
             self = self.with_context(message_create_from_mail_mail=True)
         res = super(MailMail, self).create(values)
-        mail_server_id = self.mail_server_id.search([('smtp_user', '=', res.author_id.email)])[0]
+        mail_server_id = self.mail_server_id.search([('smtp_user', '=', res.author_id.email)], limit=1) # remove [0] and added limit=1 to prevent list out of bound error
         if mail_server_id:
             res.mail_server_id = mail_server_id.id
         return res
