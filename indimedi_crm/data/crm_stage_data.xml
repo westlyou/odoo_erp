@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- <record model="crm.stage" id="custom_stage_lead_new">
+        <field name="name">New</field>
+        <field name="probability">0</field>
+        <field name="on_change">0</field>
+        <field name="sequence">1</field>
+    </record> -->
+    <record model="crm.stage" id="stage_lead1">
+        <field name="name">New</field>
+        <field name="probability">0</field>
+        <field name="on_change">0</field>
+        <field name="sequence">1</field>
+    </record>
+    <record model="crm.stage" id="custom_stage_lead_inquiry">
+        <field name="name">Inquiry</field>
+        <field name="probability">0</field>
+        <field name="on_change">0</field>
+        <field name="sequence">2</field>
+    </record>
+    <record model="crm.stage" id="custom_stage_lead_warm">
+        <field name="name">Warm</field>
+        <field name="probability">0</field>
+        <field name="on_change">0</field>
+        <field name="sequence">3</field>
+    </record>
+    <record model="crm.stage" id="custom_stage_lead_hot">
+        <field name="name">Hot</field>
+        <field name="probability">0</field>
+        <field name="on_change">0</field>
+        <field name="sequence">4</field>
+    </record>
+    <record model="crm.stage" id="custom_stage_lead_not_interested">
+        <field name="name">Not Interested</field>
+        <field name="probability">0</field>
+        <field name="on_change">0</field>
+        <field name="sequence">5</field>
+    </record>
+    <record model="crm.stage" id="custom_stage_lead_closed">
+        <field name="name">Closed</field>
+        <field name="probability">0</field>
+        <field name="on_change">0</field>
+        <field name="sequence">6</field>
+    </record>
+    <record model="crm.stage" id="custom_stage_lead_rejected">
+        <field name="name">Rejected</field>
+        <field name="probability">0</field>
+        <field name="on_change">0</field>
+        <field name="sequence">7</field>
+    </record>
+    <!-- <record model="crm.stage" id="custom_stage_lead4">
+        <field name="name">Won</field>
+        <field name="fold" eval="False"/>
+        <field name="on_change">1</field>
+        <field name="sequence">70</field>
+    </record> -->
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend_inherit" name="web_calendar_inherit assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <!-- <link rel="stylesheet" href="/indimedi_crm/static/lib/fullcalendar/css/fullcalendar.css"/> -->
+            <script type="text/javascript" src="/indimedi_crm/static/lib/web_calendar/js/widget.js"></script>
+        </xpath>
+    </template>
+</odoo>

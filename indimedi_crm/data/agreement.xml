@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+<template id="page_action"> 
+<form action="/action_page" method="get">
+ <br/>
+  Name:<br/>
+ <input type="text" name="name" t-att-value="name"/> 
+ <br/>
+  Email:<br/>
+ <input type="text" name="mail" t-att-value="mail"/>
+  <br/>
+  Ref Number:<br/>
+  <input type="text" name="refnumber" t-att-value="refnumber" required="True" readonly="1"/>
+  <br/>
+  <input type="hidden" name="ip" t-att-value="ip"/>
+  <br/><br/>
+    <center>
+      <button type="submit" style="background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;">I Agree</button>
+		</center>
+
+</form> 
+</template>
+</odoo>
+

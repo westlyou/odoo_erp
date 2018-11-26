@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="email_template_agreement_crm_part_time" model="mail.template">
+            <field name="name">For part of the Year No. of Hours a weeks and ..</field>
+           	<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+            <field name="subject">Entigrity Client Service Agreement</field>
+            <field name="email_to"> ${ctx['email_to']|safe} </field>
+            <field name="email_cc"> ${object.email} </field>
+            <field name="reply_to"> preferred Reply address</field>
+            <field name="model_id" ref="indimedi_crm.model_job_description" />
+            <field name="auto_delete" eval="True" />
+            <field name="user_signature" eval="False" />
+            <field name="body_html"><![CDATA[
+
+
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); ">
+	<center><b>SERVICE AGREEMENT</b></center>
+	<p><b>${object.name} </b></p><br/>
+	<p><b>THIS SERVICE AGREEMENT</b> (hereinafter referred to as the “Agreement”), is made on ${object.generation_date} by and between <b>Entigrity Solutions LLC</b> (hereinafter referred to as the <b>“Company”</b>), of 244, 5th Avenue, Suite E128, New York, N.Y. 10018</p>
+	And
+	<p><b>${object.crm_id.name} </b>(hereinafter referred to as the <b>“Firm”</b>), of Address of ${object.crm_id.c_street}, ${object.crm_id.c_street2}, ${object.crm_id.c_city}, ${object.crm_id.c_state_id.name}-${object.crm_id.c_zip}, ${object.crm_id.c_country_id.name} <b>WHEREAS</b>, Company is an independent Company that specializes in providing clients with Accounting and Back office support services.  The obligations set forth in this Agreement will be performed by company itself and through direct and indirect associates, affiliates or subsidiaries.
+	</p>
+		<p><b>WHEREAS</b>, Firm desires to engage Company for the purposes of availing services more particularly describe in Exhibit “A” (hereinafter refer to as “<b>Services</b>”); and, subject to the terms and conditions contained herein, Company desires to accept said engagement.</p>
+	
+		<p><b>Definitions : Certain Definitions for the purpose of this is agreement</b></p>
+		
+		1. <b>Affiliate</b> : "Affiliate" means the Company and any other entity that, directly or indirectly through one or more intermediaries, controls, is controlled by, or is under common control with, the Company.
+		<br/>
+		2. <b>Remote Staff</b>:  Remote Staff/s shall be the dedicated person/s appointed/replaced for client’s work pursuant to this agreement and shall always be full-time employee of the company. 
+		<br/>
+		<p>Exhibit “A” to this agreement will form part of this agreement. They shall be binding to both the parties.</p>
+		
+		<p>NOW, THEREFORE, in consideration of the mutual promises, covenants and other good and valuable consideration hereinafter set forth, the parties hereto agree as follows:</p>
+		<br/>
+
+		<b>1.RELATIONSHIP OF THE PARTIES</b>
+				<ol>
+					
+					<li type="Disc"><b>Company agrees that:</b></li>
+					<li type="Square">  The Services will be rendered by Company as an independent Company</li>
+						<ul>
+						<li type="Square"> This Agreement does not create any employer-employee relationship between the parties.	</li>
+						<li type="Square"> Company shall have no right to receive any employee benefits, including, but not limited to, health insurance, life insurance etc..</li>
+						<li type="Square"> Company shall pay all taxes including, self-employment taxes due in respect of the Fees and Costs</li>
+						<li type="Square"> Company shall indemnify and hold Firm harmless in the event Firm is required to pay such taxes on behalf of Company.</li>
+						</ul>	
+				</ol>
+				<ol>
+					<li type="Disc"> Company shall bear the sole responsibility for payment of compensation to its personnel. Company shall bear sole responsibility for any health or disability insurance, retirement benefits, or other welfare or pension benefits, if any, to which such personnel may be entitled. Company agrees to indemnify Firm in the event that Firm is required to pay any of the foregoing costs on behalf of Company. </li>
+				</ol>
+
+		<b>	2.REPRESENTATIONS, WARRANTIES AND INDEMNIFICATION </b>
+				<ol>
+					<li type="Disc">Firm represents and warrants to Company that,</li>
+
+						<ul>
+						<li type="Square"> Firm is authorized to enter into this Agreement.</li>
+						<li type="Square"> Firm is under no restrictions or obligations, contractual or otherwise, that is inconsistent with the execution of this Agreement or will interfere with Firm’s performance of any of Firm’s obligations hereunder. </li>
+						<li type="Square"> Firm authorizes Company to accept instructions from firm and/or from the staff that firm designate for this engagement.</li>
+						<li type="Square"> Firms shall be responsible for properly checking, adequacy, completeness, accuracy etc of the services performed through Remote Staff.</li>
+						<li type="Square"> Firms shall accept responsibility for the results of the services delivered.</li>
+						<li type="Square"> Firms shall Establish and maintain Internal controls over the process / system and monitor ongoing activities. </li></ul>
+				</ol>
+			<p> Firm will provide us promptly with accurate and complete information reasonably required for the proper performance of the Services, including access to appropriate members of your staff, records, information technology, systems and premises. We will be entitled to rely upon the accuracy of all information provided by you, or by others on your behalf, without independently verifying it. You must notify us promptly if any information provided by you is rendered untrue, unfair or misleading. If required, you must take all necessary steps to correct any communication or document issued which contains, refers to or is based upon such information. 
+			</p>
+			<p> Information made available by you, or by others on your behalf, to or which is otherwise known by, any of our Personnel who are not engaged in the provision of the Services will not be deemed to have been made available to those of our Personnel who are engaged in the provision of the Services to you. A successful working relationship requires a significant commitment on both the part. 
+			</p>
+
+				<ol>
+					<li type="square"> Because company will rely on Firm and its management to discharge the forgoing responsibilities, the firm holds harmless and releases Company, its Partners and employees from all claims, liabilities, losses, and costs arising in circumstances, where there has been a misrepresentation by a member / employee of the firm’s management, which has caused, in any respect, Company’s inability to discover such matters should they exist.  This provision shall survive the termination of this arrangement for services.</li>
+				</ol>
+					<li type="Disc"> <b>Company represents and warrants to Firm that: </b> </li>
+				
+				<ul>
+					<li type="Square"> Company is authorized to enter into this Agreement. </li><br/>
+					<li type="Square"> Company is under no restrictions or obligations, contractual or otherwise, that is inconsistent with the execution of this Agreement or will interfere with Company’s performance of the Services.</li><br/>
+					<li type="Square"> Company is not engaged in any employment, litigation, arbitration or other legal or administrative proceeding or investigation that would have an adverse effect on Company’s ability to perform Company’s obligations hereunder.</li>
+					<br/>
+					<li type="Square">Company has secured the necessary licenses for performance of the Services, if required.</li><br/>
+					<li type="Square"> The Services shall be performed in a competent fashion, with the highest amount of professionalism and integrity, in accordance with applicable standards, all subject to reasonable approval by Firm. </li><br/>
+					<li type="Square"> Any intellectual property created or used by Company during its performance of the Services will not violate any third party’s intellectual property rights. </li><br/>
+					<li type="Square"> Company may hereby indemnifies and holds firm harmless from any and all damages, claims, liabilities, and costs (including reasonable attorney’s fees), or losses of any kind or nature whatsoever which may in any way arise from any breach or alleged breach of this Agreement, including the representations, warranties and agreements set forth in this paragraph. </li><br/>
+				</ul>
+
+		<b> 3. CONFIDENTIALITY</b> <br/>
+				<ol>
+				<li type="Disc"> 
+					The terms and conditions of this agreement are confidential and may not be disclosed to or discussed with anyone except as permitte 
+				</li><br/>
+				<li type="Disc"> 
+					For the purpose of this Agreement, Confidential Information means all the information of a confidential nature arising out of or in connection with this agreement including any trade/ business secret, technical knowledge or  know-how, financial information, plans, customer/ client  lists, Firm’s customer information or data, Firm’s customer accounting or financial information, Firm’s customer tax information, Firm’s customer any information,  supplier information, pricing policies, Fees structure,  Standard Operating Procedures, Protocols, , marketing  data and/ or promotional techniques, product data, purchase information, sales policies, employee lists, Policies, computer records, computer access codes, trade secrets, plans and programs, any  formula  pattern or compilation  of  information, used  during the course of agreement, or  any of its/  their  clients, irrespective of whether such information is received by Firm under a validly executed confidentiality agreement or not, or which is disclosed (whether in writing, delivery of items/ reports, manuals, verbally, visual representation, inspection of tangible objects, on office or site visits, or by any other means and whether directly or indirectly) whether before or after the date of this agreement. Confidential Information may include “Proprietary information” as defined hereinafter. 
+				</li><br/>
+				<li type="Disc"> 
+					Each party hereto shall keep the other party’s “Confidential Information” and shall not disclose such information to any third party without the prior written consent of the confiding party. None of the terms of this agreement shall be disclosedto “Remote Staff” or any employee of the company or it’s affiliate, except the appointed Account manager and person signing this agreement on behalf the company.
+				</li><br/>
+				<li type="Disc"> 
+					In order to protect the Confidential Information, both the parties hereby agree and undertake to keep secret and treat as confidential all the Confidential Information, and shall not at any time, either during the course of agreement or on or after the Termination of the agreement, nor use for any purpose other than in the ordinary course of business and in furtherance of the confiding party’s interest.
+				</li><br/>
+				<li type="Disc"> Company may not be permitted to use Firm’s name as company’s client in any marketing literature, brochures, or for any private reference unless same is permitted by the client.
+				</li><br/>
+				<li type="Disc"> 
+					Notwithstanding the foregoing, the term “Confidential Information” shall not include any information which.
+				</li><br/>
+					<ul><li type="Square"> 
+						Can be demonstrated to have been in the public domain or was publicly known or available prior to the date of the information was shared with the other party.
+					</li><br/>
+					<li type="Square"> 
+						Can be demonstrated in writing to have been rightfully in the possession of the other party prior to the sharing of such information.
+					</li><br/>
+					<li type="Square"> 
+						Becomes part of the public domain or publicly known or available by publication or otherwise, not due to any unauthorized act or omission on the part of other party
+					</li><br/>
+					<li type="Square">
+						Is supplied to the other by a third party without binder of secrecy, so long as such third party has no obligation to the confiding party to maintain such information in confidence.
+					</li> <br/>
+					<li type="Square"> 
+						Each party understands that its obligations hereunder with respect to any Confidential Information will terminate only at such time (if any) as said Confidential Information ceases to be confidential as set forth above.
+					</li><br/>
+					<li type="Square"> 
+						as required by law or professional regulation.
+					</li><br/>
+					<li type="Square"> 
+						as authorised by you in writing;
+					</li><br/>
+					<li type="Square"> 
+						to the extent reasonably required by this Agreement (and, without limiting the effect of this clause, a party may disclose confidential information only to those of its officers, employees or professional advisers, third parties, or affiliates officers, employees or professional advisors, third parties on a "need to know" basis, as is reasonably required for the implementation of this Agreement)
+					</li><br/>
+					</ul>
+				</ol>
+				<br/>
+
+		<b>	4. NON SOLICITATION</b>	<br/>
+				<ol>
+					<li type="Disc"> 
+					Company and its Employee agree to undertake that during the term of Agreement and 10 years thereafter, due to the exposure and access to substantial Confidential Information and/ or that Company may obtain and in recognition of the need to protect the Firm’s interest in this regard, Company will not, except with the prior written consent of the Firm, directly or indirectly; 
+					</li><br/>
+
+						<ul>
+						<li type="Square"> Solicit, induce, recruit, encourage or take away client or customer of the Firm and/ or the Affiliates, to become a client or customer.
+						</li><br/>
+						<li type="Square"> Authorize or direct any person, Solicit, induce, recruit, encourage or take away any person, who was a client or customer of the Firm and/ or the Affiliates, to become a client or customer of any other person.
+						</li><br/>
+						<li type="Square"> Attempt to persuade any person, which is a client or customer of the Firm, to cease doing business or to reduce the amount of business which any such client or customer has customarily done with the Firm and/ or the Affiliates.
+						</li></ul><br/>
+
+					<li type="Disc"> Firm and its Employee agree to undertake that during the term of Agreement and 10 years thereafter, due to the exposure and access to substantial Confidential Information and/ or deep working relationship with company and Remote Staff, that Firm may have and in recognition of the need to protect the Company’s interest in this regard, Firm will not, except with the prior written consent of the Company, directly or indirectly;
+					</li><br/>
+						<ul>
+						<li type="Square"> Authorize or direct any person, to Solicit, induce, recruit, encourage or take away employee or employees or past employees or relative of employee or past employees or of the company and/ or the Affiliates, for any work whatsoever. 
+						</li><br/>
+						<li type="Square"> Engage in any business, commercial or professional arrangement, transaction or any relationship with any entity in which employee or past employees or relative of employee or past employees are either director, Partner, employee or has got any financial or contractual interest.
+						</li><br/>
+						<li type="Square"> Attempt to persuade any person, which is an employee or employees of the company, to cease employment or modify terms of employment which such employee or employees has customarily done with the company and/ or the Affiliates.
+						</li>
+						</ul><br/>
+					<li type="Disc"> If Company/Firms either breaches the terms of clause no. 4 respectively than they shall be liable to the other party $150,000/- as compensation of every employee/client.
+					</li><br/>
+					<li type="Disc">Company and firm acknowledge and agree that each of the above restrictions constitute an entirely separate and independent restriction on Firm / Company, and that the extent and application thereof are considered reasonable for the legitimate protection of the business and goodwill of the Firm / Company. The aforesaid restrictions, on which Firm / Company has had the opportunity to take independent legal advice, are considered reasonable by the Firm / Company and necessary for the protection of the legitimate interests of the Firm / Company.
+					</li><br/>
+				</ol>
+				<br/>
+
+		<b> 5. OWNERSHIP OF IP </b>
+			<ol>
+				<li type="Disc">Company will promptly and fully disclose and assign to the Firm all inventions, original works of authorship, discoveries, designs, formulas, technology, improvements, trade secrets, techniques and know-how, that are conceived, discovered, developed or reduced to practice by Company, either alone or jointly with others, which result from or arise out of the Services rendered by Company to Firm (the “IP”).</li><br/>
+
+				<P>All such IP will be the sole property of the Firm. Company represents and warrants that Company has no obligations to any third party which prohibit or restrict the right to assign to the Firm exclusive right, title and interest in and to any and all IP made by Company resulting from or arising out of Company’s Services hereunder. Company agrees to execute any further documents that are necessary or appropriate, to obtain, maintain, or enforce Firm’s ownership of the IP.</P>
+
+				<ol>
+					<li type="Square">All intellectual property rights in any work or material developed  by Firm during the course of engagement or otherwise (“Proprietary  Information”), whether  individually or in association with other employees/ officers/ agents/ servants/ directors of the Firms and whether developed during or beyond working hours, whether by using the resources of the Firms or not, will at all times, belong to and be the property  of the Firms and Company will not be entitled to claim any rights/ interests/ benefits over or out of such Proprietary Information and other materials and hereby also acknowledge that these will remain forever as the exclusive property of the Firm. This information shall not include systems, application and software developed by Company’s independently.</li>
+				</ol>
+			</ol>
+			<br/>
+		<b> 6. WORK SCOPE AND LIABILITY LIMITATION</b>
+		<ol>
+			<li type="Disc">By Firm’s signature below, Firm acknowledge that Firm understand and agree that the Reports Company or its Remote Staff may provide may not include adjustments to reflect Generally Accepted Accounting Principles, nor reflect full proper tax record keeping (“book to tax” adjustments). Company will make no audit or other verification of the data. Company may provide reports that contain portions of financial information; these reports are for internal use only. Company does not at any time provide legal services of any type. Company has not been requested to discover errors, misrepresentations, fraud, illegal acts, or theft. Therefore, have not included any procedures designed or intended to discover such acts, and Firm agree Company have no responsibility to do so.
+			</li><br/>
+
+			<li type="Disc">Company in its sole professional judgment, reserves the right to refuse to take any action that could be construed as making management decisions or performing management functions, including determining account coding and approving journal entries and will notify firm of such refusal.</li><br/>
+
+			<li type="Disc">In performing our services with your written permission we may rely on, or provide you with, external information or public records or Analysis of Operational, Industry or Financial Reports or any deliverables (including but not limited to financial reports, profit &amp; loss statements, accounting records or other information). This information may not always be accurate or complete. We do not accept responsibility and will not be liable for any direct or indirect damage or loss caused by errors or omissions in external information or public records or Analysis of Operational, Industry or Financial Reports any deliverables (including but not limited to financial reports, or other information).</li> <br/>
+
+			<li type="Disc">Our liability relating to the performance of the services rendered under this agreement is limited solely to direct damage sustained by the firm.  In no event shall we be liable for the consequential, special, incidental or punitive loss, damage or expense caused to the firm or to any third party (including without limitation, lost profits, opportunity costs, etc.).  Notwithstanding the foregoing, our maximum liability relating to services rendered under this letter (regardless of form of action, whether in contract, negligence or otherwise) shall be limited to the fees received by us for this engagement.  The provisions set forth in this paragraph shall survive the completion of the engagement.</li> <br/>
+
+			<li type="Disc">All claims relating this agreement shall be made with 6 months of becoming aware of the non-performance or gross negligence or wilful misconduct.</li> <br/>
+		</ol>
+		<br/>
+
+		<b> 7. E-MAIL (ELECTRONIC) COMMUNICATION</b>
+		<ol>
+			<li type="Disc">In connection with this Agreement, Company may communicate with Firm or others via email transmission.  As emails can be intercepted and read, disclosed, or otherwise used or communicated by an unintended third party, or may not be delivered to each of the parties to whom they are directed and only to such parties, Company cannot guarantee or warrant that emails from us will be properly delivered and read only by the addressee.  Therefore, Company specifically disclaim and waive any liability or responsibility whatsoever for interception or unintentional disclosure of emails transmitted by us in connection with the performance of this engagement.  In that regard, Firm agree that Company shall have no liability for any loss or damage to any person or entity resulting from the use of email transmissions, including any consequential, incidental, direct, indirect or special damages, such as loss of revenues or anticipated profits, or disclosure or communication of confidential or proprietary information.</li><br/>
+		</ol>
+		<br/>
+
+		<b> 8. THIRD PARTY SERVICES AND RECORD RETENTION</b>
+		<ol>
+			<li type="Disc">During the course of our work with firm, company will use one or more third party applications (including internet-based application providers) or third party services to provide portions of our services to firm with written intimation to firm.  This may include online filing of Firm’s Accounts Payable, online tax software or other expert training and consultations or other business services.  By signing this agreement firm confirm that firm understand the services being provided and also agree that Company is not liable for record retention or any other aspect of the services provided by these 3rd parties, even if Company absorb the cost (in part or in full) of a third party service as a benefit to firm.  Firm at all times assume responsibility for a decision to maintain hard copies of Firm’s/Firm’s Client original documents or to limit firm’s/Firm’s Client document retention to the digital copies stored by the web application.</li> <br/>
+
+			<li type="Disc">It is company’s policy to not keep any records and work paper files electronically or otherwise, unless otherwise required by tax or other regulatory agencies. All work paper and miscellaneous report copies (electronic or hard copy) that company is not required to retain are shredded or erased immediately.</li><br/>
+
+			<li type="Disc">In the unlikely event that company do obtain any hard copy, all original paper documents provided by firm will be returned to Firm promptly as company’s work is complete. Company do not keep physical hard copies of any documents. It is firm’s responsibility to safeguard such documents in case of future need. Company may occasionally keep some copies company deem necessary to our work.</li> <br/>
+
+			<li type="Disc">If company engagement with firm ends for any reason, firm will have the option to continue any third party services at firm’s expense.  Firm agree to complete the transfer of services to firm’s name and assume responsibility for payment within 10 days of the end of company’s work with firm.  Company’s “end date” will be defined as the 11th business day following the date shown on the email or letter of termination transmitted by either party.  Firm understand that if firm does not assume responsibility for these services that they may be cancelled.  Additional fees may apply if firm elect to restore those services (if that option is available from the service provider) or request copies (digital or hard copy) of records from the third party provider.</li> <br/>
+		</ol>
+		<br/>
+
+		<b> 9. MISCELLANEOUS </b>
+		<ol>
+			<li type="Disc">No failure by either party to perform any of its material obligations hereunder shall be deemed a breach hereof, unless the non-breaching party has given written notice of such failure to the breaching party, and the breaching party fails to cure such non-performance within thirty days (30) days after receipt of such notice.</li><br/>
+
+			<li type="Disc">All notices, statements and/or requests for approvals (each a “Notice”) that either party hereto is required or may desire to give to the other party shall be given in writing by addressing the same to the other party at the addresses set forth above, or at such other address as may be designated in a Notice to the other party. Notices shall be made by personal delivery, courier, or by certified U.S. mail, return receipt requested, postage prepaid. Notice shall be deemed given on the date of delivery to the other party. </li> <br/>
+
+			<li type="Disc">This Agreement constitutes the entire agreement between the parties hereto with respect to the specific subject matter hereof and supersedes all prior agreements or understandings of any kind with respect to the specific subject matter hereof.</li> <br/>
+
+			<li type="Disc">In the event that any provision or part of this Agreement shall be deemed void or invalid by a court of competent jurisdiction, the remaining provisions or parts shall be and remain in full force and effect.</li> <br/>
+
+			<li type="Disc">Any and all additions, deletions, or modification to this Agreement must be in writing and signed by the parties or it shall have no effect and shall be void.</li> <br/>
+
+			<li type="Disc">This Agreement is binding upon and shall insure to the benefit of the respective successors, licensees and/or assigns of the parties hereto. Notwithstanding the foregoing, neither party may assign or transfer its rights or delegate its obligations under this Agreement without the other party’s prior written consent, which consent will not be unreasonably withheld. </li> <br/>
+
+			<li type="Disc">Firm understand and agree that Company will be released from and shall have no liability for any failure beyond its reasonable control, including, but not limited to, acts of God, labor troubles, strikes, lockouts, severe weather, delay or default of utilities or communications companies or accidents.</li> <br/>
+
+			<li type="Disc">If any dispute arises among the parties hereto, the parties agree first to try in good faith to settle the dispute by mediation administered by the American Arbitration Association under its Rules for Professional Accounting and Related Services Disputes before resorting to litigation. Costs of any mediation proceeding shall be shared equally by all parties.</li> <br/>
+
+			<li type="Disc">Firm and Company both agree that any dispute over fees charged by Company to the Firm will be submitted for resolution by arbitration in accordance with the Rules for Professional Accounting and Related Services Disputes of the American Arbitration Association. Such arbitration shall be binding and final. In agreeing to arbitration, Both acknowledge that, in the event of a dispute over fees charged by Company, each of us is giving up the right to have the dispute decided in a court of law before a judge or jury and instead company are accepting the use of arbitration for resolution.</li><br/>
+
+			<li type="Disc">This Agreement shall be governed in accordance with the laws of the State of New York, applicable to agreements to be wholly performed therein, without giving effect to its laws governing conflict of laws. </li> <br/>
+
+			<li type="Disc">All obligations provided under this Agreement are between Company and firm and neither party shall assign any rights or delegate any obligations hereunder without the other party’s prior written consent.  Any attempted assignment without the required consent shall be null and void.</li>
+			<br/>
+
+			<li type="Disc">In WITNESS WHEREOF the parties have duly executed this Agreement along with Exhibit “A” and Exhibit “B” as of the date first set forth above. </li><br/>
+		</ol>
+
+		<center><b>EXHIBIT “A”</b></center> <br/>
+
+		<b> 1. TERMINATION </b>
+		<ol>
+			<li type="Disc">The terms of the agreement will commence from ${object.generation_date} and continue till this agreement is terminated (hereinafter referred to as the “Term”). Notwithstanding the foregoing, the Agreement may be terminated as follows:</li><br/>
+			<ul>
+				<li type="Square">By Company, at any time, for any reason, on the giving of 60 days written notice to Firm.</li> <br/>
+				<li type="Square">By Firm, After minimum billing period of 6  months, by giving Company 60 days written notice or on paying Company the equivalent in lieu of notice.</li> <br/>
+			</ul>
+			<li type="Disc">If agreement is terminated before the completion of 6 months of Billing period. Than firm shall be liable to pay monthly compensation as mentioned below for the Balance billing period.
+			</li><br/>
+				<ul>
+					<li type="Square">Balance Billing Period (6 months - Billing period Completed and Paid)</li>
+					<br/>
+				</ul>
+			<li type="Disc">Either Party has can terminate agreement by giving written notice in case of violation of agreement, In case violation is not corrected with 30 days of receipt of the notice. Other Standard Working Protocols of the company and firm shall be communicated to you from time to time with work guidelines circulars.</li><br/>
+		</ol>
+		<br/>
+
+		<b> 2. COMPENSATION</b>
+		<ol>
+			<li type="Disc">
+				In consideration for the Services performed by Company, Compensation shall be <b>$ ${object.rate_per_hour} </b>/ hour and i.e. <b>$${object.total_rate} / ${object.hiring_period}</b>. Compensation shall be adjusted proportionately if Remote Staff is not available to work anytime in the week. Along with the fees set forth above, Company will be entitled to reimbursement of its reasonable expenses incurred in connection with the Statement of Work for travel-related expenses and for such other items as the Parties may agree upon in writing. Expenses will be documented with receipts or other reasonable written evidence. In case firm is not able to utilize full<b> ${object.hour_selection} hour/${object.hiring_period} </b> than also firm is liable to pay minimum fee of <b>$${object.total_rate} /${object.hiring_period}</b>.
+			</li><br/>
+
+			<b>BILLING</b>
+			<ol>
+				<li type="Disc">The billing period will commence from the day of assignment of the Remote Staff/s to the firm i.e. the firm need not pay any consideration for the time when Remote Staff/s is not assigned/ unassigned period to them.</li><br/>
+				<li type="Disc"> Billing will be done on calendar monthly advance basis. (First billing shall be on pro-rata basis).</li><br/>
+				<li type="Disc"> If the firm objects any portion of the bill, the firm shall notify the company in writing within 7 days of receipt of the bill. The firm shall identify in writing the specific cause of the disagreement and the amount in dispute and shall pay that portion of the invoice not in dispute in accordance with the payment terms of this agreement. Any dispute over billed amount that cannot be resolved within ten days of presentation of bill by direct negotiation between the parties than it shall be resolved through dispute resolution provision of this agreement.</li><br/>
+			</ol>
+		</ol><br/>
+
+		<b> 3. PAYMENTS</b>
+		<ol>
+			<li type="Disc">The firm shall make initial payment of 250 as advance upon signing the agreement. This payment shall be adjusted against invoices.</li><br/>
+
+			<li type="Disc">The Company is authorized to direct debit the amount due in the bank account provided by the firm.</li><br/>
+
+			<li type="Disc">Subsequent Payment will be made within 7 days on receipt of the bill through E-mail.
+			</li><br/>
+
+			<li type="Disc">If the firm fails to make payment within time period, the company reserves the right to suspend the performance of the services by giving notice of 3 days through E-mail.</li><br/>
+
+			<li type="Disc">Any wire transfer, taxes, or other fees associated with payment remittance are the responsibility of the respective party.</li><br/>
+
+			<li type="Disc">Should you wish to remit payment via online transfer or wire transfer or Paypal etc; a transaction fee will be applied to each invoice. Same shall be borne by the firm.</li><br/>
+
+		</ol><br/>
+
+		<b> 4. Work Description :</b>
+			<ul>
+				<li type="Square"> During the Term, Company along with it’s direct or indirect subsidiary, associates or affiliates shall perform the following services (individually and collectively, “Services”) for Firm:Firm is desirous of having accounting and other back office support services from the company. The work may include. </li>
+
+			 <table style="width:100%">
+				 
+				  <tr>
+					<td>
+					<ul><li>Entering Vendor Bills.</li></ul></td>
+					<td>
+					<ul><li>Assistance with preparation of annual Form etc.</li></ul></td>
+				  </tr>
+				  <tr>
+					<td>
+					<ul><li>Processing Vendor Payments.</li></ul></td>
+					<td>
+					<ul><li>Assistance with vendor communications relating to obtaining W-9s</li></ul></td>
+				  </tr>
+				  <tr>
+					<td>
+					<ul><li>Enter/Import Payroll Transactions.</li></ul>
+					</td>
+					<td>
+					<ul><li>Review accounting staff work for consistency and accuracy</li></ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td>
+					<ul><li>Entering and Processing Credit Card Transaction.</li></ul></td>
+					<td>
+					<ul><li>Review AP aging and AR aging and bring any unusual items to Management’s attention.</li></ul></td>
+				  </tr>
+				  <tr>
+					<td>
+					<ul><li>Calculating Sales Commissions.</li></ul>
+					</td>
+					<td>
+					<ul><li>Unearned revenue calculations</li></ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td>
+					<ul><li>Bank Account Reconciliations</li></ul></td>
+					<td>
+					<ul><li>Maintain fixed assets ledger</li></ul></td>
+				  </tr>
+					<tr>
+					<td>
+					<ul><li>Sales Tax returns</li></ul></td>
+					<td>
+					<ul><li>Other balance sheet account reconciliations</li></ul></td>
+				  </tr>  
+				  <tr>
+					<td>
+					<ul><li>Posting of monthly journal entries (Depreciation, Amortization, Other)</li>
+					</ul></td>
+					<td>
+					<ul><li>Creating dashboard for management use</li></ul></td>
+				  </tr>
+				  <tr>
+					<td>
+					<ul><li>Prepare work papers</li>
+					</ul></td>
+					<td>
+					<ul><li>Customized operational reports</li></ul></td>
+				  </tr>
+				  <tr>
+					<td>
+					<ul><li>Year -end accounting adjustments and closing of books</li>
+					</ul></td>
+					<td>
+					<ul><li>Key performance indicators</li></ul></td>
+				  </tr>
+			</table> 
+		</ul>
+
+			<p>For the purpose of carrying out work pursuant to this agreement Company shall designate <strong>“Remote Staff” </strong> to firm. All though company provides <strong>“Remote Staff” </strong> to firm but company do not assume responsibility for the completeness/accuracy/execution of the information/reports or work done that we receive from you and/or from your clients or we submit to you after processing. As the work involved is qualitative in nature so list mentioned above is indicative, exact nature of work would be determined further by firm and as per the policies and guidelines of the firm and same shall be communicated from time to time.</p>
+		<br/>
+
+	<b> 5. Dedicated Person</b>
+			<p>Company shall designate <b>1 </b>“Remote Staff” to the firm. This designated “Remote Staff” will work on the direction of the firm and shall work dedicatedly for the firm’s work. Your “Remote Staff” shall be responsible to work for <b>${object.hour_selection} hour/${object.hiring_period} from ${object.time_from} to ${object.time_to} and ${object.hour_selection} hour/${object.hiring_period} for the rest of the year</b>.In case if any “Remote Staff” works for more than <b>above mentioned hours </b>than same shall be billed to you at the rate <b>$${object.rate_per_hour} / hour </b>.</p>
+		<br/><br/>
+		
+	<b> 6. Account Manager</b>
+		<p>Company shall designate account manager to reasonably coordinate the work performed by “Remote Staff” assigned to him by the firm and reasonably supervising work assigned to “Remote Staff” as mentioned above. Although company designate’s account manager for establishing better control over work done. Company assumes no responsibility w.r.t to quality and accuracy of the work done or any derivable submitted.</p>
+		<br/>
+
+	<b> 7. Remote Staff ceases to work for firm </b>
+		<p>7. Company shall designate <b>1</b> “Remote Staff” to the firm. This designated “Remote Staff” will work on the direction of the firm and shall work dedicatedly for the firm’s work. Your “Remote Staff” shall be responsible to work for <b>20 hours/week from 05th-February to 04th May and 10 hours/week for the rest of the year</b>. In case if any “Remote Staff” works for more than above mentioned hours than same shall be billed to you at the rate <b>$10/ hour.</b></p> <br/>
+
+	<b> 8. Reporting and Work Guidelines</b>
+		<p>The “Remote Staff” will report to the company and the firm for the work. The firm may appoint any of his employee/officers for taking reporting of “Remote Staff”. Pursuant to this agreement company may issue work guidelines circular from time to time and same shall form part of this agreement.</p> <br/>
+
+	<b> 9. Time Sheet</b>
+		<p>The “Remote Staff” shall regularly submit the time sheet to the firm (The frequency of submission of time sheet shall be decided from time to time by the company and it shall be duly communicated to the firm).</p><br/>
+
+	<b> 10. Non performance</b>
+		<p>The firm shall report the non-performance of Remote Staff to account manager
+</p>
+
+
+	<br/><br/>
+	<table style="width:100%">
+		<tr>
+			<td border="1">
+				<div class="boxed" style="float:left;width:40%;border:1px solid black !important">
+			  		<br/><br/>
+			  		<b>For, Entigrity Solutions LLC</b>
+			  		<br/><br/><br/>
+				</div>
+			</td>
+			<td border="1">
+				<div class="boxed" style="float:right;width:40%;border:1px solid black !important">
+			  		<br/><br/>
+			  		<b>For, ${object.crm_id.name}</b>
+			  		<br/><br/><br/>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
+
+	<br/><br/><br/><br/><br/><br/>
+	<p style="float:left;">
+		<b>Entigrity Solutions LLC</b><br/>
+		244 5th Avenue, Suite E128, New York NY 10001<br/>
+		Email: info@entigrity.com Phone: +1-646-827-4348<br/><br/>
+		CLIENT SERVICE AGREEMENT PRIATE AND CONFIDENTIAL
+	</p>
+
+	<div>
+    	<center>
+			<table>
+    			<tr>
+ 	    			<td class="button">
+						<a href="/indimedi_crm/data?agreement_id=${object.id}" target="_blank" style="background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;">Agree</a>
+        			</td>
+    			</tr>
+			</table>    
+		</center>
+	</div>
+
+</div>
+
+
+			]]></field>
+        </record>
+    </data>
+</odoo>

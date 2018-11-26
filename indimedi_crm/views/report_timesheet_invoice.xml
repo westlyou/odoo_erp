@@ -1,0 +1,197 @@
+<odoo>
+    <data>
+        <report id="timesheet_invoices"
+                model="timesheet.invoice"
+                string="Timesheet Invoice"
+                menu="False"
+                report_type="qweb-pdf"
+                name="indimedi_crm.report_timesheet_invoice"
+                file="indimedi_crm.report_timesheet_invoice"
+        />
+        
+        <template id="report_timesheet_invoice">
+            <t t-call="report.html_container"/>              
+                <div class="header">
+                    <div class="row col-md-12">
+                        <div class="col-md-4" style="text-align:left;padding-left:0px; padding-right:0px">
+                            <br/>
+                            <br/>
+                            <b style="font-size:15px;">Entigrity Solutions LLC</b><br/>
+                            1467 Silver Leaf Drive<br/>
+                            Lakeland, FL 33813<br/>
+                            6465472265
+                        </div>
+                        <div class="col-md-4" style="text-align: center; font-size: 40px; margin-top:-9%;">
+                            <span style="color:grey;"><b>INVOICE</b></span>
+                        </div>
+                        <div class="col-md-4" style="text-align:right;margin-top:-9%">
+                           <img t-if="res_company.logo" t-att-src="'data:image/png;base64,%s' %res_company.logo" style="height: auto; width: 200px;"/>  
+                         <!-- <img src="/logo.png?company=${user.company_id.id}" style="height: auto; width: 100px;" alt="${user.company_id.name}"/> -->
+                        </div>
+                    </div>
+                </div>
+               <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div class="oe_structure"/>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-4" style="float: right;">
+                                <table style="width: 100%;border-top: 1px solid black;border-bottom: 1px solid black;line-height: 1.7; margin-top: 2px; text-align: center;">
+                                    <tr>
+                                        <td style="text-align: left;"><b>Invoice #</b></td>
+                                        <td style="text-align:left;"></td>
+                                        <td style="text-align:right;"> <span t-field="o.sequence_id"/> </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;"><b>Invoice Date</b></td>
+                                        <td style="text-align:left;"></td>
+                                        <td style="text-align:right;"><span t-field="o.invoice_date"/></td>
+                                    </tr>
+                                    <tr style="border-top: 1px solid black; background-color:rgb(240, 240, 240)">
+                                        <td style="text-align: left;"><b>Amount Due:</b></td>
+                                        <td style="text-align:left;"></td>
+                                        <td style="text-align:right;"><b><span t-field="o.final_amount"  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></b></td>
+                                    </tr>
+                                </table>
+                                <br/>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12" style="margin-bottom:20px;">
+                            <table>
+                                <tr style="border:1px solid black;background-color:rgb(240, 240, 240);">
+                                    <td style="padding-left:5px;"><b>Bill To</b></td>
+                                </tr>
+                                <tr style="border:1px solid black;">
+                                    <td style="padding-left:5px;width:300px;">
+                                        <b><span t-field="o.analytic_account_id.partner_id.name"
+                                         /></b><br/>
+                                        <span t-field="o.analytic_account_id.partner_id.company_street"
+                                         /><br/>
+                                        <t t-if="o.analytic_account_id.partner_id.company_street2">
+                                            <span t-field="o.analytic_account_id.partner_id.company_street2"
+                                         /><br/>
+                                        </t>
+                                        <t t-if="o.analytic_account_id.partner_id.company_street3">
+                                            <span t-field="o.analytic_account_id.partner_id.company_street3"/><br/>
+                                        </t>
+                                        <span t-field="o.analytic_account_id.partner_id.company_city"/><br/>
+                                        <span t-field="o.analytic_account_id.partner_id.company_state_id.name"/><br/>
+                                        <span t-field="o.analytic_account_id.partner_id.company_zip"/><br/>
+                                        <span t-field="o.analytic_account_id.partner_id.company_country_id.name"/>
+                                    </td>
+                                </tr><br/><br/>
+                            </table>
+                        </div>
+
+                        <div class="col-xs-12" style="margin-bottom:20px;">
+                            <table border="1">
+                                <tr style="border:1px solid black;background-color:rgb(240, 240, 240);">
+                                    <td style="padding-left:5px;text-align:center;"><b>Payment Date</b></td>
+                                </tr>
+                                <tr style="border:1px solid black;">
+                                    <td style="padding-left:5px;width:200px;text-align:center;">
+                                        <span t-field="o.invoice_date"/>
+                                    </td>
+                                </tr><br/><br/>
+                            </table>
+                        </div>
+
+<!--                         <div class="row">
+                            <div name="invoice_address" class="col-md-8 col-md-pull-4">
+                                <span class="text-left"><strong style="color:red;">Employee phone:</strong>
+                                </span>
+                                <span t-field="o.project_task.jd_us_name_id.name"/> 
+                                <br></br>
+                                <span><strong style="color:red;">Designation:</strong>
+                                </span>
+                                <span t-field="o.project_task.profile_id"/>
+                                <br></br>
+                                <span></span>
+                            </div>
+                            <div  class="col-md-4 col-md-push-8">
+                                <span class="text-left"><strong style="color:red;">Employee phone:</strong>
+                                <span t-field="o.project_task.jd_us_name_id.name"/> 
+                                </span>
+                                <br></br>
+                                <span><strong style="color:red;">Designation:</strong>
+                                <span t-field="o.project_task.profile_id"/>
+                                </span>
+                                <br></br>
+                                <span></span>
+                                <br></br>
+                            </div>
+                        </div> -->
+                        
+                       
+                        <div class="col-md-12">
+
+                        <table class="text-center" border="1" style="vertical-align:middle;width:100%; ">
+                                <thead style="border: solid 2px;">
+                                    <tr style="border: solid 1px;background-color:rgb(240, 240, 240);">
+                                        <th style=" border: solid 1px; text-align: center;"> Service </th>
+                                        <th style=" border: solid 1px; text-align: center;"> Sevice Description </th>
+                                        <th style=" border: solid 1px; text-align: center;"> Quantity </th>
+                                        <th style=" border: solid 1px; text-align: center;"> Price </th>
+                                        <th style=" border: solid 1px; text-align: center;"> Amount </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody style="border: solid 2px; text-align: center;">
+                                    <tr style="border: solid 1px;">
+                                        <td style="border: solid 1px;">
+                                            <span> Services </span>
+                                        </td>
+                                        <td style="border: solid 1px;">
+                                            <span t-field="o.invoicing_type_id.name"/> charges from <span t-field="o.invoice_start_date"/> to <span t-field="o.invoice_end_date" />  
+                                        </td>
+                                        <td style="border: solid 1px;">
+                                            <span> 1 </span>
+                                        </td>
+                                        <td style="border: solid 1px;">
+                                            <span t-field="o.bill_amount"  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                        </td>
+                                        <td style="border: solid 1px;">
+                                            <span t-field="o.bill_amount"  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                            <br/>
+
+                            <div class="col-xs-4" style="float: right;">
+                                <table style="width: 100%;border-top: 1px solid black;border-bottom: 1px solid black;line-height: 1.7; margin-top: 2px; text-align: center;">
+                                    <tr>
+                                        <td style="text-align: left;"><b>Subtotal:</b></td>
+                                        <td style="text-align:left;"></td>
+                                        <td style="text-align:right;"><span t-field="o.bill_amount"  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/> </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;"><b>Discount:</b></td>
+                                        <td style="text-align:left;"></td>
+                                        <td style="text-align:right;"><span t-field="o.disc_amount"  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/> </td>
+                                    </tr>
+                                    <tr style="border-top: 1px solid black;">
+                                        <td style="text-align: left;"><b>Total:</b></td>
+                                        <td style="text-align:left;"></td>
+                                        <td style="text-align:right;"><b><span t-field="o.final_amount"  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></b></td>
+                                    </tr>
+                                    <tr style="border-top: 1px solid black;background-color:rgb(240, 240, 240);">
+                                        <td style="text-align: left;"><b>Amount Due:</b></td>
+                                        <td style="text-align:left;"></td>
+                                        <td style="text-align:right;"><b><span t-field="o.final_amount"  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></b></td>
+                                    </tr>
+                                </table>
+                                <br/>
+                            </div>
+                        </div>
+
+                    </div>
+                    This is computer generated statement does not require signature.
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+        </template>
+    </data>
+</odoo>

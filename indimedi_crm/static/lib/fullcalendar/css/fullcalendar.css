@@ -1,0 +1,4 @@
+/* To set the Height of each slot in custom calendar view*/
+.fc-agenda-slots td div {
+	height: 50px;
+	}

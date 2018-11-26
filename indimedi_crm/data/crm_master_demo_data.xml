@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Lead Allocation -->
+        <record id="crm_allocation_1" model="crm.allocation">
+            <field name="name">RS</field>
+        </record>
+        <record id="crm_allocation_2" model="crm.allocation">
+            <field name="name">D&amp;A</field>
+        </record>
+        <record id="crm_allocation_3" model="crm.allocation">
+            <field name="name">WFC</field>
+        </record>
+        <!-- Activity Demo Data -->
+        <!-- <record id="crm_activity_email" model="lead.custom.activity">
+            <field name="name">Email</field>
+        </record>
+        <record id="crm_activity_task" model="lead.custom.activity">
+            <field name="name">Task</field>
+        </record> -->
+        <!-- Working Timezone -->
+        <record id="working_timezone_1" model="working.timezone">
+            <field name="name">EST</field>
+        </record>
+        <record id="working_timezone_2" model="working.timezone">
+            <field name="name">MST</field>
+        </record>
+        <record id="working_timezone_3" model="working.timezone">
+            <field name="name">CST</field>
+        </record>
+        <record id="working_timezone_4" model="working.timezone">
+            <field name="name">PST</field>
+        </record>
+        <!-- From Timezone -->
+        <record id="from_timezone_1" model="from.timezone">
+            <field name="name">01:30 AM</field>
+        </record>
+        <record id="from_timezone_2" model="from.timezone">
+            <field name="name">02:30 AM</field>
+        </record>
+        <record id="from_timezone_3" model="from.timezone">
+            <field name="name">03:30 AM</field>
+        </record>
+        <record id="from_timezone_4" model="from.timezone">
+            <field name="name">04:30 AM</field>
+        </record>
+        <record id="from_timezone_5" model="from.timezone">
+            <field name="name">05:30 AM</field>
+        </record>
+        <record id="from_timezone_6" model="from.timezone">
+            <field name="name">06:30 AM</field>
+        </record>
+        <!-- To Timezone -->
+        <record id="to_timezone_1" model="to.timezone">
+            <field name="name">10:30 AM</field>
+        </record>
+        <record id="to_timezone_2" model="to.timezone">
+            <field name="name">11:30 AM</field>
+        </record>
+        <record id="to_timezone_3" model="to.timezone">
+            <field name="name">12:30 AM</field>
+        </record>
+        <record id="to_timezone_4" model="to.timezone">
+            <field name="name">01:30 AM</field>
+        </record>
+        <record id="to_timezone_5" model="to.timezone">
+            <field name="name">02:30 AM</field>
+        </record>
+        <record id="to_timezone_6" model="to.timezone">
+            <field name="name">03:30 AM</field>
+        </record>
+        <!-- Job Profile -->
+        <record id="job_profile_1" model="job.profile">
+            <field name="name">Data Entry Specialist</field>
+        </record>
+        <record id="job_profile_2" model="job.profile">
+            <field name="name">Book Keeper</field>
+        </record>
+        <record id="job_profile_3" model="job.profile">
+            <field name="name">Staff Accountant</field>
+        </record>
+        <record id="job_profile_4" model="job.profile">
+            <field name="name">Tax Accountant</field>
+        </record>
+        <record id="job_profile_5" model="job.profile">
+            <field name="name">Tax Associate/Preparer</field>
+        </record>
+        <record id="job_profile_6" model="job.profile">
+            <field name="name">Audit Associate</field>
+        </record>
+        <record id="job_profile_7" model="job.profile">
+            <field name="name">Sr. Accountant</field>
+        </record>
+        <record id="job_profile_8" model="job.profile">
+            <field name="name">Tax Senior</field>
+        </record>
+        <record id="job_profile_9" model="job.profile">
+            <field name="name">Tax Manager</field>
+        </record>
+        <record id="job_profile_10" model="job.profile">
+            <field name="name">Account Manager</field>
+        </record>
+        <!-- Job Experience -->
+        <record id="job_experience_1" model="job.experience">
+            <field name="name">1-2 Years</field>
+        </record>
+        <record id="job_experience_2" model="job.experience">
+            <field name="name">2-4 Years</field>
+        </record>
+        <record id="job_experience_3" model="job.experience">
+            <field name="name">3-4 Years</field>
+        </record>
+        <record id="job_experience_4" model="job.experience">
+            <field name="name">4-5 Years</field>
+        </record>
+        <record id="job_experience_5" model="job.experience">
+            <field name="name">4-6 Years</field>
+        </record>
+        <record id="job_experience_6" model="job.experience">
+            <field name="name">6 ABOVE</field>
+        </record>
+        <!-- Nature of Experience -->
+        <record id="nature_experience_1" model="nature.experience">
+            <field name="name">Individiual Taxes</field>
+        </record>
+        <record id="nature_experience_2" model="nature.experience">
+            <field name="name">Business Taxes</field>
+        </record>
+        <record id="nature_experience_3" model="nature.experience">
+            <field name="name">Monthly Bookkeeping</field>
+        </record>
+        <record id="nature_experience_4" model="nature.experience">
+            <field name="name">Annual Write-Ups</field>
+        </record>
+        <record id="nature_experience_5" model="nature.experience">
+            <field name="name">1099 And W2 Forms Preparation</field>
+        </record>
+        <record id="nature_experience_6" model="nature.experience">
+            <field name="name">Audit</field>
+        </record>
+        <record id="nature_experience_7" model="nature.experience">
+            <field name="name">Payroll Processing</field>
+        </record>
+        <record id="nature_experience_8" model="nature.experience">
+            <field name="name">State Taxes - Sales Tax</field>
+        </record>
+        <record id="nature_experience_9" model="nature.experience">
+            <field name="name">Not For Profit</field>
+        </record>
+        <!-- Software Remote -->
+        <record id="software_remote_1" model="software.remote">
+            <field name="name">Teamviewer</field>
+        </record>
+        <record id="software_remote_2" model="software.remote">
+            <field name="name">Windows Remote Desktop</field>
+        </record>
+        <record id="software_remote_3" model="software.remote">
+            <field name="name">Log Me In</field>
+        </record>
+        <record id="software_remote_4" model="software.remote">
+            <field name="name">Go To My PC</field>
+        </record>
+        <record id="software_remote_5" model="software.remote">
+            <field name="name">Show My PC</field>
+        </record>
+        <record id="software_remote_6" model="software.remote">
+            <field name="name">Ammyy</field>
+        </record>
+        <record id="software_remote_7" model="software.remote">
+            <field name="name">Citrix</field>
+        </record>
+        <!-- Document Remote -->
+        <record id="document_remote_1" model="document.remote">
+            <field name="name">Teamviewer</field>
+        </record>
+        <record id="document_remote_2" model="document.remote">
+            <field name="name">Windows Remote Desktop</field>
+        </record>
+        <record id="document_remote_3" model="document.remote">
+            <field name="name">Log Me In</field>
+        </record>
+        <record id="document_remote_4" model="document.remote">
+            <field name="name">Go To My PC</field>
+        </record>
+        <record id="document_remote_5" model="document.remote">
+            <field name="name">Show My PC</field>
+        </record>
+        <record id="document_remote_6" model="document.remote">
+            <field name="name">Ammyy</field>
+        </record>
+        <record id="document_remote_7" model="document.remote">
+            <field name="name">Citrix</field>
+        </record>
+        <record id="document_remote_7" model="document.remote">
+            <field name="name">Citrix</field>
+        </record>
+        <!-- Document Sharing -->
+        <record id="document_sharing_1" model="document.sharing">
+            <field name="name">Dropbox</field>
+        </record>
+        <record id="document_sharing_2" model="document.sharing">
+            <field name="name">Google Drive</field>
+        </record>
+        <record id="document_sharing_3" model="document.sharing">
+            <field name="name">Shared File</field>
+        </record>
+        <record id="document_sharing_4" model="document.sharing">
+            <field name="name">Right Networks</field>
+        </record>
+        <!-- Designation in Contact -->
+        <record id="contact_designation_1" model="contact.designation">
+            <field name="name">Chairman</field>
+        </record>
+        <record id="contact_designation_2" model="contact.designation">
+            <field name="name">Owner</field>
+        </record>
+        <record id="contact_designation_3" model="contact.designation">
+            <field name="name">President</field>
+        </record>
+        <record id="contact_designation_4" model="contact.designation">
+            <field name="name">Vice President</field>
+        </record>
+        <record id="contact_designation_5" model="contact.designation">
+            <field name="name">Managing Director</field>
+        </record>
+        <record id="contact_designation_6" model="contact.designation">
+            <field name="name">Managing Partner</field>
+        </record>
+        <record id="contact_designation_7" model="contact.designation">
+            <field name="name">Partner</field>
+        </record>
+        <record id="contact_designation_8" model="contact.designation">
+            <field name="name">Shareholder</field>
+        </record>
+        <record id="contact_designation_9" model="contact.designation">
+            <field name="name">Managing Shareholder</field>
+        </record>
+        <record id="contact_designation_10" model="contact.designation">
+            <field name="name">Principal</field>
+        </record>
+        <record id="contact_designation_11" model="contact.designation">
+            <field name="name">Tax Staff</field>
+        </record>
+        <record id="contact_designation_12" model="contact.designation">
+            <field name="name">Tax Preparer</field>
+        </record>
+        <record id="contact_designation_13" model="contact.designation">
+            <field name="name">Tax Reviewer</field>
+        </record>
+        <record id="contact_designation_14" model="contact.designation">
+            <field name="name">Tax Manager</field>
+        </record>
+        <record id="contact_designation_15" model="contact.designation">
+            <field name="name">Bookkeeper</field>
+        </record>
+        <record id="contact_designation_16" model="contact.designation">
+            <field name="name">Staff Accountant</field>
+        </record>
+        <record id="contact_designation_17" model="contact.designation">
+            <field name="name">Account Manager</field>
+        </record>
+        <record id="contact_designation_18" model="contact.designation">
+            <field name="name">Receptionist</field>
+        </record>
+        <record id="contact_designation_19" model="contact.designation">
+            <field name="name">Other Staff</field>
+        </record>
+        <record id="job_invoicing_weekly" model="job.invoicing">
+            <field name="name">Weekly</field>
+        </record>
+        <record id="job_invoicing_monthly" model="job.invoicing">
+            <field name="name">Monthly</field>
+        </record>
+        <record id="job_invoicing_weekly_advance" model="job.invoicing">
+            <field name="name">Weekly Advance</field>
+        </record>
+        <record id="job_invoicing_monthly_advance" model="job.invoicing">
+            <field name="name">Monthly Advance</field>
+        </record>
+        <record id="job_invoicing_biweekly" model="job.invoicing">
+            <field name="name">Biweekly</field>
+        </record>
+        <record id="job_invoicing_biweekly_advance" model="job.invoicing">
+            <field name="name">Biweekly Advance</field>
+        </record>
+    </data>
+</odoo>

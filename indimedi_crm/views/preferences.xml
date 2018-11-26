@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="inherit_profile_form" model="ir.ui.view">
+            <field name="name">profile_form_inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="replace">
+                    <field name="company_id" options="{'no_create': True}" readonly="0"/>
+                </xpath>
+                <form position="inside">
+                	<notebook>
+                		<page string="Outgoin Mail Server">
+                			<group col="4">
+                				<field name="mail_server_id" groups="base.group_no_one"/>
+		                        <field name="sequence" groups="base.group_no_one"/>
+		                    </group>
+		                    <group col="4" string="Connection Information">
+		                        <field name="smtp_host"/>
+		                        <field name="smtp_port"/>
+		                        <field name="smtp_debug" groups="base.group_no_one"/>
+		                     </group>
+		                     <group string="Security and Authentication" colspan="4">
+		                        <field name="smtp_encryption"/>
+		                        <field name="smtp_user"/>
+		                        <field name="smtp_pass" password="True"/>
+		                        <button name="test_smtp_connection" type="object" string="Test Connection" icon="fa-television"/>
+		                    </group>
+                		</page>
+           	</notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="inherit_outgoing_form" model="ir.ui.view">
+        	<field name="name">email_form_inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+            	<notebook position="inside">
+                	<page string="Outgoing Mail">
+                		<group col="4">
+            				<field name="mail_server_id" groups="base.group_no_one"/>
+	                        <field name="sequence" groups="base.group_no_one"/>
+	                    </group>
+	                    <group col="4" string="Connection Information">
+	                        <field name="smtp_host"/>
+	                        <field name="smtp_port"/>
+	                        <field name="smtp_debug" groups="base.group_no_one"/>
+	                     </group>
+	                     <group string="Security and Authentication" colspan="4">
+	                        <field name="smtp_encryption"/>
+	                        <field name="smtp_user"/>
+	                        <field name="smtp_pass" password="True"/>
+	                        <button name="test_smtp_connection" type="object" string="Test Connection" icon="fa-television"/>
+	                    </group>
+                	</page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</odoo>
