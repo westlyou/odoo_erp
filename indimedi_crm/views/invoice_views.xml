@@ -22,10 +22,10 @@
                     <field name="custom_work_hours" readonly="1" invisible="0"/>
                     <field name="rate_per_hour" readonly="1"/>
                     <field name="min_bill" readonly="1"/>
-                    <field name="worked_hours" readonly="1"/>
-                    <field name="ideal_hours" readonly="1"/>
-                    <field name="additional_hours" readonly="1"/>
-                    <field name="hours_charged"/>
+                    <field name="worked_hours" readonly="1" widget="float_time"/>
+                    <field name="ideal_hours" readonly="1" widget="float_time"/>
+                    <field name="additional_hours" readonly="1"  widget="float_time"/>
+                    <field name="hours_charged" widget="float_time"/>
                     <field name="bill_amount"/>
                     <field name="disc_amount"/>
                     <field name="final_amount" sum="Total Amount"/>
