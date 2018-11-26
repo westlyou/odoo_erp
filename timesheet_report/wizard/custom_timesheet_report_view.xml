@@ -1,0 +1,56 @@
+<odoo>
+
+	<record id="timesheet_report_wizard" model="ir.ui.view">
+	    <field name="name">timesheet.report.wizard.form</field>
+	    <field name="model">timesheet.report.wizard</field>
+	    <field name="arch" type="xml">
+	    	<form string="Timesheet Report">
+	    		<group>
+	    			<group>
+	    				<field name="start_date"/>
+	    				<field name="end_date"/>
+	    			</group>
+	    		</group>
+	    		<footer>
+	    		
+	    		</footer>
+	    	</form>
+	    </field>
+	</record>
+	
+	<record id="action_timesheet_report_wizard" model="ir.actions.act_window">
+	    <field name="name">Timesheet Report</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">timesheet.report.wizard</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">form</field>
+	    <field name="target">new</field>
+	</record>            
+
+	<record id="timesheet_custom_report_tree" model="ir.ui.view">
+	    <field name="name">timesheet.custom.report.tree</field>
+	    <field name="model">timesheet.custom.report</field>
+	    <field name="arch" type="xml">
+	    	<tree string="Timesheet Weekly Reprot">
+	    		<field name="client_id"/>
+	    		<field name="manager_id"/>
+	    		<field name="employee_working"/>
+	    		<field name="min_hour"/>
+	    		<field name="actual_hour"/>
+	    		<field name="actual_hour_lst_week"/>
+	    		<field name="productivity_against_last_Week"/>
+	    		<field name="productivity_to_min_bill"/>
+	    	</tree>
+	    </field>
+	</record>
+	
+	
+	
+	
+	
+	<menuitem name="Timesheet Weekly Report"
+              parent="project.menu_project_management"
+              id="menu_timesheet_weekly_report"
+              action="action_timesheet_report_wizard"/>
+	
+</odoo>
