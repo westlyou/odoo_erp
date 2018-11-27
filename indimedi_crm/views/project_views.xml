@@ -192,9 +192,20 @@
                 </xpath>
                 <xpath expr="//field[@name='timesheet_ids']/tree/field[@name='name']" position="replace">
                 </xpath>
+                <xpath expr="//field[@name='timesheet_ids']" position="before">
+                	<group>
+                		<group string="Update Communication" invisible="1">
+	                		<field name="comm_date"/>
+	                		<field name="communication_type"/>
+	                		<button name="update_communication_type" string="Update Communication" 
+	                		type="object" class="btn-primary"/>
+	                	</group>
+                	</group>
+                </xpath>
                 <xpath expr="//field[@name='timesheet_ids']/tree/field[@name='user_id']" position="after">
                     <field name="client_client_id" context="{'default_task_client_id': parent.id}" domain="[('task_client_id', '=', parent.id), ('task_client_id', '!=', False)]"/>
                     <field name="type_of_view" string="Type of Work" required="1" options="{'no_quick_create': True, 'no_create' : 1, 'no_edit': 1}"/>
+                    <field name="communication_type" required="1"/>
                     <field name="name"/>
                     <field name="client_name_sheet" invisible="1"/>
                     <field name="start_time" widget="float_time" required="1"/>

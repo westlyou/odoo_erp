@@ -2,6 +2,7 @@
 
 from odoo import api, fields, models, tools, _
 from datetime import datetime
+from odoo.exceptions import ValidationError
 
 
 class Project(models.Model):
@@ -26,6 +27,8 @@ class Project(models.Model):
     total_rate = fields.Float('Total Min. Rate', track_visibility='onchange')
     client_email = fields.Char(string="Client Email", track_visibility='onchange')
 
+    
+        
     @api.multi
     def write(self, vals):
         #Employee Phone Number Format Logic
@@ -72,6 +75,22 @@ class ProjectTask(models.Model):
     partner_id = fields.Many2one(related='project_id.partner_id', string='Customer', track_visibility='onchange',store=True)
     cc_partner_ids = fields.Many2many('res.partner','timesheet_cc_partner_rel', 'partner_id','cc_partner_id', string="Mail CC", store=True)
 
+
+    comm_date = fields.Date(string="Date")
+    communication_type = fields.Selection([('email', 'Email'),
+                                           ('chat','Chat'),
+                                           ('phone', 'Phone')], string="Communication Type")
+    
+    
+
+    @api.multi
+    def update_communication_type(self):
+        if not self.comm_date or not self.communication_type:
+            raise ValidationError("Communication date and type is required to update communication in timesheet")
+        analytic_line_ids = self.search([('date', '=', self.comm_date)])
+        analytic_line_ids.with_context({'bypass_save': True}).write({'communication_type': self.communication_type})
+        
+        
     @api.model
     def create(self, vals):
         client = super(ProjectTask, self).create(vals)

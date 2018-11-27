@@ -26,7 +26,14 @@ class AccountAnalyticLine(models.Model):
     client_client_id = fields.Many2one('client.client', string="Client Name")
     active = fields.Boolean('Active',default=True)
     
+    communication_type = fields.Selection([('email', 'Email'),
+                                           ('chat','Chat'),
+                                           ('phone', 'Phone')], string="Communication Type", default="phone")
 
+    
+    
+            
+    
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, context=None, orderby=False, lazy=True):
         if 'stop_time' in fields:
@@ -56,15 +63,21 @@ class AccountAnalyticLine(models.Model):
         for line in timesheet:
             if line.unit_amount < float(0.0):
                 raise ValidationError(_('Please fill Stop Time in 24 hours format and greater than Start Time.'))
+        if not self._context.get('bypass_save'):
+            if not timesheet.communication_type:
+                raise ValidationError("Please add communication type in timesheet before save.")
         return timesheet
 
 
     @api.multi
-    def write(self, vals):        
+    def write(self, vals):   
         time = super(AccountAnalyticLine, self).write(vals)
         for line in self:
             if line.unit_amount < float(0.0):
                 raise ValidationError(_('Please fill Stop Time in 24 hours format and greater than Start Time.'))
+            if not self._context.get('bypass_save'):
+                if not line.communication_type:
+                    raise ValidationError("Please add communication type in timesheet before save.")
         return time
 
    
