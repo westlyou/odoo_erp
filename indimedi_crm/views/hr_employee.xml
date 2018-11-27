@@ -58,4 +58,15 @@
             </xpath>
         </field>
     </record>
+    
+    
+    <menuitem
+            id="hr.menu_hr_root"
+            name="Employees"
+            groups="-hr.group_hr_manager,-hr.group_hr_user,-base.group_user,indimedi_crm.group_project_general_manager"
+            web_icon="hr,static/description/icon.png"
+            sequence="75"/>
+            
+            
+    
 </odoo>
