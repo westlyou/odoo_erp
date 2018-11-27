@@ -194,7 +194,7 @@
                 </xpath>
                 <xpath expr="//field[@name='timesheet_ids']/tree/field[@name='user_id']" position="after">
                     <field name="client_client_id" context="{'default_task_client_id': parent.id}" domain="[('task_client_id', '=', parent.id), ('task_client_id', '!=', False)]"/>
-                    <field name="type_of_view" string="Type of Work" required="1"/>
+                    <field name="type_of_view" string="Type of Work" required="1" options="{'no_quick_create': True, 'no_create' : 1, 'no_edit': 1}"/>
                     <field name="name"/>
                     <field name="client_name_sheet" invisible="1"/>
                     <field name="start_time" widget="float_time" required="1"/>
@@ -336,7 +336,7 @@
                         </group>
                         <group style="margin-top:-4px;">
                             <field name="amount" invisible="1"/>
-                            <field name="type_of_view" required="1" readonly="1" options='{"no_open": True, "no_create_edit": True, "no_create": True}'/>
+                            <field name="type_of_view" required="1" readonly="1" options="{'no_quick_create': True, 'no_create' : 1, 'no_edit': 1}"/>
                             <field name="client_name_sheet" invisible="1" readonly="1"/>
                             <field name="stop_time" widget="float_time" required="1" readonly="1"/>
                             <field name="start_date" invisible="1"/>
@@ -399,7 +399,7 @@
                         <field name="project_id" required="1" string="Assignment"/>
                         <field name="user_id" required="1" options='{"no_open": True}'/>
                         <field name="client_client_id"/>
-                        <field name="type_of_view" string="Type of Work" required="1"/>
+                        <field name="type_of_view" string="Type of Work" required="1" options="{'no_quick_create': True, 'no_create' : 1, 'no_edit': 1}"/>
                         <field name="name"/>
                         <field name="start_time" widget="float_time" required="1"/>
                         <field name="stop_time" widget="float_time" required="1"/>
@@ -461,7 +461,7 @@
             <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='task_id']" position="after">
-                    <field name="type_of_view"/>
+                    <field name="type_of_view" options="{'no_quick_create': True, 'no_create' : 1, 'no_edit': 1}"/>
                 </xpath>
                 <xpath expr="//field[@name='task_id']" position="attributes">
                     <attribute name="invisible">1</attribute>

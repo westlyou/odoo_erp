@@ -36,6 +36,7 @@
              'data/timesheet_template.xml',
              'data/post_sale_resume.xml',
              'data/invoice_schedular.xml',
+             'data/mail_data.xml',
              'views/crm_lead_views.xml',
              'views/calender_views.xml',
              'views/sale_views.xml',
