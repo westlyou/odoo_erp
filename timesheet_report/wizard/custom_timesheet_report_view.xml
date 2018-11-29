@@ -7,12 +7,17 @@
 	    	<form string="Timesheet Report">
 	    		<group>
 	    			<group>
-	    				<field name="start_date"/>
-	    				<field name="end_date"/>
+	    				<field name="start_date" required="1"/>
+	    				<field name="end_date" required="1"/>
+	    				<field name="file" filename="filename"/>
+	    				
 	    			</group>
 	    		</group>
 	    		<footer>
-	    		
+	    			<button name="generate_report_xls" string="Generate Report" 
+	    			class="btn-primary" type="object"/> 
+	    			or
+	    			<button string="Cancel" class="btn-default" special="cancel"/>
 	    		</footer>
 	    	</form>
 	    </field>
