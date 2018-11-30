@@ -9,7 +9,8 @@ from odoo.exceptions import UserError, ValidationError
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
     _order = 'start_time'
-
+    
+    
     type_of_view  = fields.Many2one('type.view', string="Type of Work")
     start_datetime = fields.Datetime('Start DateTime', store=True )
     end_date = fields.Date('End DateTime', store=True )
@@ -26,11 +27,17 @@ class AccountAnalyticLine(models.Model):
     client_client_id = fields.Many2one('client.client', string="Client Name")
     active = fields.Boolean('Active',default=True)
     
-    communication_type = fields.Selection([('email', 'Email'),
-                                           ('chat','Chat'),
-                                           ('phone', 'Phone')], string="Communication Type", default="phone")
+    comm_on_email = fields.Boolean(string="Email")
+    comm_on_phone = fields.Boolean(string="Phone")
+    comm_on_chat = fields.Boolean(string="Chat")
 
-    
+    @api.onchange('user_id')
+    def _get_default_value(self):
+        for data in self:
+            data.comm_on_email = data.task_id.comm_on_email
+            data.comm_on_phone = data.task_id.comm_on_phone
+            data.comm_on_chat = data.task_id.comm_on_chat
+
     
             
     
@@ -63,9 +70,7 @@ class AccountAnalyticLine(models.Model):
         for line in timesheet:
             if line.unit_amount < float(0.0):
                 raise ValidationError(_('Please fill Stop Time in 24 hours format and greater than Start Time.'))
-        if not self._context.get('bypass_save'):
-            if not timesheet.communication_type:
-                raise ValidationError("Please add communication type in timesheet before save.")
+        
         return timesheet
 
 
@@ -75,9 +80,7 @@ class AccountAnalyticLine(models.Model):
         for line in self:
             if line.unit_amount < float(0.0):
                 raise ValidationError(_('Please fill Stop Time in 24 hours format and greater than Start Time.'))
-            if not self._context.get('bypass_save'):
-                if not line.communication_type:
-                    raise ValidationError("Please add communication type in timesheet before save.")
+            
         return time
 
    

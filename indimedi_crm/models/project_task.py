@@ -75,21 +75,10 @@ class ProjectTask(models.Model):
     partner_id = fields.Many2one(related='project_id.partner_id', string='Customer', track_visibility='onchange',store=True)
     cc_partner_ids = fields.Many2many('res.partner','timesheet_cc_partner_rel', 'partner_id','cc_partner_id', string="Mail CC", store=True)
 
-
-    comm_date = fields.Date(string="Date")
-    communication_type = fields.Selection([('email', 'Email'),
-                                           ('chat','Chat'),
-                                           ('phone', 'Phone')], string="Communication Type")
+    comm_on_email = fields.Boolean(string="Email")
+    comm_on_phone = fields.Boolean(string="Phone")
+    comm_on_chat = fields.Boolean(string="Chat")
     
-    
-
-    @api.multi
-    def update_communication_type(self):
-        if not self.comm_date or not self.communication_type:
-            raise ValidationError("Communication date and type is required to update communication in timesheet")
-        analytic_line_ids = self.search([('date', '=', self.comm_date)])
-        analytic_line_ids.with_context({'bypass_save': True}).write({'communication_type': self.communication_type})
-        
         
     @api.model
     def create(self, vals):
