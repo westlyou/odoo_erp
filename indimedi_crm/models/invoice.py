@@ -31,7 +31,7 @@ class TimesheetInvoice(models.Model):
     min_bill = fields.Float('Min. Bill')
     worked_hours = fields.Float('Worked Hours')
     ideal_hours = fields.Float('Ideal Hours')
-    hours_charged = fields.Float('Hours Charged')
+    hours_charged = fields.Float(string='Hours Charged')
     bill_amount = fields.Float('Bill Amount')
     disc_amount = fields.Float('Disc. Amount')
     final_amount = fields.Float('Final Amount')
@@ -41,6 +41,15 @@ class TimesheetInvoice(models.Model):
     sent_mail = fields.Boolean('Sent',default=False)
     invoice_date = fields.Date('Invoice Create Date', default=lambda self: fields.Datetime.now())
     additional_hours = fields.Float(string="Additional Hours")
+
+    
+#     @api.multi
+#     def _get_hours_charged(self):
+#         # formula : Work Hours+ ideal Hours + Additional Hours 
+#         for rec in self:
+#             total = 0#float(rec.custom_work_hours) + rec.ideal_hours + rec.additional_hours
+#             rec.hours_charged = total
+            
 
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, context=None, orderby=False, lazy=True):
