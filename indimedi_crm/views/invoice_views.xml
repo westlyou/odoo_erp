@@ -80,8 +80,10 @@
                     <filter string="Monthly Advance" name="monthly_advance" domain="[('invoicing_type_id', '=', 'Monthly Advance')]"/>
                     <separator/>
                     <group expand="0" string="Group By...">
+                    	<filter string="Start Date" domain="[]" context="{'group_by':'invoice_start_date'}" name="invoice_start_date"/>
+                    	<filter string="End Date" domain="[]" context="{'group_by':'invoice_end_date'}" name="invoice_end_date"/>
                         <filter string="Client" domain="[]" context="{'group_by':'analytic_account_id'}" name="invoice_policy"/>
-                        <filter string="Invoicing Policy" domain="[]" context="{'group_by':'invoicing_type_id'}" name="invoice_policy"/>
+                        <filter string="Invoicing Type" domain="[]" context="{'group_by':'invoicing_type_id'}" name="invoice_policy"/>
                     </group>
                 </search>
             </field>
