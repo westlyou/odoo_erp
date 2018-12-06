@@ -131,7 +131,9 @@ class TypeOfView(models.Model):
 
     name = fields.Char(string='Type Of View')
     billable = fields.Boolean(string="Billable")
-
+    idel = fields.Boolean(string="Ideal")
+    is_break = fields.Boolean(string="Break")
+    active = fields.Boolean(string="Active", default=True)
 
 class ClientClient(models.Model):
     _name = 'client.client'

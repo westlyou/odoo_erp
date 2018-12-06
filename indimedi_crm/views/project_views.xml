@@ -7,6 +7,9 @@
             <field name="arch" type="xml">
                 <tree string="Type of Work">
                     <field name="name" string="Type of Work"/>
+                    <field name="billable"/>
+                    <field name="idel"/>
+                    <field name="is_break"/>
                 </tree>
             </field>
         </record>
@@ -17,9 +20,13 @@
             <field name="arch" type="xml">
                 <form string="Type of Work">
                     <sheet>
-                        <group col="4" string="Type of Work">
+                        <group string="Type of Work">
                             <field name="name" string="Type of Work"/>
-                            <field name="billable"/>
+                        </group>
+                        <group>
+                        	<field name="billable"/>
+		                    <field name="idel"/>
+		                    <field name="is_break"/>
                         </group>
                     </sheet>
                 </form>
