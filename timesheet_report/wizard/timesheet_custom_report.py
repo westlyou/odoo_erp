@@ -42,7 +42,7 @@ class TimesheetReportWizard(models.TransientModel):
         timesheet_obj = self.env['account.analytic.line']
         domain = []
         if self.start_date and self.end_date:
-            domain = [('date', '>=', self.start_date), ('date', '<=', self.end_date)]
+            domain = [('date', '>=', self.start_date), ('date', '<=', self.end_date),('active', '=', 0)]
             
         #need to make it task wise instead of client wise
         task_ids = timesheet_obj.search(domain)
@@ -81,7 +81,6 @@ class TimesheetReportWizard(models.TransientModel):
                 if timesheet.type_of_view.billable:
                     this_week_working_hour += timesheet.unit_amount
                     
-            print"this_week_working_hour===================",this_week_working_hour        
             if chat:
                 chat = self._check_communication_frequency(chat)
             else:
@@ -102,7 +101,7 @@ class TimesheetReportWizard(models.TransientModel):
             last_start_date = datetime.strftime(last_start_date, DEFAULT_SERVER_DATE_FORMAT)
             last_end_date = datetime.strftime(last_end_date, DEFAULT_SERVER_DATE_FORMAT)
         
-            last_domain = [('date', '>=', last_start_date), ('date', '<=', last_end_date)]
+            last_domain = [('date', '>=', last_start_date), ('date', '<=', last_end_date),('active', '=', 0)]
             
             last_timesheet_ids = timesheet_obj.search(last_domain + [('task_id', '=', task.id)])
             
