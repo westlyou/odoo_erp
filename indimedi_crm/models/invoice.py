@@ -144,25 +144,21 @@ class Project(models.Model):
                         week_start = date_in_between[0]
                         week_end = date_in_between[1]
                         
-                        print"week_start=================",week_start,week_end
                         
                         #Holiday Count Logic
                         holidays = self.env['public.holiday'].search([
                             ('public_holiday_date', '>=', week_start.strftime(DF)),
                             ('public_holiday_date', '<=', week_end.strftime(DF))])
 
-                        
                         holidays_hours = 0
+                        
                         if len(holidays) >= 1.00:
                             daily_hours = float(proj.hour_selection) / 5
                             holidays_hours = daily_hours * len(holidays)
+                            
                             custom_work_hours =  round((float(proj.hour_selection) - holidays_hours),2)
-#                             print "IF>>>>>>custom_work_hours***************",daily_hours, holidays_hours,custom_work_hours
                         else:
-#                             print "else***************"
                             custom_work_hours = round(float(proj.hour_selection),2)
-#                             print "ELSE>>>>custom_work_hours***************", custom_work_hours
-
                         leave = self.env['hr.holidays'].search([
                             ('date_from', '>=', week_start.strftime(DF)),
                             ('date_to', '<=', week_end.strftime(DF)),
@@ -174,20 +170,12 @@ class Project(models.Model):
                         if len(leave) >= 1.00:
                             daily_hours = float(proj.hour_selection) / 5
                             leave_hours = daily_hours * leave_days
-                            custom_work_hours -=  round((float(custom_work_hours) - leave_hours),2)
-#                             print "IF>>>>>>custom_work_hours***************",daily_hours, holidays_hours,custom_work_hours
-                        else:
-#                             print "else***************"
-                            custom_work_hours = round(float(proj.hour_selection),2)
-#                             print "ELSE>>>>custom_work_hours***************", custom_work_hours
-
+                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
 
                         domain = [('project_id', '=', proj.id), ('active', '=', False)]
                         if week_start and week_end:
                             domain.extend([('date', '>=', week_start.strftime(DF)), ('date', '<=', week_end.strftime(DF))])
-                            print"domain========================",domain
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
-                        print"timesheet_lines=============",timesheet_lines
                         worked_hour = 0
                         idel_hour = 0
                         break_hour = 0
@@ -213,7 +201,6 @@ class Project(models.Model):
 #                         else:
 #                             ideal_time = 0.00
 
-                        
                         if worked_hour:
                             invoice_lines = self.env['timesheet.invoice'].create({
                                     'analytic_account_id': proj.analytic_account_id.id,
@@ -278,11 +265,8 @@ class Project(models.Model):
                             daily_hours = float(proj.hour_selection) / working_days
                             holidays_hours = daily_hours * len(holidays)
                             custom_work_hours = round((float(proj.hour_selection) - holidays_hours),2)
-#                             print "IF>>>>>>custom_work_hours***************",daily_hours, holidays_hours
                         else:
-#                             print "else***************"
                             custom_work_hours = round(float(proj.hour_selection),2)
-#                             print "ELSE>>>>custom_work_hours***************", custom_work_hours
 
                         leave = self.env['hr.holidays'].search([
                             ('date_from', '>=', month_start.strftime(DF)),
@@ -295,12 +279,7 @@ class Project(models.Model):
                         if len(leave) >= 1.00:
                             daily_hours = float(proj.hour_selection) / 5
                             leave_hours = daily_hours * leave_days
-                            custom_work_hours -=  round((float(custom_work_hours) - leave_hours),2)
-#                             print "IF>>>>>>custom_work_hours***************",daily_hours, holidays_hours,custom_work_hours
-                        else:
-#                             print "else***************"
-                            custom_work_hours = round(float(proj.hour_selection),2)
-#                             print "ELSE>>>>custom_work_hours***************", custom_work_hours
+                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
 
                         domain = [('project_id', '=', proj.id), ('active', '=', False)]
                         if month_start and month_end:
@@ -383,7 +362,6 @@ class Project(models.Model):
                         d1 = today1 + relativedelta(months=1)
                         start_date = datetime.date(d1.year, d1.month, 1)
                         end_date = last_day_of_next_month(start_date)#datetime.date(date.year, date.month, calendar.mdays[date.month])
-                        print "lllllllllllllllll", start_date, end_date
 
 
                         #previous month logic
@@ -391,8 +369,6 @@ class Project(models.Model):
                         d2 = today2 - relativedelta(months=1)
                         date11 = date(d2.year, d2.month, 1)
                         date22 = date(today2.year, today2.month, 1) - relativedelta(days=1)
-                        print ">>>>>>>>>>>>>>>>", date11
-                        print "<<<<<<<<<<<<<<<<", date22
 
 
                         #This month logic
@@ -400,19 +376,15 @@ class Project(models.Model):
                         a = datetime.date(int(dt.year), int(dt.month), int(dt.day)).isocalendar()[1]
                         b = int(dt.year)
                         c = int(dt.month)
-                        print "abc??????", b, c
                         month_start = datetime.date(int(dt.year), int(dt.month), 1)
                         month_end = self._last_day_of_month(datetime.date(int(dt.year), int(dt.month), int(dt.day)))
-                        print "month_end,satrtdfuidhshfgvjkgvb", month_start, month_end
 
 
                         #Holiday Count Logic
                         holidays = self.env['public.holiday'].search([
                             ('public_holiday_date', '>=', month_start.strftime(DF)),
                             ('public_holiday_date', '<=', month_end.strftime(DF))])
-                        print len(holidays)
                         
-
                         # end
 
                         #WORKING DAYS LOGIC
@@ -424,18 +396,14 @@ class Project(models.Model):
                                                 if (start_date + datetime.timedelta(days=x)).isoweekday() <= 5
                                                }
                         working_days = len(valid_date_list)
-                        print "Working Days",working_days
 
                         holidays_hours = 0
                         if len(holidays) >= 1.00:
                             daily_hours = float(proj.hour_selection) / working_days
                             holidays_hours = daily_hours * len(holidays)
                             custom_work_hours = round((float(proj.hour_selection) - holidays_hours),2)
-                            print "IF>>>>>>custom_work_hours ADVANCE MONTHLY***************",daily_hours, holidays_hours
                         else:
-                            print "else***************"
                             custom_work_hours = round(float(proj.hour_selection),2)
-                            print "ELSE>>>>custom_work_hours ADVANCE MONTHLY***************", custom_work_hours
                         
                         leave = self.env['hr.holidays'].search([
                             ('date_from', '>=', month_start.strftime(DF)),
@@ -448,20 +416,12 @@ class Project(models.Model):
                         if len(leave) >= 1.00:
                             daily_hours = float(proj.hour_selection) / 5
                             leave_hours = daily_hours * leave_days
-                            custom_work_hours -=  round((float(custom_work_hours) - leave_hours),2)
-#                             print "IF>>>>>>custom_work_hours***************",daily_hours, holidays_hours,custom_work_hours
-                        else:
-#                             print "else***************"
-                            custom_work_hours = round(float(proj.hour_selection),2)
-#                             print "ELSE>>>>custom_work_hours***************", custom_work_hours
-
-
+                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
+                       
                         domain = [('project_id', '=', proj.id), ('active', '=', False)]
                         if month_start and month_end:
                             domain.extend([('date', '>=', date11.strftime(DF)), ('date', '<=', date22.strftime(DF))])
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
-                        # print "timesheet_lines>>>>>>>>", timesheet_lines
-                        # print sum(timesheet_lines.mapped('unit_amount'))
                         
                         worked_hour,idel_hour,break_hour = 0
                         for line in timesheet_lines:
@@ -535,17 +495,14 @@ class Project(models.Model):
                         prev_monday = today - datetime.timedelta(days=today.weekday(), weeks=1)
                         prev_sunday = prev_monday - datetime.timedelta(days=1)
                         prev_saturday = prev_monday + datetime.timedelta(days=5)
-                        print ">>>>>>>>days>>>>>>>>", today, prev_sunday, prev_monday, prev_saturday
 
 
                         #Current Week DateRange Logic
                         dt = datetime.datetime.now()
                         a = datetime.date(int(dt.year), int(dt.month), int(dt.day)).isocalendar()[1]
                         b = int(dt.year)
-                        # print ">>>>>>>>A", a, b
 
                         date_in_between = self._CurrentweekBoundaries(int(b), int(a))
-                        # print "date_in_between>>>>>>>>>>>", date_in_between
                         week_start = date_in_between[0]
                         week_end = date_in_between[1]
                         print "????????", week_start, week_end
@@ -561,11 +518,8 @@ class Project(models.Model):
                             daily_hours = float(proj.hour_selection) / 5
                             holidays_hours = daily_hours * len(holidays)
                             custom_work_hours = round((float(proj.hour_selection) - holidays_hours),2)
-                            print "IF>>>>>>custom_work_hours***************",daily_hours, holidays_hours
                         else:
-                            print "else***************"
                             custom_work_hours = round(float(proj.hour_selection),2)
-                            print "ELSE>>>>custom_work_hours***************", custom_work_hours
 
                         leave = self.env['hr.holidays'].search([
                             ('date_from', '>=', week_start.strftime(DF)),
@@ -578,12 +532,7 @@ class Project(models.Model):
                         if len(leave) >= 1.00:
                             daily_hours = float(proj.hour_selection) / 5
                             leave_hours = daily_hours * leave_days
-                            custom_work_hours -=  round((float(custom_work_hours) - leave_hours),2)
-#                             print "IF>>>>>>custom_work_hours***************",daily_hours, holidays_hours,custom_work_hours
-                        else:
-#                             print "else***************"
-                            custom_work_hours = round(float(proj.hour_selection),2)
-#                             print "ELSE>>>>custom_work_hours***************", custom_work_hours
+                            custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
 
 
 
@@ -591,8 +540,6 @@ class Project(models.Model):
                         if prev_sunday and prev_saturday:
                             domain.extend([('date', '>=', prev_sunday.strftime(DF)), ('date', '<=', prev_saturday.strftime(DF))])
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
-                        # print "timesheet_lines>>>>>>>>", timesheet_lines
-                        # print sum(timesheet_lines.mapped('unit_amount'))
 #                         sum_hours = sum(timesheet_lines.mapped('unit_amount'))
                         
                         worked_hour,idel_hour,break_hour = 0
