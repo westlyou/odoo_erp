@@ -19,22 +19,27 @@
                     <field name="invoice_start_date" readonly="1"/>
                     <field name="invoice_end_date" readonly="1"/>
                     <field name="hour_selection" readonly="1" invisible="1"/>
-                    <field name="custom_work_hours" readonly="1" invisible="0"/>
+                    <field name="custom_work_hours" readonly="1" invisible="0" force_save="1"/>
                     <field name="rate_per_hour" readonly="1"/>
                     <field name="min_bill" readonly="1"/>
                     <field name="worked_hours" readonly="1" widget="float_time"/>
                     <field name="ideal_hours" readonly="1" widget="float_time"/>
-                    <field name="additional_hours" readonly="1"  widget="float_time"/>
+                    <field name="additional_hours"  widget="float_time"/>
                     <field name="hours_charged" widget="float_time"/>
                     <field name="bill_amount"/>
                     <field name="disc_amount"/>
                     <field name="final_amount" sum="Total Amount"/>
                     <field name="holidays"/>
+                    <field name="leave_days"/>
+                    <field name="holidays_hours" invisible="1"/>
+                    <field name="leave_hours" invisible="1"/>
                     <field name="billed" attrs="{'readonly': [('cancelled', '=', True)]}"/>
                     <field name="cancelled" attrs="{'readonly': [('billed', '=', True)]}"/>
                     <field name="sequence_id" invisible="1"/>
-                    <field name="sent_mail"/>
+                    <field name="sent_mail" />
                     <field name="invoice_date" invisible="1"/>
+                    <button name="send_timesheet_invoice" string="Send Invoice" type="object" 
+                    attrs="{'invisible': ['|',('billed', '!=', True),('sent_mail', '=', True)]}" class='oe_highlight'/>
                 </tree>
             </field>
         </record>
@@ -45,6 +50,7 @@
             <field name="res_model">timesheet.invoice</field>
             <field name="view_mode">tree</field>
             <field name="view_id" ref='view_timesheet_invoice_tree'/>
+            <field name="context">{'readonly_by_pass': True}</field>
             <field name="domain">[('billed', '=', False),('cancelled', '=', False)]</field>
         </record>
 
@@ -54,6 +60,7 @@
             <field name="res_model">timesheet.invoice</field>
             <field name="view_mode">tree</field>
             <field name="view_id" ref='view_timesheet_invoice_tree'/>
+            <field name="context">{'readonly_by_pass': True}</field>
             <field name="domain">[('billed', '=', True),('cancelled', '=', False)]</field>
         </record>
 
@@ -63,6 +70,7 @@
             <field name="res_model">timesheet.invoice</field>
             <field name="view_mode">tree</field>
             <field name="view_id" ref='view_timesheet_invoice_tree'/>
+            <field name="context">{'readonly_by_pass': True}</field>
             <field name="domain">[('cancelled', '=', True)]</field>
         </record>
 
@@ -106,6 +114,28 @@ if records:
             <field name="name">Send Email</field>
             <field name="key2">client_action_multi</field>
             <field name="value" eval="'ir.actions.server,' +str(ref('action_timesheet_invoice'))" />
+            <field name="key">action</field>
+            <field name="model">timesheet.invoice</field>
+        </record>
+        
+        
+        <!-- mark as billed -->
+         <record model="ir.actions.server" id="action_mark_as_biiled">
+            <field name="name">Mark As Billed</field>
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice"/>
+            <field name="code">
+if records:
+    for i in records:
+        action = i.mark_as_billed()
+
+            </field>
+        </record>
+
+        <record model="ir.values" id="val_mark_as_billed">
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice" />
+            <field name="name">Mark As Billed</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.server,' +str(ref('action_mark_as_biiled'))" />
             <field name="key">action</field>
             <field name="model">timesheet.invoice</field>
         </record>
