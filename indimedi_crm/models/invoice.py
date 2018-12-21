@@ -51,6 +51,7 @@ class TimesheetInvoice(models.Model):
     holidays_hours = fields.Float(string="Holiday Hour")
     hours_charged_save = fields.Float(string='Hours Charged')
     
+    
     @api.onchange('additional_hours')
     def onchange_additional_hours(self):
         hours_charged = self.hours_charged_save + self.additional_hours
