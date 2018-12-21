@@ -69,7 +69,7 @@ class TimeSheets(models.TransientModel):
         inout_obj = self.env['account.analytic.line']
         domain = [('date', '>=', self.start_date),
                  ('date', '<=', self.stop_date),('task_id','=',self.project_task.id)]
-        inv_lines = inout_obj.search(domain)
+        inv_lines = inout_obj.search(domain, order='date asc')
 
         for each in inv_lines:
             if each.unit_amount >= float(0.0):

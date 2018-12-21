@@ -4,7 +4,7 @@
         <record id="email_template_worksheets" model="mail.template">
             <field name="name">Timesheets Of Work</field>
             <field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
-            <field name="subject">Timesheet - ${object.daily_sub_date.split('-')[1] + '-' + object.daily_sub_date.split('-')[2] + '-' + object.daily_sub_date.split('-')[0]} - ${object.project_task.jd_us_name_id.name}</field>
+            <field name="subject">Timesheet - ${object.start_date.split('-')[1] + '-' + object.start_date.split('-')[2] + '-' + object.start_date.split('-')[0]} to ${object.stop_date.split('-')[1] + '-' + object.stop_date.split('-')[2] + '-' + object.stop_date.split('-')[0]} - ${object.project_task.jd_us_name_id.name}</field>
             <!-- <field name="email_to">${object.email|safe}</field> -->
             <!-- <field name="email_cc">${object.email}</field> -->
             <field name="model_id" ref="indimedi_crm.model_time_sheet_wizard"/>
