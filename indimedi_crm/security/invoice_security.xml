@@ -12,5 +12,14 @@
             <field name="category_id" ref="module_category_timesheet_invoice"/>
             <field name="comment">The user will have access to all records of all the Timesheet Invoice.</field>
         </record>
+        
+        <!-- delete invoice right for manager -->
+        <record id="group_timesheet_invoice_manager_delete" model="res.groups">
+            <field name="name">Manager Can Delete</field>
+            <field name="category_id" ref="module_category_timesheet_invoice"/>
+            <field name="implied_ids" eval="[(4, ref('group_timesheet_invoice_manager'))]"/>
+            <field name="comment">The user will have access to all records of all the Timesheet Invoice and delete invoice.</field>
+        </record>
+        
     </data>
 </odoo>
