@@ -69,7 +69,7 @@ class TimeSheets(models.TransientModel):
         inout_obj = self.env['account.analytic.line']
         domain = [('date', '>=', self.start_date),
                  ('date', '<=', self.stop_date),('task_id','=',self.project_task.id)]
-        inv_lines = inout_obj.search(domain, order='date asc')
+        inv_lines = inout_obj.search(domain, order='date,start_time  asc')
 
         for each in inv_lines:
             if each.unit_amount >= float(0.0):
@@ -81,6 +81,7 @@ class TimeSheets(models.TransientModel):
             if each.stop_time >= float(0.0):
                 stop_time_temp = '%s:%02.0f' % tuple(int(round(x)) for x in divmod(each.stop_time*60,60))
                 each.write({'stop_time_temp': stop_time_temp})
+
 
         sorted_lines = inv_lines.sorted(key=lambda r: r.start_date)
         time_count = sum(sorted_lines.mapped('unit_amount'))
@@ -118,9 +119,9 @@ class TimeSheets(models.TransientModel):
         # mail_date = datetime.today().strftime("%m-%d-%Y")
 
 
-        print ">>>>>>>>>>>>>>>>>Server ID>>>>>>>>>>>>>", server_id
-        print ">>>>>>>>>>>>>>>>>mail_auther_id>>>>>>>>>>>>>", mail_auther_id
-        print ">>>>>>>>>>>>>>>>>login_email_id>>>>>>>>>>>>>", login_email_id
+#         print ">>>>>>>>>>>>>>>>>Server ID>>>>>>>>>>>>>", server_id
+#         print ">>>>>>>>>>>>>>>>>mail_auther_id>>>>>>>>>>>>>", mail_auther_id
+#         print ">>>>>>>>>>>>>>>>>login_email_id>>>>>>>>>>>>>", login_email_id
         # print ">>>>>>>>>>>>>>>>>mail_date>>>>>>>>>>>>>", datetime.today().strftime("%m-%d-%Y"), mail_date
 
 
