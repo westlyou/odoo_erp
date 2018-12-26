@@ -139,6 +139,27 @@ if records:
             <field name="key">action</field>
             <field name="model">timesheet.invoice</field>
         </record>
+        
+         <!-- mark as Cancelled -->
+         <record model="ir.actions.server" id="action_mark_as_cancel">
+            <field name="name">Mark As Cancelled</field>
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice"/>
+            <field name="code">
+if records:
+    for i in records:
+        action = i.mark_as_cancel()
+
+            </field>
+        </record>
+
+        <record model="ir.values" id="val_mark_as_cancel">
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice" />
+            <field name="name">Mark As Cancelled</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.server,' +str(ref('action_mark_as_cancel'))" />
+            <field name="key">action</field>
+            <field name="model">timesheet.invoice</field>
+        </record>
 
 
 

@@ -158,6 +158,10 @@ class TimesheetInvoice(models.Model):
             raise UserError("You can not mark cancelled invoice as billed.")
         self.billed = True
 
+    @api.multi
+    def mark_as_cancel(self):
+        self.cancelled = True
+        
     sequence_id = fields.Char('Invoice No.', index=True,readonly=True)
 
     @api.model
