@@ -50,7 +50,7 @@ class TimesheetInvoice(models.Model):
     leave_hours = fields.Float(string="Leave Hours")
     holidays_hours = fields.Float(string="Holiday Hour")
     hours_charged_save = fields.Float(string='Hours Charged')
-    
+    is_paid = fields.Boolean(string="Paid")
     
     @api.onchange('additional_hours')
     def onchange_additional_hours(self):
@@ -158,8 +158,18 @@ class TimesheetInvoice(models.Model):
             raise UserError("You can not mark cancelled invoice as billed.")
         self.billed = True
 
+    @api.multi
+    def mark_as_cancel(self):
+        self.cancelled = True
+        
     sequence_id = fields.Char('Invoice No.', index=True,readonly=True)
 
+    @api.multi
+    def mark_as_paid(self):
+        if not self.billed:
+            raise UserError("Only billed invoice can be paid!")
+        self.is_paid = True
+    
     @api.model
     def create(self, vals):
         seq = self.env['ir.sequence'].next_by_code('timesheet.invoice') or '/'

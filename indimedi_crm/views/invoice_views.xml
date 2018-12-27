@@ -33,7 +33,8 @@
                     <field name="leave_days"/>
                     <field name="holidays_hours" invisible="1"/>
                     <field name="leave_hours" invisible="1"/>
-                    <field name="billed" attrs="{'readonly': [('cancelled', '=', True)]}"/>
+                    <field name="billed" invisible="1" attrs="{'readonly': [('cancelled', '=', True)]}"/>
+                    <field name="is_paid"/>
                     <field name="cancelled" attrs="{'readonly': [('billed', '=', True)]}"/>
                     <field name="sequence_id" invisible="1"/>
                     <field name="sent_mail" />
@@ -54,15 +55,6 @@
             <field name="domain">[('billed', '=', False),('cancelled', '=', False)]</field>
         </record>
 
-        <record id="view_billed_timesheet_action" model="ir.actions.act_window">
-            <field name="name">Billed</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">timesheet.invoice</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref='view_timesheet_invoice_tree'/>
-            <field name="context">{'readonly_by_pass': True}</field>
-            <field name="domain">[('billed', '=', True),('cancelled', '=', False)]</field>
-        </record>
 
         <record id="view_cancelled_timesheet_action" model="ir.actions.act_window">
             <field name="name">Cancelled</field>
@@ -86,17 +78,31 @@
                     <separator/>
                     <filter string="Monthly" name="monthly" domain="[('invoicing_type_id', '=', 'Monthly')]"/>
                     <filter string="Monthly Advance" name="monthly_advance" domain="[('invoicing_type_id', '=', 'Monthly Advance')]"/>
+                    <filter string="Billed" domain="[('billed','=', True),('is_paid', '=', False)]"  name="invoice_billed"/>
+                    <filter string="Paid" domain="[('is_paid', '=', True)]"  name="invoice_paid"/>
                     <separator/>
                     <group expand="0" string="Group By...">
                     	<filter string="Start Date" domain="[]" context="{'group_by':'invoice_start_date'}" name="invoice_start_date"/>
                     	<filter string="End Date" domain="[]" context="{'group_by':'invoice_end_date'}" name="invoice_end_date"/>
                         <filter string="Client" domain="[]" context="{'group_by':'analytic_account_id'}" name="invoice_policy"/>
+                        
                         <filter string="Invoicing Type" domain="[]" context="{'group_by':'invoicing_type_id'}" name="invoice_policy"/>
                     </group>
                 </search>
             </field>
         </record>
         
+        <!-- timesheet invoice billed action -->
+        <record id="view_billed_timesheet_action" model="ir.actions.act_window">
+            <field name="name">Billed</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">timesheet.invoice</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref='view_timesheet_invoice_tree'/>
+            <field name="context">{'readonly_by_pass': True, 'search_default_invoice_billed': 1}</field>
+            <field name="search_view_id" ref="view_timesheet_invoice_search"/>
+            <field name="domain">[('billed', '=', True),('cancelled', '=', False)]</field>
+        </record>
 
         <record model="ir.actions.server" id="action_timesheet_invoice">
             <field name="name">Send Email</field>
@@ -139,9 +145,51 @@ if records:
             <field name="key">action</field>
             <field name="model">timesheet.invoice</field>
         </record>
+        
+         <!-- mark as Cancelled -->
+         <record model="ir.actions.server" id="action_mark_as_cancel">
+            <field name="name">Mark As Cancelled</field>
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice"/>
+            <field name="code">
+if records:
+    for i in records:
+        action = i.mark_as_cancel()
+
+            </field>
+        </record>
+
+        <record model="ir.values" id="val_mark_as_cancel">
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice" />
+            <field name="name">Mark As Cancelled</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.server,' +str(ref('action_mark_as_cancel'))" />
+            <field name="key">action</field>
+            <field name="model">timesheet.invoice</field>
+        </record>
 
 
+		 <!-- mark as paid -->
+         <record model="ir.actions.server" id="action_mark_as_paid">
+            <field name="name">Mark As Paid</field>
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice"/>
+            <field name="code">
+if records:
+    for i in records:
+        action = i.mark_as_paid()
 
+            </field>
+        </record>
+
+        <record model="ir.values" id="val_mark_as_paid">
+            <field name="model_id" ref="indimedi_crm.model_timesheet_invoice" />
+            <field name="name">Mark As Paid</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.server,' +str(ref('action_mark_as_paid'))" />
+            <field name="key">action</field>
+            <field name="model">timesheet.invoice</field>
+        </record>
+        
+        
 
         <menuitem id="timesheet_invoice_menu" name="Timesheet Invoicing" sequence="56" groups="group_timesheet_invoice_manager"/>
 
