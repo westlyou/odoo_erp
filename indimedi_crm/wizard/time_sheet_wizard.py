@@ -60,6 +60,19 @@ class TimeSheets(models.TransientModel):
     mail_sub_date = datetime.today().strftime("%m-%d-%Y")
     daily_sub_date = fields.Date('Mail Date', default=fields.Date.context_today)
 
+    
+    def get_subject_line(self):
+        sub = ''
+        if self.start_date == self.stop_date:
+            sub = "Timesheet - " + self.start_date.split('-')[1] + '-' + self.start_date.split('-')[2] + '-' + self.start_date.split('-')[0] + " - " + self.project_task.jd_us_name_id.name
+        else:
+            sub = "Timesheet - " + self.start_date.split('-')[1] + '-' + self.start_date.split('-')[2] + '-' + self.start_date.split('-')[0] + " to " + \
+                    self.stop_date.split('-')[1] + '-' + self.stop_date.split('-')[2] + '-' + self.stop_date.split('-')[0] + \
+                    " - " + self.project_task.jd_us_name_id.name
+            
+        return sub
+    
+
     @api.multi
     def print_report(self, data):
         return self.env['report'].get_action(self, 'indimedi_crm.report_timesheet_wizard')

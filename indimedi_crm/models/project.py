@@ -39,8 +39,6 @@ class AccountAnalyticLine(models.Model):
             data.comm_on_chat = data.task_id.comm_on_chat
 
     
-            
-    
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, context=None, orderby=False, lazy=True):
         if 'stop_time' in fields:
