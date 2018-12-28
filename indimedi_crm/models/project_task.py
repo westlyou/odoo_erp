@@ -27,7 +27,24 @@ class Project(models.Model):
     total_rate = fields.Float('Total Min. Rate', track_visibility='onchange')
     client_email = fields.Char(string="Client Email", track_visibility='onchange')
 
+    #new fields
+    billing_history_ids = fields.One2many('billing.history', 'project_id', string="Billing History")
+
     
+    @api.multi
+    def open_billing_wizard(self):
+        view_id = self.env.ref('indimedi_crm.change_billing_info_form')
+        
+        return {
+                'name': "Change Billing Information",
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'change.billing.info',
+                'view_id': view_id.id,
+                'target': 'new',
+                'context': {'default_project_id': self.id},
+        }
         
     @api.multi
     def write(self, vals):
