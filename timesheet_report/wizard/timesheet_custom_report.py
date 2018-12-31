@@ -42,7 +42,7 @@ class TimesheetReportWizard(models.TransientModel):
         timesheet_obj = self.env['account.analytic.line']
         domain = []
         if self.start_date and self.end_date:
-            domain = [('date', '>=', self.start_date), ('date', '<=', self.end_date),('active', '=', 0)]
+            domain = [('date', '>=', self.start_date), ('date', '<=', self.end_date),('active', '=', False)]
             
         #need to make it task wise instead of client wise
         task_ids = timesheet_obj.search(domain)
@@ -101,7 +101,7 @@ class TimesheetReportWizard(models.TransientModel):
             last_start_date = datetime.strftime(last_start_date, DEFAULT_SERVER_DATE_FORMAT)
             last_end_date = datetime.strftime(last_end_date, DEFAULT_SERVER_DATE_FORMAT)
         
-            last_domain = [('date', '>=', last_start_date), ('date', '<=', last_end_date),('active', '=', 0)]
+            last_domain = [('date', '>=', last_start_date), ('date', '<=', last_end_date),('active', '=', False)]
             
             last_timesheet_ids = timesheet_obj.search(last_domain + [('task_id', '=', task.id)])
             
@@ -121,9 +121,24 @@ class TimesheetReportWizard(models.TransientModel):
                 productivity_to_min_bill = 0
                 
             
+            
+            #this_week_working_hour in time formate
+            working_hour = 0
+            minutes = this_week_working_hour * 60
+            if minutes:
+                working_hour, working_min = divmod(minutes, 60)
+                working_hour = "%02d:%02d"%(working_hour, working_min)
+            
+            last_working_hour = 0
+            minutes = last_week_working_hour * 60
+            if minutes:
+                last_working_hour, last_working_min = divmod(minutes, 60)
+                last_working_hour = "%02d:%02d"%(last_working_hour, last_working_min)
+            
+                
             value.update({
-                        'this_week_working_hour': this_week_working_hour, 
-                        'last_week_working_hour': last_week_working_hour,
+                        'this_week_working_hour': working_hour, 
+                        'last_week_working_hour': last_working_hour,
                         'pructivity_against_last_week': pructivity_against_last_week,
                         'productivity_to_min_bill': productivity_to_min_bill,
                         'email' : email,
@@ -210,6 +225,6 @@ class TimesheetReportWizard(models.TransientModel):
             return "Too Frequent"
         elif count == 4:
             return "Frequent"
-        elif count < 4:
+        elif count < 4  :
             return "Less Frequent"
         
