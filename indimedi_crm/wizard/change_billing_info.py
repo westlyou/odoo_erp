@@ -33,7 +33,8 @@ class ChangeBillingInfo(models.Model):
     
     @api.multi
     def action_update_billing_detail(self):
-        vals = {'total_rate': self.total_rate}
-        if self.rate_per_hour <= 0:
-            raise UserError("Negative or zero rate is not allowed")
+        pass
+            
+        
+        
         
