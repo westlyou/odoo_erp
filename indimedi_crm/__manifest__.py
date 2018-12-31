@@ -54,6 +54,9 @@
              'data/analysis_timesheet_sent.xml',
              'views/invoice_views.xml',
              'views/hide_menus_customer.xml',
+             
+            #new file added
+            'wizard/change_billing_info_wizard.xml',
         ],
     'qweb': [
         'static/lib/web_calendar/xml/*.xml',
