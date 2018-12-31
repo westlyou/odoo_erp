@@ -201,7 +201,7 @@ class TimesheetReportWizard(models.TransientModel):
             
             row += 1
         #create xls file
-        filename = ('Timesheet Weekly Report'+ '.xls')
+        filename = r'/tmp/Timesheet_Weekly_Report.xls'
         workbook.save(filename)
         file = open(filename, "rb")
         file_data = file.read()
