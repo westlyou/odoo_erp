@@ -28,7 +28,7 @@ class Project(models.Model):
     client_email = fields.Char(string="Client Email", track_visibility='onchange')
 
     #new fields
-    #billing_history_ids = fields.One2many('billing.history', 'project_id', string="Billing History")
+    billing_history_ids = fields.One2many('billing.history', 'project_id', string="Billing History")
 
     
     @api.multi
