@@ -33,8 +33,57 @@ class ChangeBillingInfo(models.Model):
     
     @api.multi
     def action_update_billing_detail(self):
-        pass
+        vals = {'total_rate': self.total_rate}
+        if self.rate_per_hour <= 0:
+            raise UserError("Negative or zero rate is not allowed")
+        if self.invoice_start_date:
+            vals.update({
+                        'invoice_start_date': self.invoice_start_date
+                        })
+        if self.rate_per_hour:
+            vals.update({
+                        'rate_per_hour': self.rate_per_hour
+                        })
+        else:
+            vals.update({
+                        'rate_per_hour': self.project_id.rate_per_hour
+                        })
             
+        if self.invoicing_type_id:
+            vals.update({
+                        'invoicing_type_id': self.invoicing_type_id.id
+                        })
+        else:
+            vals.update({
+                        'invoicing_type_id': self.project_id.invoicing_type_id.id
+                        })
+        if self.hour_selection:        
+            vals.update({
+                        'hour_selection': self.hour_selection
+                        })
+        else:
+            vals.update({
+                        'hour_selection': self.project_id.hour_selection
+                        })
+#             
+#         vals.update({
+#                 'project_id': self.project_id.id,
+#                 })
+
+        vals2 = {
+                'project_id': self.project_id.id,
+                'invoice_start_date': self.project_id.invoice_start_date,
+                'rate_per_hour': self.project_id.rate_per_hour,
+                'total_rate': self.project_id.total_rate,
+                'invoicing_type_id': self.project_id.invoicing_type_id.id,
+                'hour_selection': self.project_id.hour_selection,
+                'user_id': self.env.user.id,
+                
+                }
+        
+        self.project_id.write(vals)
+        self.env['billing.history'].create(vals2)
+        
         
         
         

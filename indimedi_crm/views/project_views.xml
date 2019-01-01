@@ -319,6 +319,18 @@
                             <field name="hour_selection" readonly="1"/>
                             <field name="total_rate" readonly="1"/>
                         </group>
+                        <separator string="Billing History"/>
+                        <field name="billing_history_ids" string="Billing History" readonly="1">
+                        	<tree string="Billing History">
+                        		<field name="invoice_start_date"/>
+								<field name="rate_per_hour"/>
+								<field name="total_rate"/>
+								<field name="invoicing_type_id"/>
+								<field name="hour_selection"/>
+								<field name="user_id"/>
+								<field name="create_date"/>
+                        	</tree>
+                        </field>
                     </page>
                 </xpath>
                 <xpath expr="//field[@name='message_follower_ids']" position="after">
