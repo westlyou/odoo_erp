@@ -11,3 +11,4 @@ from . import feedback
 from . import profile
 from . import public_holiday
 from . import invoice
+from . import billing_history

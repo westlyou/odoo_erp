@@ -53,12 +53,17 @@ class TimesheetReportWizard(models.TransientModel):
             
             min_hour = task.project_id.hour_selection
             
+            min_hour_str = 0
+            minutes = float(min_hour) * 60
+            if minutes:
+                min_hour_only, working_min = divmod(minutes, 60)
+                min_hour_str = "%02d:%02d"%(min_hour_only, working_min)
             value = {
                     'client_name': task.client_reporting_id.name,
                     'manager_name': task.manager_id.name,
                     'ea_working': task.user_id.name,
                     'us_name': task.jd_us_name_id.name,
-                    'min_hour': min_hour or 0,
+                    'min_hour': min_hour_str or '00:00',
                     }
             
             #find actual hour worked without training and dev. this week and last week
