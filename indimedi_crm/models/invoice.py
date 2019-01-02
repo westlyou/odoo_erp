@@ -32,7 +32,7 @@ class TimesheetInvoice(models.Model):
     rate_per_hour = fields.Float(string="Rate Per Hour")
     min_bill = fields.Float('Min. Bill')
     worked_hours = fields.Float('Worked Hours')
-    ideal_hours = fields.Float('Ideal Hours')
+    ideal_hours = fields.Float('Idle Hours')
     hours_charged = fields.Float(string='Hours Charged')
     bill_amount = fields.Float('Bill Amount')
     disc_amount = fields.Float('Disc. Amount')
@@ -302,7 +302,7 @@ class Project(models.Model):
 #                         else:
 #                             ideal_time = 0.00
 
-                        if worked_hour:
+                        if worked_hour or ideal_time:
                             invoice_lines = self.env['timesheet.invoice'].create({
                                     'analytic_account_id': proj.analytic_account_id.id,
                                     'invoicing_type_id': proj.invoicing_type_id.id,
@@ -419,7 +419,7 @@ class Project(models.Model):
                         else:
                             extra_hours = 0.00
                             
-                        if worked_hour:
+                        if worked_hour or ideal_time:
                             invoice_lines = self.env['timesheet.invoice'].create({
                                     'analytic_account_id': proj.analytic_account_id.id,
                                     'invoicing_type_id': proj.invoicing_type_id.id,
