@@ -26,6 +26,7 @@
                     <field name="ideal_hours" readonly="1" widget="float_time"/>
                     <field name="additional_hours"  widget="float_time"/>
                     <field name="hours_charged" widget="float_time"/>
+                    <field name="hours_charged_save" invisible="1"/>
                     <field name="bill_amount"/>
                     <field name="disc_amount"/>
                     <field name="final_amount" sum="Total Amount"/>

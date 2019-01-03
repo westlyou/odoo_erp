@@ -49,8 +49,17 @@ class TimesheetInvoice(models.Model):
     leave_days = fields.Float(string="Leave Days")
     leave_hours = fields.Float(string="Leave Hours")
     holidays_hours = fields.Float(string="Holiday Hour")
-    hours_charged_save = fields.Float(string='Hours Charged')
+    hours_charged_save = fields.Float(string='Hours Charged Temp')
     is_paid = fields.Boolean(string="Paid")
+    custom_work_hours_float = fields.Float(string="Working Hours Float")
+    
+    @api.onchange('custom_work_hours', 'rate_per_hour')
+    def onchange_custom_working_hour(self):
+        custom_hour = float(self.custom_work_hours.split()[0])
+        min_bill = custom_hour * self.rate_per_hour
+        self.min_bill = min_bill
+        
+        self.hours_charged = self.worked_hours if self.worked_hours > custom_hour else custom_hour
     
     @api.onchange('additional_hours')
     def onchange_additional_hours(self):
@@ -303,6 +312,9 @@ class Project(models.Model):
 #                             ideal_time = 0.00
 
                         if worked_hour or ideal_time:
+                            work_idle = worked_hour + ideal_time 
+                            hour_charged = work_idle if work_idle > custom_work_hours else custom_work_hours
+                            
                             invoice_lines = self.env['timesheet.invoice'].create({
                                     'analytic_account_id': proj.analytic_account_id.id,
                                     'invoicing_type_id': proj.invoicing_type_id.id,
@@ -315,10 +327,10 @@ class Project(models.Model):
                                     'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
                                     'additional_hours': extra_hours,
-                                    'hours_charged': worked_hour if worked_hour > custom_work_hours else custom_work_hours,
-                                    'hours_charged_save': worked_hour if worked_hour > custom_work_hours else custom_work_hours,
-                                    'bill_amount': (worked_hour if worked_hour > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
-                                    'final_amount': (worked_hour if worked_hour > custom_work_hours else custom_work_hours) * proj.rate_per_hour,
+                                    'hours_charged': hour_charged,
+                                    'hours_charged_save': hour_charged,
+                                    'bill_amount': hour_charged * proj.rate_per_hour,
+                                    'final_amount': hour_charged * proj.rate_per_hour,
                                     'holidays': len(holidays),
                                     'leave_hours': leave_hours,
                                     'leave_days': leave_days,
@@ -420,6 +432,10 @@ class Project(models.Model):
                             extra_hours = 0.00
                             
                         if worked_hour or ideal_time:
+                            
+                            work_idle = worked_hour + ideal_time 
+                            hour_charged = work_idle if work_idle > custom_work_hours else custom_work_hours
+                            
                             invoice_lines = self.env['timesheet.invoice'].create({
                                     'analytic_account_id': proj.analytic_account_id.id,
                                     'invoicing_type_id': proj.invoicing_type_id.id,
@@ -433,10 +449,10 @@ class Project(models.Model):
                                     'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
                                     'additional_hours': extra_hours,
-                                    'hours_charged': worked_hour if worked_hour > float(proj.hour_selection) else float(proj.hour_selection),
-                                    'hours_charged_save': worked_hour if worked_hour > custom_work_hours else custom_work_hours,
-                                    'bill_amount': (worked_hour if worked_hour > float(proj.hour_selection) else float(proj.hour_selection)) * proj.rate_per_hour,
-                                    'final_amount': (worked_hour if worked_hour > float(proj.hour_selection) else float(proj.hour_selection)) * proj.rate_per_hour,
+                                    'hours_charged': hour_charged,
+                                    'hours_charged_save': hour_charged,
+                                    'bill_amount': hour_charged * proj.rate_per_hour,
+                                    'final_amount': hour_charged * proj.rate_per_hour,
                                     'holidays': len(holidays),
                                     'holidays_hours': holidays_hours,
                                     'leave_days': leave_days,
