@@ -59,7 +59,7 @@ class TimesheetInvoice(models.Model):
         min_bill = custom_hour * self.rate_per_hour
         self.min_bill = min_bill
         
-        self.hours_charged = self.worked_hours if self.worked_hours > custom_hour else custom_hour
+        self.hours_charged = (self.worked_hours + self.ideal_hours) if (self.worked_hours + self.ideal_hours) > custom_hour else custom_hour
     
     @api.onchange('additional_hours')
     def onchange_additional_hours(self):
