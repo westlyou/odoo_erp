@@ -90,6 +90,29 @@ class TimesheetReportWizard(models.TransientModel):
              
             min_hour -= holidays_hours
 #             
+            related_employee_id = self.env['hr.employee'].search([('user_id', '=', task.user_id.id)])
+            leaves = False
+            if related_employee_id:
+                leaves = self.env['hr.holidays'].search(
+                    [('employee_id', '=', related_employee_id.id),
+                    ('date_from', '>=', self.start_date),
+                    ('date_to', '<=', self.end_date),
+                    ('type', '=', 'remove')])
+                
+            leave_count = 0
+            leave_hours = 0
+            if leaves:
+                leave_count = abs(sum(leaves.mapped('number_of_days')))
+            
+            
+            if leave_count > 0:
+                daily_hours = float(min_hour) / 5
+                leave_hours = daily_hours * leave_count
+             
+            min_hour -= leave_hours
+#           
+            
+                
             project_name = task.project_id.name
             
             min_hour_str = 0
@@ -180,11 +203,15 @@ class TimesheetReportWizard(models.TransientModel):
                 last_working_hour, last_working_min = divmod(minutes, 60)
                 last_working_hour = "%02d:%02d"%(last_working_hour, last_working_min)
             
-                
+            pructivity_against_last_week = round(pructivity_against_last_week, 2)
+            pructivity_against_last_week_str = str(pructivity_against_last_week) + "%"
+            
+            productivity_to_min_bill = round(productivity_to_min_bill, 2)
+            
             value.update({
                         'this_week_working_hour': working_hour, 
                         'last_week_working_hour': last_working_hour,
-                        'pructivity_against_last_week': pructivity_against_last_week,
+                        'pructivity_against_last_week': pructivity_against_last_week_str,
                         'productivity_to_min_bill': productivity_to_min_bill,
                         'email' : email,
                         'phone': phone,
