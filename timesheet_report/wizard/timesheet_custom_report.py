@@ -207,12 +207,13 @@ class TimesheetReportWizard(models.TransientModel):
             pructivity_against_last_week_str = str(pructivity_against_last_week) + "%"
             
             productivity_to_min_bill = round(productivity_to_min_bill, 2)
+            productivity_to_min_bill_str = str(productivity_to_min_bill) + "%"
             
             value.update({
                         'this_week_working_hour': working_hour, 
                         'last_week_working_hour': last_working_hour,
                         'pructivity_against_last_week': pructivity_against_last_week_str,
-                        'productivity_to_min_bill': productivity_to_min_bill,
+                        'productivity_to_min_bill': productivity_to_min_bill_str,
                         'email' : email,
                         'phone': phone,
                         'chat' : chat
