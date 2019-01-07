@@ -100,3 +100,4 @@ access_public_holiday_manager,public.holiday.manager,model_public_holiday,group_
 access_timesheet_invoice_manager_cancel,timesheet.invoice.manager.delete,model_timesheet_invoice,group_timesheet_invoice_manager_delete,1,1,1,1
 access_billing_history,billing.history,model_billing_history,group_timesheet_invoice_manager,1,1,1,0
 access_billing_history_user,billing.history.user,model_billing_history,,1,0,0,0
+access_project_leave_gm,project.leave.gm,model_project_leave,group_project_general_manager,1,1,1,1

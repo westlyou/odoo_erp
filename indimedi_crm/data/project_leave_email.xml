@@ -1,0 +1,63 @@
+<odoo>
+
+	<record id="email_project_leave_request" model="mail.template">
+		<field name="name">Project Leave Request</field>
+		<field name="email_from"><![CDATA[${ctx['email_from']|safe}]]></field>
+		<field name="subject">Approval of Leave of ${object.us_name_id.name}
+		</field>
+		<field name="email_to"><![CDATA[${ctx['email_to']}]]></field>
+		<field name="model_id" ref="indimedi_crm.model_project_leave" />
+		<field name="auto_delete" eval="True" />
+		<field name="user_signature" eval="True" />
+		<field name="body_html">
+                <![CDATA[
+                
+                <p style="margin-bottom: 0cm; line-height: 100%">
+
+					Hi ${object.project_id.client_name}<br/><br/>
+					
+					<p>Good Morning.</p>
+					
+					<p>Hope
+					you are doing well.</p><p>Please
+					approve the leave of ${object.us_name_id.name} for today ${object.start_date} as he/she will be away to
+					attend family function and he/she will be working regularly from
+					tomorrow. If you want he/she can set off today leave by working on
+					weekends or it will deduct from his/her leave balance.</p>
+					
+					<p>Your
+					consideration in this regard would be appreciated.</p><br>
+					
+					<p>If
+					you have any questions, please let me know.</p><p>
+						
+						
+						<style type="text/css">
+							@page { margin: 2cm }
+							p { margin-bottom: 0.25cm; direction: ltr; line-height: 120%; text-align: left; orphans: 2; widows: 2 }
+							a:link { color: #0563c1 }
+						</style>
+						
+						</p><p style="margin-bottom: 0cm; line-height: 100%"><br>
+						<p>Regards</p>
+					</p><br/><br/>
+                
+                
+                ]]>
+		</field>
+	</record>
+
+
+	<!-- <record id="indimedi_crm.mail_template_data_notification_email_project_leave" model="mail.template">
+            <field name="name">Sale Order Notification Email</field>
+            <field name="subject">${object.subject}</field>
+            <field name="model_id" ref="mail.model_mail_message"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[<html>
+            Test
+            </html>]]>
+            </field>
+	</record>
+            				
+ -->
+</odoo>
