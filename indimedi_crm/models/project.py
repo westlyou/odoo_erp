@@ -31,6 +31,7 @@ class AccountAnalyticLine(models.Model):
     comm_on_phone = fields.Boolean(string="Phone")
     comm_on_chat = fields.Boolean(string="Chat")
 
+
     @api.onchange('user_id')
     def _get_default_value(self):
         for data in self:
