@@ -23,11 +23,22 @@ class ProjectLeave(models.Model):
                               default='draft', copy=False)
     
     
+    @api.onchange('min_hour_per_day')
+    def onchange_min_hour_per_day(self):
+        self.leave_duration = self.min_hour_per_day
+    
     @api.multi
     def copy(self):
         for rec in self:
             raise UserError("Copy operation not allowed.")
         return super(ProjectLeave, self).copy()
+    
+    @api.multi
+    def unlink(self):
+        for rec in self:
+            if rec.state == 'sent':
+                raise UserError("You can not delete sent leave request")
+        return super(ProjectLeave, self).unlink()
     
     @api.multi
     @api.depends('project_id')
@@ -45,7 +56,6 @@ class ProjectLeave(models.Model):
             
             rec.min_hour_per_day = hour_per_day
             
-    
     @api.multi
     def action_confirm_leave(self):
         
@@ -59,9 +69,6 @@ class ProjectLeave(models.Model):
         self.state = 'confirm'
         
         
-        
-   
-
     @api.multi
     def action_send_leave_mail(self):
         self.ensure_one()
@@ -87,7 +94,7 @@ class ProjectLeave(models.Model):
             'default_mail_server_id': server_id,
         })
         return {
-            'name': _('Compose Email'),
+            'name': _('Project Leave Email'),
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
@@ -98,7 +105,7 @@ class ProjectLeave(models.Model):
             'context': ctx,
         }
         
-        
+     
         
 class MailComposeMessage(models.TransientModel):
     _inherit = 'mail.compose.message'
