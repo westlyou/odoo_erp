@@ -31,9 +31,9 @@
                     <field name="disc_amount"/>
                     <field name="final_amount" sum="Total Amount"/>
                     <field name="holidays"/>
-                    <field name="leave_days"/>
+                    <field name="leave_days" invisible="1"/>
                     <field name="holidays_hours" invisible="1"/>
-                    <field name="leave_hours" invisible="1"/>
+                    <field name="leave_hours"/>
                     <field name="billed" invisible="1" attrs="{'readonly': [('cancelled', '=', True)]}"/>
                     <field name="is_paid"/>
                     <field name="cancelled" attrs="{'readonly': [('billed', '=', True)]}"/>
