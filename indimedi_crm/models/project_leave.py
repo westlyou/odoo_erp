@@ -64,8 +64,6 @@ class ProjectLeave(models.Model):
         if self.leave_duration <= 0:
             raise UserError("Zero or negative duration is not allowed.")
         
-        if self.leave_duration > self.min_hour_per_day:
-            raise UserError("Leave duration should not greater then minimum hour per day")
         self.state = 'confirm'
         
         
