@@ -17,6 +17,7 @@ class TimesheetInvoice(models.Model):
     _inherits = {'account.analytic.account': "analytic_account_id"}
     _order = 'invoice_start_date'
 
+    project_id = fields.Many2one('project.project', string="Project")
     analytic_account_id = fields.Many2one('account.analytic.account', string='Client Name',
         ondelete="cascade", required=True, auto_join=True)
     invoicing_type_id = fields.Many2one('job.invoicing', string="Invoicing Type")
@@ -303,6 +304,7 @@ class Project(models.Model):
                             hour_charged = work_idle if work_idle > custom_work_hours else custom_work_hours
                             
                             invoice_lines = self.env['timesheet.invoice'].create({
+                                    'project_id': proj.id,
                                     'analytic_account_id': proj.analytic_account_id.id,
                                     'invoicing_type_id': proj.invoicing_type_id.id,
                                     'invoice_start_date': week_start,
@@ -423,6 +425,7 @@ class Project(models.Model):
                             hour_charged = work_idle if work_idle > custom_work_hours else custom_work_hours
                             
                             invoice_lines = self.env['timesheet.invoice'].create({
+                                    'project_id': proj.id,
                                     'analytic_account_id': proj.analytic_account_id.id,
                                     'invoicing_type_id': proj.invoicing_type_id.id,
                                     'invoice_start_date': month_start,
@@ -563,6 +566,7 @@ class Project(models.Model):
                         total_charged = float(proj.hour_selection) + extra_hours
 
                         invoice_lines = self.env['timesheet.invoice'].create({
+                                'project_id': proj.id,
                                 'analytic_account_id': proj.analytic_account_id.id,
                                 'invoicing_type_id': proj.invoicing_type_id.id,
                                 'invoice_start_date': month_start,
@@ -689,6 +693,7 @@ class Project(models.Model):
                         total_charged = custom_work_hours + extra_hours
 
                         invoice_lines = self.env['timesheet.invoice'].create({
+                                'project_id': proj.id,
                                 'analytic_account_id': proj.analytic_account_id.id,
                                 'invoicing_type_id': proj.invoicing_type_id.id,
                                 'invoice_start_date': week_start,

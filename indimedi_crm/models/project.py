@@ -32,6 +32,20 @@ class AccountAnalyticLine(models.Model):
     comm_on_chat = fields.Boolean(string="Chat")
 
 
+    @api.constrains('date')
+    def validate_past_date(self):
+        date = self.date
+        invoice_id = self.env['timesheet.invoice'].search([('invoice_start_date', '<=', date),
+                                                           '|',('invoice_end_date', '>=', date),
+                                                           ('invoice_start_date', '>=', date),
+                                                           ('billed', '=', True),
+                                                           ('project_id', '=',self.project_id.id)
+                                                           ])
+        if invoice_id:
+            raise ValidationError("Sorry can not create timesheet \n\
+            Timesheet invoice of date %s already billed."%(date))
+            
+            
     @api.onchange('user_id')
     def _get_default_value(self):
         for data in self:
