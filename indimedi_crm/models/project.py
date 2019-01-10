@@ -39,11 +39,12 @@ class AccountAnalyticLine(models.Model):
                                                            '|',('invoice_end_date', '>=', date),
                                                            ('invoice_start_date', '>=', date),
                                                            ('billed', '=', True),
-                                                           ('project_id', '=',self.project_id.id)
+                                                           ('project_id', '=',self.project_id.id)                                                          
                                                            ])
         if invoice_id:
-            raise ValidationError("Sorry can not create timesheet \n\
-            Timesheet invoice of date %s already billed."%(date))
+            for inv in invoice_id:
+                if inv.invoicing_type_id.name in ['Weekly', 'Monthly']:
+                    raise ValidationError("Its Too late!")
             
             
     @api.onchange('user_id')
