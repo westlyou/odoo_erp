@@ -16,7 +16,7 @@ class ProjectLeave(models.Model):
     start_date = fields.Date(string="Start Date", required=True, default=fields.Datetime.now)
     end_date = fields.Date(string="End Date", required=True, default=fields.Datetime.now)
     leave_duration = fields.Integer(string="Leave Duration(Hour)", required=True, copy=False)
-    reason = fields.Text(string="Reason for Leave", required=True)
+    reason = fields.Text(string="Reason for Leave")
     state = fields.Selection([('draft', 'Draft'),
                               ('confirm', 'Confirm'),
                               ('sent', 'Sent')], string="State", 
