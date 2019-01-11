@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from datetime import datetime
 
 class ProjectLeave(models.Model):
     _name = 'project.leave'
@@ -9,6 +10,7 @@ class ProjectLeave(models.Model):
     
     name = fields.Many2one('project.task', string="Client", required=True)
     project_id = fields.Many2one(related='name.project_id', string="Project", copy=False)
+    contact_name = fields.Char(compute='_get_customer_primary_contact', string="Contact", copy=False)
     invoicing_type_id = fields.Many2one(related='project_id.invoicing_type_id', string="Invoicing Type")
     hour_selection = fields.Selection(related='project_id.hour_selection', string="Working Hours", copy=False)
     min_hour_per_day = fields.Float(compute='_get_min_hour_per_day', string="Min Hour/Day", copy=False)
@@ -21,7 +23,37 @@ class ProjectLeave(models.Model):
                               ('confirm', 'Confirm'),
                               ('sent', 'Sent')], string="State", 
                               default='draft', copy=False)
+    local_start_date = fields.Char(compute='_convert_to_new_date_formate')
     
+    
+    @api.multi
+    @api.depends('start_date')
+    def _convert_to_new_date_formate(self):
+        for rec in self:
+            if rec.start_date:
+                start_date = datetime.strptime(rec.start_date, DEFAULT_SERVER_DATE_FORMAT)
+                start_date = datetime.strftime(start_date, '%B %d %Y')
+                rec.local_start_date = start_date
+                
+    @api.multi
+    @api.depends('project_id')
+    def _get_customer_primary_contact(self):
+        for rec in self:
+            name = ''
+            if rec.project_id:
+                if rec.project_id.partner_id:
+                    if rec.project_id.partner_id.child_ids:
+                        child_ids = rec.project_id.partner_id.child_ids
+                        if child_ids:
+                            for contact in child_ids:
+                                if contact.primary_contact:
+                                    name = contact.name
+                            if not name:
+                                name = child_ids[0].name
+                if not name:
+                    name = rec.project_id.partner_id.name
+            rec.contact_name = name
+                     
     
     @api.onchange('min_hour_per_day')
     def onchange_min_hour_per_day(self):
@@ -81,7 +113,7 @@ class ProjectLeave(models.Model):
             compose_form_id = False
         ctx = dict(self.env.context or {})
         server_id = self.env.user.mail_server_id.id
-        
+        print"=================",self.name.partner_ids
         ctx.update({
             'default_model': 'project.leave',
             'default_res_id': self.ids[0],

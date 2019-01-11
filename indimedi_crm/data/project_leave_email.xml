@@ -11,53 +11,53 @@
 		<field name="user_signature" eval="True" />
 		<field name="body_html">
                 <![CDATA[
-                
-                <p style="margin-bottom: 0cm; line-height: 100%">
-
-					Hi ${object.project_id.client_name}<br/><br/>
-					
-					<p>Good Morning.</p>
-					
-					<p>Hope
-					you are doing well.</p><p>Please
-					approve the leave of ${object.us_name_id.name} for today ${object.start_date} as he/she will be away to
-					attend family function and he/she will be working regularly from
-					tomorrow. If you want he/she can set off today leave by working on
-					weekends or it will deduct from his/her leave balance.</p>
-					
-					<p>Your
-					consideration in this regard would be appreciated.</p><br>
-					
-					<p>If
-					you have any questions, please let me know.</p><p>
-						
-						
-						<style type="text/css">
-							@page { margin: 2cm }
-							p { margin-bottom: 0.25cm; direction: ltr; line-height: 120%; text-align: left; orphans: 2; widows: 2 }
-							a:link { color: #0563c1 }
-						</style>
-						
-						</p><p style="margin-bottom: 0cm; line-height: 100%"><br>
-						<p>Regards</p>
-					</p><br/><br/>
-                
-                
+					<p><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">Hi ${object.contact_name}</span></p>
+<p>&nbsp;</p>
+<p align="left"><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">Good Morning.</span></p>
+<p align="left">&nbsp;</p>
+<p align="left"><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">Hope you are doing well.</span></p>
+<p align="left">&nbsp;</p>
+<p align="left"><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">Please approve the leave of ${object.us_name_id.name} for today ${object.local_start_date} as he/she will be away to attend family function and he/she will be working regularly from tomorrow. If you want he/she can set off today leave by working on weekends or it will deduct from his/her leave balance.</span></p>
+<p align="left">&nbsp;</p>
+<p align="left"><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">Your consideration in this regard would be appreciated.</span></p>
+<p align="left"><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">If you have any questions, please let me know.</span></p>
+<p align="left">&nbsp;</p>
+<p align="left">&nbsp;</p>
+<p align="left"><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">Regards</span></p>
+<p align="left"><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">Team Entigrity</span></p>
+<p><br /><br /></p>				               
                 ]]>
 		</field>
 	</record>
 
-
-	<!-- <record id="indimedi_crm.mail_template_data_notification_email_project_leave" model="mail.template">
-            <field name="name">Sale Order Notification Email</field>
-            <field name="subject">${object.subject}</field>
-            <field name="model_id" ref="mail.model_mail_message"/>
-            <field name="auto_delete" eval="True"/>
-            <field name="body_html"><![CDATA[<html>
-            Test
-            </html>]]>
-            </field>
+	<record id="email_project_medical_leave_request" model="mail.template">
+		<field name="name">Approval of Medical Leave</field>
+		<field name="email_from"><![CDATA[${ctx['email_from']|safe}]]></field>
+		<field name="subject">Approval of Medical Leave of ${object.us_name_id.name}
+		</field>
+		<field name="email_to"><![CDATA[${ctx['email_to']}]]></field>
+		<field name="model_id" ref="indimedi_crm.model_project_leave" />
+		<field name="auto_delete" eval="True" />
+		<field name="user_signature" eval="True" />
+		<field name="body_html">
+               <![CDATA[
+				<p><span style="font-family: Verdana, serif; font-size: 14pt;">Hi ${object.contact_name}</span></p>
+				<p lang="en-GB">&nbsp;</p>
+				<p><span style="font-family: Verdana, serif; font-size: 14pt;">Good Morning</span></p>
+				<p>&nbsp;</p>
+				<p><span style="font-family: Verdana, serif; font-size: 14pt;">Hope you are doing well.</span></p>
+				<p>&nbsp;</p>
+				<p><span style="font-size: 14pt;"><span style="font-family: Verdana, serif;">Please approve the leave of ${object.us_name_id.name}</span><span style="font-family: Verdana, serif;">&nbsp;for today as he is unwell and he will be working regularly from tomorrow. If you want he can set off today leave by working on weekends or it will deduct from his leave balance.</span></span></p>
+				<p>&nbsp;</p>
+				<p><span style="font-family: Verdana, serif; font-size: 14pt;">Your consideration in this regard would be appreciated.</span></p>
+				<p>&nbsp;</p>
+				<p><span style="font-family: Verdana, serif; font-size: 14pt;">If you have any questions, please let me know.</span></p>
+				<p>&nbsp;</p>
+				<p align="left"><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">Regards</span></p>
+				<p align="left"><span style="color: #000000; font-family: verdana, geneva; font-size: 14pt;">Team Entigrity</span></p>			               
+               ]]>
+		</field>
 	</record>
-            				
- -->
+	
+
 </odoo>
