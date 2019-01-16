@@ -1,4 +1,5 @@
 from odoo import api, fields, models, tools, _
+from odoo.exceptions import ValidationError
 
 class BillingHisory(models.Model):
     _name = 'billing.history'
@@ -6,6 +7,7 @@ class BillingHisory(models.Model):
     
     project_id = fields.Many2one('project.project', string="Project")
     invoice_start_date = fields.Date(string="Billing Start Date")
+    invoice_end_date = fields.Date(string="Billing End Date")
     rate_per_hour = fields.Float(string="Rate Per Hour", track_visibility='onchange')
     total_rate = fields.Float('Total Min. Rate', track_visibility='onchange')
     invoicing_type_id = fields.Many2one('job.invoicing', string="Invoicing Type", track_visibility='onchange')
@@ -16,3 +18,21 @@ class BillingHisory(models.Model):
                                        ('180','180 Hours'),('200','200 Hours')],
                                        string="Working Hours", track_visibility='onchange')
     user_id = fields.Many2one('res.users', string="Responsible")
+
+
+
+
+    @api.constrains('invoice_start_date', 'invoice_end_date')
+    def _check_date(self):
+        for history in self:
+            domain = [
+                ('invoice_start_date', '<=', history.invoice_end_date),
+                ('invoice_end_date', '>=', history.invoice_start_date),
+                ('id', '!=', history.id),
+                ('project_id', '=', history.project_id.id)
+                ]
+            nhistory = self.search(domain)
+            print"nhistory==============",nhistory.invoice_start_date
+            if nhistory:
+                raise ValidationError(_('You can not have 2 billing that overlaps on the same day.'))
+            

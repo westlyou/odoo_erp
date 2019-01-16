@@ -113,7 +113,6 @@ class ProjectLeave(models.Model):
             compose_form_id = False
         ctx = dict(self.env.context or {})
         server_id = self.env.user.mail_server_id.id
-        print"=================",self.name.partner_ids
         ctx.update({
             'default_model': 'project.leave',
             'default_res_id': self.ids[0],

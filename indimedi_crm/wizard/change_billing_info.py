@@ -2,11 +2,12 @@ from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError
 
 #new file
-class ChangeBillingInfo(models.Model):
+class ChangeBillingInfo(models.TransientModel):
     _name = 'change.billing.info'
     
     project_id = fields.Many2one('project.project', string="Project")
     invoice_start_date = fields.Date(string="Billing Start Date")
+    invoice_end_date = fields.Date(string="Billing End Date")
     rate_per_hour = fields.Float(string="Rate Per Hour", track_visibility='onchange')
     invoicing_type_id = fields.Many2one('job.invoicing', string="Invoicing Type", track_visibility='onchange')
     hour_selection = fields.Selection([('10','10 Hours'),('20','20 Hours'),('30','30 Hours'),
@@ -73,12 +74,12 @@ class ChangeBillingInfo(models.Model):
         vals2 = {
                 'project_id': self.project_id.id,
                 'invoice_start_date': self.project_id.invoice_start_date,
+                'invoice_end_date': self.invoice_end_date,
                 'rate_per_hour': self.project_id.rate_per_hour,
                 'total_rate': self.project_id.total_rate,
                 'invoicing_type_id': self.project_id.invoicing_type_id.id,
                 'hour_selection': self.project_id.hour_selection,
                 'user_id': self.env.user.id,
-                
                 }
         
         self.project_id.write(vals)
