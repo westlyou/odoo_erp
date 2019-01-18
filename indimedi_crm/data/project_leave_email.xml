@@ -59,5 +59,26 @@
 		</field>
 	</record>
 	
+	
+	<record id="email_project_half_day_leave_request" model="mail.template">
+		<field name="name">Approval of half day leave</field>
+		<field name="email_from"><![CDATA[${ctx['email_from']|safe}]]></field>
+		<field name="subject">Approval of half day leave of ${object.us_name_id.name}
+		</field>
+		<field name="email_to"><![CDATA[${ctx['email_to']}]]></field>
+		<field name="model_id" ref="indimedi_crm.model_project_leave" />
+		<field name="auto_delete" eval="True" />
+		<field name="user_signature" eval="True" />
+		<field name="body_html">
+			<![CDATA[
+				<p><span style="font-size: 14pt;">Hi ${object.contact_name}</span></p><br/><p><span style="font-size: 14pt;">Good Morning</span><br /><br/>
+				<span style="font-size: 14pt;">Hope you are doing well.</span></p></br>
+<p><span style="font-size: 14pt;">Please approve the half day leave of ${object.us_name_id.name} for today as he is ______________________________________________.</span></p>
+<p><span style="font-size: 14pt;">Your consideration in this regard would be appreciated.</span></p>
+<p><span style="font-size: 14pt;">If you have any questions, please let me know.</span></p>
+<p><span style="font-size: 14pt;">Regards</span><br /><span style="font-size: 14pt;">Team Entigtiry</span></p>
+			]]>
+    	</field>
+	</record>
 
 </odoo>
