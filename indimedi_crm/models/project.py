@@ -43,7 +43,7 @@ class AccountAnalyticLine(models.Model):
     @api.constrains('date')
     def validate_past_date(self):
         date = self.date
-        invoice_id = self.env['timesheet.invoice'].search([('invoice_start_date', '<=', date),
+        invoice_id = self.env['timesheet.invoice'].sudo().search([('invoice_start_date', '<=', date),
                                                            '|',('invoice_end_date', '>=', date),
                                                            ('invoice_start_date', '>=', date),
                                                            ('billed', '=', True),
