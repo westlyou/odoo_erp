@@ -1,5 +1,7 @@
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError
+from datetime import datetime, timedelta
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 #new file
 class ChangeBillingInfo(models.TransientModel):
@@ -7,7 +9,7 @@ class ChangeBillingInfo(models.TransientModel):
     
     project_id = fields.Many2one('project.project', string="Project")
     invoice_start_date = fields.Date(string="Billing Start Date")
-    invoice_end_date = fields.Date(string="Billing End Date")
+    
     rate_per_hour = fields.Float(string="Rate Per Hour", track_visibility='onchange')
     invoicing_type_id = fields.Many2one('job.invoicing', string="Invoicing Type", track_visibility='onchange')
     hour_selection = fields.Selection([('10','10 Hours'),('20','20 Hours'),('30','30 Hours'),
@@ -71,19 +73,55 @@ class ChangeBillingInfo(models.TransientModel):
 #                 'project_id': self.project_id.id,
 #                 })
 
-        vals2 = {
-                'project_id': self.project_id.id,
-                'invoice_start_date': self.project_id.invoice_start_date,
-                'invoice_end_date': self.invoice_end_date,
-                'rate_per_hour': self.project_id.rate_per_hour,
-                'total_rate': self.project_id.total_rate,
-                'invoicing_type_id': self.project_id.invoicing_type_id.id,
-                'hour_selection': self.project_id.hour_selection,
-                'user_id': self.env.user.id,
-                }
-        
-        self.project_id.write(vals)
-        self.env['billing.history'].create(vals2)
+        if not self.project_id.billing_history_ids:
+            yesterday = datetime.strftime(fields.Datetime.from_string(self.invoice_start_date) - timedelta(1), DEFAULT_SERVER_DATE_FORMAT)
+            
+            vals2 = {
+                    'project_id': self.project_id.id,
+                    'invoice_start_date': self.project_id.invoice_start_date,
+                    'invoice_end_date': yesterday,
+                    'rate_per_hour': self.project_id.rate_per_hour,
+                    'total_rate': self.project_id.total_rate,
+                    'invoicing_type_id': self.project_id.invoicing_type_id.id,
+                    'hour_selection': self.project_id.hour_selection,
+                    'user_id': self.env.user.id,
+                    }
+            
+            second_vals = {
+                    'project_id': self.project_id.id,
+                    'invoice_start_date': self.invoice_start_date,
+                    'rate_per_hour': self.rate_per_hour,
+                    'total_rate': self.total_rate,
+                    'invoicing_type_id': self.invoicing_type_id.id,
+                    'hour_selection': self.hour_selection,
+                    'user_id': self.env.user.id,
+                    }
+            
+            self.project_id.write(vals)
+            self.env['billing.history'].create(vals2)
+            self.env['billing.history'].create(second_vals)
+            
+        else:
+            print'self.project_id.billing_history_ids[0]==============',self.project_id.billing_history_ids[0]
+            
+            find_old_line = self.project_id.billing_history_ids[0]
+            
+            yesterday = datetime.strftime(fields.Datetime.from_string(self.invoice_start_date) - timedelta(1), DEFAULT_SERVER_DATE_FORMAT)
+            
+            find_old_line.invoice_end_date = yesterday
+            
+            vals2 = {
+                    'project_id': self.project_id.id,
+                    'invoice_start_date': self.invoice_start_date,
+                    'rate_per_hour': self.rate_per_hour,
+                    'total_rate': self.total_rate,
+                    'invoicing_type_id': self.invoicing_type_id.id,
+                    'hour_selection': self.hour_selection,
+                    'user_id': self.env.user.id,
+                    } 
+            
+            self.project_id.write(vals)
+            self.env['billing.history'].create(vals2)
         
         
         

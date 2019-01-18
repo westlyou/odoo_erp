@@ -31,11 +31,18 @@ class AccountAnalyticLine(models.Model):
     comm_on_phone = fields.Boolean(string="Phone")
     comm_on_chat = fields.Boolean(string="Chat")
 
+    @api.multi
+    def unlink(self):
+        for rec in self:
+            if not rec.active:
+                raise UserError("Its too late!")
+            
+        return super(AccountAnalyticLine, self).unlink()
 
     @api.constrains('date')
     def validate_past_date(self):
         date = self.date
-        invoice_id = self.env['timesheet.invoice'].search([('invoice_start_date', '<=', date),
+        invoice_id = self.env['timesheet.invoice'].sudo().search([('invoice_start_date', '<=', date),
                                                            '|',('invoice_end_date', '>=', date),
                                                            ('invoice_start_date', '>=', date),
                                                            ('billed', '=', True),

@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 class BillingHisory(models.Model):
     _name = 'billing.history'
-    
+    _order = 'invoice_start_date desc'
     
     project_id = fields.Many2one('project.project', string="Project")
     invoice_start_date = fields.Date(string="Billing Start Date")
@@ -21,18 +21,16 @@ class BillingHisory(models.Model):
 
 
 
-
-    @api.constrains('invoice_start_date', 'invoice_end_date')
-    def _check_date(self):
-        for history in self:
-            domain = [
-                ('invoice_start_date', '<=', history.invoice_end_date),
-                ('invoice_end_date', '>=', history.invoice_start_date),
-                ('id', '!=', history.id),
-                ('project_id', '=', history.project_id.id)
-                ]
-            nhistory = self.search(domain)
-            print"nhistory==============",nhistory.invoice_start_date
-            if nhistory:
-                raise ValidationError(_('You can not have 2 billing that overlaps on the same day.'))
-            
+#     @api.constrains('invoice_start_date', 'invoice_end_date')
+#     def _check_date(self):
+#         for history in self:
+#             domain = [
+#                 ('invoice_start_date', '<=', history.invoice_end_date),
+#                 ('invoice_end_date', '>=', history.invoice_start_date),
+#                 ('id', '!=', history.id),
+#                 ('project_id', '=', history.project_id.id)
+#                 ]
+#             nhistory = self.search(domain)
+#             if nhistory:
+#                 raise ValidationError(_('You can not have 2 billing that overlaps on the same day.'))
+#             
