@@ -27,14 +27,24 @@ class ProjectLeave(models.Model):
     
     
     @api.multi
-    @api.depends('start_date')
+    @api.depends('start_date', 'end_date')
     def _convert_to_new_date_formate(self):
         for rec in self:
             if rec.start_date:
                 start_date = datetime.strptime(rec.start_date, DEFAULT_SERVER_DATE_FORMAT)
                 start_date = datetime.strftime(start_date, '%B %d %Y')
+#                 rec.local_start_date = start_date
+            if rec.end_date:
+                end_date = datetime.strptime(rec.end_date, DEFAULT_SERVER_DATE_FORMAT)
+                end_date = datetime.strftime(end_date, '%B %d %Y')
+#                 rec.local_start_date = start_date
+            if self.start_date == self.end_date:
                 rec.local_start_date = start_date
                 
+            if self.start_date and self.end_date:
+                if not self.start_date == self.end_date:
+                    rec.local_start_date = "" + start_date + " to " + end_date
+
     @api.multi
     @api.depends('project_id')
     def _get_customer_primary_contact(self):
@@ -113,7 +123,6 @@ class ProjectLeave(models.Model):
             compose_form_id = False
         ctx = dict(self.env.context or {})
         server_id = self.env.user.mail_server_id.id
-        print"=================",self.name.partner_ids
         ctx.update({
             'default_model': 'project.leave',
             'default_res_id': self.ids[0],
