@@ -21,6 +21,20 @@ class ChangeBillingInfo(models.TransientModel):
     total_rate = fields.Float(compute='_get_total_rate', string="Total Rate")
     
     
+    @api.multi
+    def _validate_new_data(self):
+        if self.rate_per_hour <= 0:
+            raise UserError("Negative or zero rate is not allowed")
+        if self.project_id.billing_history_ids:
+            find_old_line = self.project_id.billing_history_ids[0]
+            if find_old_line.invoice_start_date:
+                if self.invoice_start_date <= find_old_line.invoice_start_date:
+                    raise UserError("Invoice start date should greater then last start date")
+        if not self.project_id.billing_history_ids:
+            if self.invoice_start_date <= self.project_id.invoice_start_date:
+                    raise UserError("Invoice start date should greater then last start date")
+        
+        
     @api.depends('hour_selection','rate_per_hour')
     def _get_total_rate(self):
         for rate in self:
@@ -36,9 +50,9 @@ class ChangeBillingInfo(models.TransientModel):
     
     @api.multi
     def action_update_billing_detail(self):
+        self._validate_new_data()
         vals = {'total_rate': self.total_rate}
-        if self.rate_per_hour <= 0:
-            raise UserError("Negative or zero rate is not allowed")
+        
         if self.invoice_start_date:
             vals.update({
                         'invoice_start_date': self.invoice_start_date
@@ -68,10 +82,6 @@ class ChangeBillingInfo(models.TransientModel):
             vals.update({
                         'hour_selection': self.project_id.hour_selection
                         })
-#             
-#         vals.update({
-#                 'project_id': self.project_id.id,
-#                 })
 
         if not self.project_id.billing_history_ids:
             yesterday = datetime.strftime(fields.Datetime.from_string(self.invoice_start_date) - timedelta(1), DEFAULT_SERVER_DATE_FORMAT)
@@ -92,7 +102,7 @@ class ChangeBillingInfo(models.TransientModel):
                     'invoice_start_date': self.invoice_start_date,
                     'rate_per_hour': self.rate_per_hour,
                     'total_rate': self.total_rate,
-                    'invoicing_type_id': self.invoicing_type_id.id,
+                    'invoicing_type_id': self.invoicing_type_id.id or self.project_id.invoicing_type_id.id,
                     'hour_selection': self.hour_selection,
                     'user_id': self.env.user.id,
                     }
@@ -102,7 +112,6 @@ class ChangeBillingInfo(models.TransientModel):
             self.env['billing.history'].create(second_vals)
             
         else:
-            print'self.project_id.billing_history_ids[0]==============',self.project_id.billing_history_ids[0]
             
             find_old_line = self.project_id.billing_history_ids[0]
             
@@ -115,7 +124,7 @@ class ChangeBillingInfo(models.TransientModel):
                     'invoice_start_date': self.invoice_start_date,
                     'rate_per_hour': self.rate_per_hour,
                     'total_rate': self.total_rate,
-                    'invoicing_type_id': self.invoicing_type_id.id,
+                    'invoicing_type_id': self.invoicing_type_id.id or self.project_id.invoicing_type_id.id,
                     'hour_selection': self.hour_selection,
                     'user_id': self.env.user.id,
                     } 
