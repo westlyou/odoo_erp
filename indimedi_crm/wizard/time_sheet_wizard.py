@@ -21,7 +21,6 @@ class ContactMail(models.TransientModel):
     @api.multi
     def send_mail(self, auto_commit=False):
         template = self.env.ref('indimedi_crm.email_resume_post_sales')
-        print ">>>>>>>>>>>>Tempalte IIIIIIIIIIIIIIIIIII",template.id
         if self._context.get('default_model') == 'job.description' and self._context.get('default_res_id') and self._context.get('mark_so_as_sent') and self._context.get('default_template_id') == template.id:
             agreement = self.env['job.description'].browse([self._context['default_res_id']])       
             stage = str(agreement.agreement_stage_id.name)
