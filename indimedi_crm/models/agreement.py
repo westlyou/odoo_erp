@@ -44,7 +44,6 @@ class JobDescription(models.Model):
 
     @api.onchange('interview_start_date')
     def onchange_interview_start_date(self):
-        print ">?>?>>?>>?>?>>?>>"
         for rec in self:
             rec.interview_stop_date = ((datetime.strptime(rec.interview_start_date, "%Y-%m-%d %H:%M:%S")) + timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
 
@@ -136,10 +135,9 @@ class JobDescription(models.Model):
 
 
         if stage_name == 'Assignment Of Employee':
-            print("project.....................")
             project_obj = self.env['project.project']
             proj_name = str(self.jd_company) + '-' + str(self.name)
-            project_obj.create({
+            project_id = project_obj.create({
                     'name': str(self.jd_company) + '-' + str(self.name),
                     'client_name': str(self.jd_company),
                     'user_id': self.jd_manager_id.id,
@@ -157,6 +155,21 @@ class JobDescription(models.Model):
                     'total_rate': self.total_rate,
                     'client_email': str(self.jd_email),
                 })
+            
+            bill_obj = self.env['billing.history']
+            
+            bill_vals = {
+                    'project_id': project_id.id,
+                    'invoice_start_date': project_id.invoice_start_date,
+                    'rate_per_hour': project_id.rate_per_hour,
+                    'total_rate': project_id.total_rate,
+                    'invoicing_type_id': project_id.invoicing_type_id.id,
+                    'hour_selection': project_id.hour_selection,
+                    'user_id': self.env.user.id,
+                    }
+            
+            bill_id = bill_obj.create(bill_vals)
+            
             task_obj = self.env['project.task'].create({
                     'name': str(self.jd_company) + '-' + str(self.name),
                     'project_id': self.env['project.project'].search([('name','=',proj_name)]).id,
@@ -187,14 +200,10 @@ class JobDescription(models.Model):
 
         # Resume Validation before 'Resume Send' Stage
         if stage_name == 'Resume Sent':
-            print "'Resume Send'",
             for resume in self:
-                print "for .,.,.,.,"
                 if resume.resume_post_sales:
                     pass
-                    print "if.,,.,.,."
                 else:
-                    print "else.,.,.,.,."
                     raise ValidationError(_("Please Add the Resumes First"))
 
         #Interview Scheduled Stage Validation
@@ -228,7 +237,6 @@ class JobDescription(models.Model):
             for partner in comp_name:
                 if partner.is_company: 
                     for i in partner.child_ids:
-                        # print "write"
                         if i.pre_sale_contacts:
                             i.pre_sale_contacts = False
                         if not i.post_sale_contacts:
@@ -250,7 +258,6 @@ class JobDescription(models.Model):
         res = super(JobDescription, self).create(vals)
 
         random_var = ''.join(random.choice('0123456789') for i in range(3))
-        # print "random_var>>>>>>>>>>>", random_var
         seq = self.env['ir.sequence'].next_by_code('job.description').split('/')
         if vals.get('hiring_model','') == 'permanent':
             seq.insert(1,"P")
@@ -259,11 +266,8 @@ class JobDescription(models.Model):
         del seq[4]
         seq = '/'.join(seq)
         seq += '/' + random_var
-        # print "seq>>>>>>>>>>>>>>>",seq
         res.name = seq
-        # print "vals['name']>>>>>>>>>>>>>>>>>>",res.name
         res.jd_company = self.env['crm.lead'].browse(vals['crm_id']).name
-        # print "res.jd_company>>>>>>>>>>>>>>", res.jd_company, res.jd_email, res.jd_phone
         res.jd_email = self.env['crm.lead'].browse(vals['crm_id']).email_from
         res.jd_phone = self.env['crm.lead'].browse(vals['crm_id']).phone
         res.jd_street = self.env['crm.lead'].browse(vals['crm_id']).c_street
@@ -315,9 +319,7 @@ class JobDescription(models.Model):
     @api.multi
     def send_resumes_post_sales(self):
         temp_m = self.resume_post_sales.ids
-        # print ">>>>>>>>>>", temp_m
         resumes = self.env['ir.attachment'].search([('res_model','=','resume.sales'),('res_id','in',temp_m)])
-        # print ">>>>>>>>>>>>>>>>>>>>>>", resumes
 
         ir_model_data = self.env['ir.model.data']
         
@@ -327,12 +329,9 @@ class JobDescription(models.Model):
             raise ValidationError(_('Please fill email id of company whome you want to send.'))
 
         for resume in self:
-            print "for .,.,.,.,"
             if resume.resume_post_sales:
                 pass
-                print "if.,,.,.,."
             else:
-                print "else.,.,.,.,."
                 raise ValidationError(_("Please Add the Resumes First"))
 
 

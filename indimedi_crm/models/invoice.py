@@ -325,6 +325,31 @@ class Project(models.Model):
                                     'leave_days': 0,
                                     'holidays_hours': holidays_hours,
                                 })
+                        else:
+                            work_idle = worked_hour + ideal_time 
+                            hour_charged = work_idle if work_idle > custom_work_hours else custom_work_hours
+                            invoice_lines = self.env['timesheet.invoice'].create({
+                                    'project_id': proj.id,
+                                    'analytic_account_id': proj.analytic_account_id.id,
+                                    'invoicing_type_id': proj.invoicing_type_id.id,
+                                    'invoice_start_date': week_start,
+                                    'invoice_end_date': week_end,
+                                    'hour_selection': proj.hour_selection,
+                                    'custom_work_hours': str(custom_work_hours) + str(' Hours'),
+                                    'rate_per_hour': proj.rate_per_hour,
+                                    'min_bill': custom_work_hours * proj.rate_per_hour,
+                                    'worked_hours': worked_hour,
+                                    'ideal_hours': ideal_time,
+                                    'additional_hours': extra_hours,
+                                    'hours_charged': hour_charged,
+                                    'hours_charged_save': hour_charged,
+                                    'bill_amount': hour_charged * proj.rate_per_hour,
+                                    'final_amount': hour_charged * proj.rate_per_hour,
+                                    'holidays': len(holidays),
+                                    'leave_hours': leave_hours,
+                                    'leave_days': 0,
+                                    'holidays_hours': holidays_hours,
+                                })
 
         return True
 
@@ -447,7 +472,32 @@ class Project(models.Model):
                                     'leave_days': 0,
                                     'leave_hours': leave_hours,
                                 })
-                            print "invoice_lines>>>>>>>>>>>", invoice_lines
+                        else:
+                            work_idle = worked_hour + ideal_time 
+                            hour_charged = work_idle if work_idle > custom_work_hours else custom_work_hours
+                            invoice_lines = self.env['timesheet.invoice'].create({
+                                    'project_id': proj.id,
+                                    'analytic_account_id': proj.analytic_account_id.id,
+                                    'invoicing_type_id': proj.invoicing_type_id.id,
+                                    'invoice_start_date': month_start,
+                                    'invoice_end_date': month_end,
+                                    'hour_selection': proj.hour_selection,
+                                    # 'custom_work_hours': str(custom_work_hours) + str(' Hours'),
+                                    'custom_work_hours':  str(custom_work_hours) + " Hours", #proj.hour_selection + str(' Hours'),
+                                    'rate_per_hour': proj.rate_per_hour,
+                                    'min_bill': proj.total_rate,
+                                    'worked_hours': worked_hour,
+                                    'ideal_hours': ideal_time,
+                                    'additional_hours': extra_hours,
+                                    'hours_charged': hour_charged,
+                                    'hours_charged_save': hour_charged,
+                                    'bill_amount': hour_charged * proj.rate_per_hour,
+                                    'final_amount': hour_charged * proj.rate_per_hour,
+                                    'holidays': len(holidays),
+                                    'holidays_hours': holidays_hours,
+                                    'leave_days': 0,
+                                    'leave_hours': leave_hours,
+                                })
 
         return True
 

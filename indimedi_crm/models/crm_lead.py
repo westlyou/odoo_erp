@@ -190,18 +190,18 @@ class CrmLead(models.Model):
 
     @api.multi
     def compute_lead_stage(self):
-        print "1111>>>>>>>>>>>>>>"
+#         print "1111>>>>>>>>>>>>>>"
         stage_assigned = self.env['crm.stage'].search([('name', '=', 'Assign to General Manager')], limit=1)
         state_sign= self.env['crm.stage'].search([('name', '=', 'Agreement Signed')], limit=1)
         have_manager = agreed = False
-        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+#         print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         domain = ['|', ('active', '=', False), ('active', '=', True), ('crm_id', '=', self.id)]
         for line in self.job_description_ids.search(domain):
             if line.agreement_general_manager:
                 have_manager = True
             if line.agree:
                 agreed = True
-        print ">>>>>>>>>>>????????????", agreed and have_manager and stage_assigned.id != self.stage_id.id
+#         print ">>>>>>>>>>>????????????", agreed and have_manager and stage_assigned.id != self.stage_id.id
         if agreed and have_manager and stage_assigned.id != self.stage_id.id:
             self.env.cr.execute(_("""update crm_lead set stage_id=%s where id=%s"""%(stage_assigned.id, self.id)))
         elif not have_manager and agreed and state_sign.id != self.stage_id.id:
@@ -214,7 +214,7 @@ class CrmLead(models.Model):
         stage_name = str(self.stage_id.name)
 
         if vals.get('job_description_ids'):
-            print "write gm>>>>>>>>>>>>>>"
+#             print "write gm>>>>>>>>>>>>>>"
             self.compute_lead_stage()
 
         if stage_before_name == 'Assign to General Manager' and stage_name !='Assign to General Manager':
@@ -236,7 +236,7 @@ class JobDescription(models.Model):
 
     @api.multi
     def toggle_active(self):
-        print "toggle_active<>>>>>>>>>>>>>>>>><<<<<<"
+#         print "toggle_active<>>>>>>>>>>>>>>>>><<<<<<"
         """ Inverse the value of the field ``active`` on the records in ``self``. """
         for record in self:
             record.active = not record.active
