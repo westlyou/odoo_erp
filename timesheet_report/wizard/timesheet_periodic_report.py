@@ -7,38 +7,15 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
-
-
-class TimesheetCustomReport(models.TransientModel):
-    _name = 'timesheet.custom.report'
     
-    client_id = fields.Char(string="Client Name")
-    manager_id = fields.Char(string="Manager")
-    employee_working = fields.Char(string="Employee Working")
-    us_name = fields.Char(string="US Name")
-    min_hour = fields.Char(string="Minimum Hour")
-    actual_hour = fields.Float(string="Actual Hour")
-    actual_hour_lst_week = fields.Float(string="Actual Hour/Last Week")
-    productivity_against_last_Week = fields.Float(string="Productivity Against Last week")
-    productivity_to_min_bill = fields.Float(string="Productivity to Minimum Bill")
-    
-    
-class TimesheetReportWizard(models.TransientModel):
-    _name = 'timesheet.report.wizard'
+class PeriodicReportWizard(models.TransientModel):
+    _name = 'periodic.report.wizard'
     
     start_date = fields.Date(string="Start Date")
-    end_date = fields.Date(compute="_get_last_date", string="End Date")
+    end_date = fields.Date(string="End Date")
     file = fields.Binary('Timesheet Report', readonly=True)
     filename = fields.Char('Name', size=256)
     
-    @api.depends('start_date')
-    def _get_last_date(self):
-        """let last day of week from start date date +7"""
-        for data in self:
-            if data.start_date:
-                start_date = datetime.strptime(data.start_date, DEFAULT_SERVER_DATE_FORMAT)
-                start_date = start_date + timedelta(days=6)
-                data.end_date = start_date 
         
     @api.multi
     def generate_report_xls(self):
@@ -46,12 +23,14 @@ class TimesheetReportWizard(models.TransientModel):
         domain = []
         project_ids = self.env['project.project'].search([])
         if self.start_date and self.end_date:
-            domain = [('date', '>=', self.start_date), ('date', '<=', self.end_date),'|',('active', '=', True),('active', '=', False)]
+            domain = [('date', '>=', self.start_date), 
+                      ('date', '<=', self.end_date),
+                      '|',('active', '=', True),
+                      ('active', '=', False)]
             
         #need to make it task wise instead of client wise
         task_ids = timesheet_obj.search(domain)
         task_ids = task_ids.mapped('task_id')
-        
         
         #Holiday Count Logic
         holidays = self.env['public.holiday'].search([
@@ -59,23 +38,6 @@ class TimesheetReportWizard(models.TransientModel):
             ('public_holiday_date', '<=', self.end_date)])
 
         holidays_count = len(holidays)
-        
-        #previous month logic
-#         today = fields.Datetime.from_string(self.start_date)
-#         
-#         d = today - relativedelta(months=1)
-#         month_start = date(today.year, today.month, 1)
-#         month_end = date(today.year, today.month, 1) - relativedelta(days=1)
-# 
-#         #working Days count logic between months
-#         start_date = month_start
-#         end_date = month_end
-#         days = end_date - start_date
-#         valid_date_list = {(start_date + datetime.timedelta(days=x)).strftime('%d-%b-%Y')
-#                                 for x in range(days.days+1)
-#                                 if (start_date + datetime.timedelta(days=x)).isoweekday() <= 5
-#                                }
-#         working_days = len(valid_date_list)
         
         vals = []
         for task in task_ids:
@@ -112,8 +74,6 @@ class TimesheetReportWizard(models.TransientModel):
              
             min_hour -= leave_hours
 #           
-            
-                
             project_name = task.project_id.name
             
             min_hour_str = 0
@@ -164,33 +124,6 @@ class TimesheetReportWizard(models.TransientModel):
             else:
                 email = ''
                    
-            #for last week
-            last_start_date = datetime.strptime(self.start_date, DEFAULT_SERVER_DATE_FORMAT)
-            last_start_date = last_start_date + timedelta(days=-7)
-            last_end_date = last_start_date + timedelta(days=6)
-            last_start_date = datetime.strftime(last_start_date, DEFAULT_SERVER_DATE_FORMAT)
-            last_end_date = datetime.strftime(last_end_date, DEFAULT_SERVER_DATE_FORMAT)
-        
-            last_domain = [('date', '>=', last_start_date), ('date', '<=', last_end_date),('active', '=', False)]
-            
-            last_timesheet_ids = timesheet_obj.search(last_domain + [('task_id', '=', task.id)])
-            
-            last_week_working_hour = 0
-            for timesheet in last_timesheet_ids:
-                if timesheet.type_of_view.billable:
-                    last_week_working_hour += timesheet.unit_amount
-            
-            try:
-                pructivity_against_last_week = (this_week_working_hour / last_week_working_hour) * 100
-            except:
-                pructivity_against_last_week = 0
-            
-            try:
-                productivity_to_min_bill = (this_week_working_hour / float(min_hour)) * 100
-            except:
-                productivity_to_min_bill = 0
-                
-            
             
             #this_week_working_hour in time formate
             working_hour = 0
@@ -199,23 +132,10 @@ class TimesheetReportWizard(models.TransientModel):
                 working_hour, working_min = divmod(minutes, 60)
                 working_hour = "%02d:%02d"%(working_hour, working_min)
             
-            last_working_hour = 0
-            minutes = last_week_working_hour * 60
-            if minutes:
-                last_working_hour, last_working_min = divmod(minutes, 60)
-                last_working_hour = "%02d:%02d"%(last_working_hour, last_working_min)
             
-            pructivity_against_last_week = round(pructivity_against_last_week, 2)
-            pructivity_against_last_week_str = str(pructivity_against_last_week) + "%"
-            
-            productivity_to_min_bill = round(productivity_to_min_bill, 2)
-            productivity_to_min_bill_str = str(productivity_to_min_bill) + "%"
             
             value.update({
                         'this_week_working_hour': working_hour, 
-                        'last_week_working_hour': last_working_hour,
-                        'pructivity_against_last_week': pructivity_against_last_week_str,
-                        'productivity_to_min_bill': productivity_to_min_bill_str,
                         'email' : email,
                         'phone': phone,
                         'chat' : chat
@@ -236,13 +156,9 @@ class TimesheetReportWizard(models.TransientModel):
         sheet.write(0, 5, 'US Name', format1)        
         sheet.write(0, 6, 'Minimum Hours Required to be worked', format1)        
         sheet.write(0, 7, 'Actual Hours Worked this week', format1)
-        sheet.write(0, 8, 'Actual Hours Worked last week', format1) 
-        sheet.write(0, 9, 'Productivity against last week', format1)
-        sheet.write(0, 10, 'Productivity to Minimum Bill', format1)
-        sheet.write(0, 11, 'Email', format1)
-        sheet.write(0, 12, 'Chat',format1)
-        sheet.write(0, 13, 'Phone', format1)
-        sheet.write(0, 14, 'Last Feedback Call',format1)
+        sheet.write(0, 8, 'Email', format1)
+        sheet.write(0, 9, 'Chat',format1)
+        sheet.write(0, 10, 'Phone', format1)
         
         sheet.col(0).width = int(30*350)
         sheet.col(1).width = int(30*260)
@@ -255,9 +171,7 @@ class TimesheetReportWizard(models.TransientModel):
         sheet.col(8).width = int(30*260)
         sheet.col(9).width = int(30*260)
         sheet.col(10).width = int(30*260)
-        sheet.col(11).width = int(30*100)
-        sheet.col(12).width = int(30*100)
-        sheet.col(13).width = int(30*100)
+        
         
         
         row = 1
@@ -271,27 +185,23 @@ class TimesheetReportWizard(models.TransientModel):
             sheet.write(row, col + 5, data['us_name'])        
             sheet.write(row, col + 6, data['min_hour'])        
             sheet.write(row, col + 7, data['this_week_working_hour'])
-            sheet.write(row, col + 8, data['last_week_working_hour']) 
-            sheet.write(row, col + 9, data['pructivity_against_last_week'])
-            sheet.write(row, col + 10, data['productivity_to_min_bill'])
             sheet.write(row, col + 11, data['email'])
             sheet.write(row, col + 12, data['chat'])
             sheet.write(row, col + 13, data['phone'])
-            sheet.write(row, col + 14, 'pending')
             
             row += 1
         #create xls file
-        filename = r'/tmp/Timesheet_Weekly_Report.xls'
+        filename = r'/tmp/Timesheet_Report.xls'
         workbook.save(filename)
         file = open(filename, "rb")
         file_data = file.read()
         out = base64.encodestring(file_data)
          
-        self.write({'file': out, 'filename':'Timesheet Weekly Report.xls'})
+        self.write({'file': out, 'filename':'Timesheet Report.xls'})
          
         return {
            'type': 'ir.actions.act_window',
-           'res_model': 'timesheet.report.wizard',
+           'res_model': 'periodic.report.wizard',
            'view_mode': 'form',
            'view_type': 'form',
            'res_id': self.id,
