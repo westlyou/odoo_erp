@@ -15,7 +15,6 @@ class PeriodicReportWizard(models.TransientModel):
     end_date = fields.Date(string="End Date")
     file = fields.Binary('Timesheet Report', readonly=True)
     filename = fields.Char('Name', size=256)
-    
         
     @api.multi
     def generate_report_xls(self):
@@ -23,16 +22,16 @@ class PeriodicReportWizard(models.TransientModel):
         domain = []
         project_ids = self.env['project.project'].search([])
         if self.start_date and self.end_date:
-            domain = [('date', '>=', self.start_date), 
+            domain = [('date', '>=', self.start_date),
                       ('date', '<=', self.end_date),
-                      '|',('active', '=', True),
+                      '|', ('active', '=', True),
                       ('active', '=', False)]
             
-        #need to make it task wise instead of client wise
+        # need to make it task wise instead of client wise
         task_ids = timesheet_obj.search(domain)
         task_ids = task_ids.mapped('task_id')
         
-        #Holiday Count Logic
+        # Holiday Count Logic
         holidays = self.env['public.holiday'].search([
             ('public_holiday_date', '>=', self.start_date),
             ('public_holiday_date', '<=', self.end_date)])
@@ -67,7 +66,6 @@ class PeriodicReportWizard(models.TransientModel):
             if leaves:
                 leave_count = abs(sum(leaves.mapped('number_of_days')))
             
-            
             if leave_count > 0:
                 daily_hours = float(min_hour) / 5
                 leave_hours = daily_hours * leave_count
@@ -80,7 +78,7 @@ class PeriodicReportWizard(models.TransientModel):
             minutes = float(min_hour) * 60
             if minutes:
                 min_hour_only, working_min = divmod(minutes, 60)
-                min_hour_str = "%02d:%02d"%(min_hour_only, working_min)
+                min_hour_str = "%02d:%02d" % (min_hour_only, working_min)
             value = {
                     'client_name': task.client_reporting_id.name,
                     'manager_name': task.manager_id.name,
@@ -91,7 +89,7 @@ class PeriodicReportWizard(models.TransientModel):
                     'project_name': project_name,
                     }
             
-            #find actual hour worked without training and dev. this week and last week
+            # find actual hour worked without training and dev. this week and last week
             email = 0
             phone = 0
             chat = 0
@@ -106,7 +104,6 @@ class PeriodicReportWizard(models.TransientModel):
                     phone += 1
                 if timesheet.comm_on_chat:
                     chat += 1
-                
                     
                 if timesheet.type_of_view.billable:
                     this_week_working_hour += timesheet.unit_amount
@@ -123,19 +120,16 @@ class PeriodicReportWizard(models.TransientModel):
                 email = self._check_communication_frequency(email)
             else:
                 email = ''
-                   
             
-            #this_week_working_hour in time formate
+            # this_week_working_hour in time formate
             working_hour = 0
             minutes = this_week_working_hour * 60
             if minutes:
                 working_hour, working_min = divmod(minutes, 60)
-                working_hour = "%02d:%02d"%(working_hour, working_min)
-            
-            
+                working_hour = "%02d:%02d" % (working_hour, working_min)
             
             value.update({
-                        'this_week_working_hour': working_hour, 
+                        'this_week_working_hour': working_hour,
                         'email' : email,
                         'phone': phone,
                         'chat' : chat
@@ -157,22 +151,20 @@ class PeriodicReportWizard(models.TransientModel):
         sheet.write(0, 6, 'Minimum Hours Required to be worked', format1)        
         sheet.write(0, 7, 'Actual Hours Worked this week', format1)
         sheet.write(0, 8, 'Email', format1)
-        sheet.write(0, 9, 'Chat',format1)
+        sheet.write(0, 9, 'Chat', format1)
         sheet.write(0, 10, 'Phone', format1)
         
-        sheet.col(0).width = int(30*350)
-        sheet.col(1).width = int(30*260)
-        sheet.col(2).width = int(30*220)
-        sheet.col(3).width = int(30*220)
-        sheet.col(4).width = int(30*220)
-        sheet.col(5).width = int(30*220)
-        sheet.col(6).width = int(30*280)
-        sheet.col(7).width = int(30*260)
-        sheet.col(8).width = int(30*260)
-        sheet.col(9).width = int(30*260)
-        sheet.col(10).width = int(30*260)
-        
-        
+        sheet.col(0).width = int(30 * 350)
+        sheet.col(1).width = int(30 * 260)
+        sheet.col(2).width = int(30 * 220)
+        sheet.col(3).width = int(30 * 220)
+        sheet.col(4).width = int(30 * 220)
+        sheet.col(5).width = int(30 * 220)
+        sheet.col(6).width = int(30 * 280)
+        sheet.col(7).width = int(30 * 260)
+        sheet.col(8).width = int(30 * 260)
+        sheet.col(9).width = int(30 * 260)
+        sheet.col(10).width = int(30 * 260)
         
         row = 1
         for data in vals:
@@ -185,12 +177,12 @@ class PeriodicReportWizard(models.TransientModel):
             sheet.write(row, col + 5, data['us_name'])        
             sheet.write(row, col + 6, data['min_hour'])        
             sheet.write(row, col + 7, data['this_week_working_hour'])
-            sheet.write(row, col + 11, data['email'])
-            sheet.write(row, col + 12, data['chat'])
-            sheet.write(row, col + 13, data['phone'])
+            sheet.write(row, col + 8, data['email'])
+            sheet.write(row, col + 9, data['chat'])
+            sheet.write(row, col + 10, data['phone'])
             
             row += 1
-        #create xls file
+        # create xls file
         filename = r'/tmp/Timesheet_Report.xls'
         workbook.save(filename)
         file = open(filename, "rb")
@@ -207,7 +199,6 @@ class PeriodicReportWizard(models.TransientModel):
            'res_id': self.id,
            'target': 'new',
         } 
-
 
     @api.multi
     def _check_communication_frequency(self, count=0):
