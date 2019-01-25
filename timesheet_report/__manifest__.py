@@ -13,6 +13,7 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
             'wizard/custom_timesheet_report_view.xml',
+            'wizard/periodic_timesheet_report_view.xml',
         ],
 
     "auto_install": False,

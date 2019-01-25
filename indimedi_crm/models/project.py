@@ -39,7 +39,6 @@ class AccountAnalyticLine(models.Model):
             
         return super(AccountAnalyticLine, self).unlink()
 
-
     @api.constrains('date')
     def validate_past_date(self):
         date = self.date

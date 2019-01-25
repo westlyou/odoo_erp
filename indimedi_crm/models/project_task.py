@@ -29,7 +29,7 @@ class Project(models.Model):
 
     #new fields
     billing_history_ids = fields.One2many('billing.history', 'project_id', string="Billing History")
-
+    invoice_end_date = fields.Date(string="Billing End Date", track_visibility='onchange')
     
     @api.multi
     def open_billing_wizard(self):
