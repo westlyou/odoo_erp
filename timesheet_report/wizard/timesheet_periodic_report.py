@@ -32,45 +32,45 @@ class PeriodicReportWizard(models.TransientModel):
         task_ids = task_ids.mapped('task_id')
         
         # Holiday Count Logic
-        holidays = self.env['public.holiday'].search([
-            ('public_holiday_date', '>=', self.start_date),
-            ('public_holiday_date', '<=', self.end_date)])
+#         holidays = self.env['public.holiday'].search([
+#             ('public_holiday_date', '>=', self.start_date),
+#             ('public_holiday_date', '<=', self.end_date)])
 
-        holidays_count = len(holidays)
+#         holidays_count = len(holidays)
         
         vals = []
         for task in task_ids:
             if task.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
-                min_hour = (float(task.project_id.hour_selection) / 4)
+                min_hour = (float(task.project_id.hour_selection))
             else:
                 min_hour = float(task.project_id.hour_selection)
             
-            holidays_hours = 0
-            if holidays_count > 0:
-                daily_hours = float(min_hour) / 5
-                holidays_hours = daily_hours * holidays_count
-             
-            min_hour -= holidays_hours
+#             holidays_hours = 0
+#             if holidays_count > 0:
+#                 daily_hours = float(min_hour) / 5
+#                 holidays_hours = daily_hours * holidays_count
+#              
+#             min_hour -= holidays_hours
 #             
-            related_employee_id = self.env['hr.employee'].search([('user_id', '=', task.user_id.id)])
-            leaves = False
-            if related_employee_id:
-                leaves = self.env['hr.holidays'].search(
-                    [('employee_id', '=', related_employee_id.id),
-                    ('date_from', '>=', self.start_date),
-                    ('date_to', '<=', self.end_date),
-                    ('type', '=', 'remove')])
-                
-            leave_count = 0
-            leave_hours = 0
-            if leaves:
-                leave_count = abs(sum(leaves.mapped('number_of_days')))
-            
-            if leave_count > 0:
-                daily_hours = float(min_hour) / 5
-                leave_hours = daily_hours * leave_count
-             
-            min_hour -= leave_hours
+#             related_employee_id = self.env['hr.employee'].search([('user_id', '=', task.user_id.id)])
+#             leaves = False
+#             if related_employee_id:
+#                 leaves = self.env['hr.holidays'].search(
+#                     [('employee_id', '=', related_employee_id.id),
+#                     ('date_from', '>=', self.start_date),
+#                     ('date_to', '<=', self.end_date),
+#                     ('type', '=', 'remove')])
+#                 
+#             leave_count = 0
+#             leave_hours = 0
+#             if leaves:
+#                 leave_count = abs(sum(leaves.mapped('number_of_days')))
+#             
+#             if leave_count > 0:
+#                 daily_hours = float(min_hour) / 5
+#                 leave_hours = daily_hours * leave_count
+#              
+#             min_hour -= leave_hours
 #           
             project_name = task.project_id.name
             
@@ -105,7 +105,7 @@ class PeriodicReportWizard(models.TransientModel):
                 if timesheet.comm_on_chat:
                     chat += 1
                     
-                if timesheet.type_of_view.billable:
+                if timesheet.type_of_view:
                     this_week_working_hour += timesheet.unit_amount
                     
             if chat:
