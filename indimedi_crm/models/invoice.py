@@ -259,7 +259,6 @@ class Project(models.Model):
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
                         
                         
-                        
                         leave = self.env['project.leave'].search([
                             ('start_date', '>=', week_start.strftime(DF)),
                             ('end_date', '<=', week_end.strftime(DF)),
@@ -272,8 +271,23 @@ class Project(models.Model):
 #                         leave_hours = 0
                         if leave_hours >= 1.00:
                             custom_work_hours =  round((float(custom_work_hours) - leave_hours),2)
-                            
                         
+                        #code for billing by rate    
+                        start_date = week_start.strftime(DF)
+                        end_date = week_end.strftime(DF)
+                        
+                        bill = False
+                        if start_date <= proj.invoice_start_date:
+                            current_rate = proj.rate_per_hour
+                            print"current rate------",current_rate, proj
+                        else:
+                            bill = self.env['billing.history'].search([('invoice_start_date', '>=', start_date),('invoice_end_date', '<=', end_date)])[-1:]
+#                             print "==========1=========",bill, bill.project_id, bill.invoice_start_date
+                        if not bill:
+                            bill = self.env['billing.history'].search([('invoice_start_date', '>=', start_date)])[-1:]
+#                             print "===========2========",bill, bill.project_id, bill.invoice_start_date
+                            
+                            
                         worked_hour = 0
                         idel_hour = 0
                         break_hour = 0
