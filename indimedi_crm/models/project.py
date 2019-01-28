@@ -33,9 +33,27 @@ class AccountAnalyticLine(models.Model):
 
     @api.multi
     def unlink(self):
+        flag = False
         for rec in self:
+            flag = False
             if not rec.active:
-                raise UserError("Its too late!")
+                user = self.env.user.id
+                user_id = self.env['res.users'].search([('id', '=', user)])
+                project_gm_id = self.env.ref('indimedi_crm.group_project_general_manager')
+                
+                group_list = []
+                for group in user_id.groups_id:
+                    group_list.append(group.id)
+                
+                for i in group_list:
+                    if i == project_gm_id.id:
+                        flag = True
+                        break
+            if flag:
+                break
+            
+        if not flag:
+            raise UserError("Its too late!")
             
         return super(AccountAnalyticLine, self).unlink()
 
