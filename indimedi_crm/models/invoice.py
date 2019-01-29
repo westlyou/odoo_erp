@@ -275,19 +275,22 @@ class Project(models.Model):
                         #code for billing by rate    
                         start_date = week_start.strftime(DF)
                         end_date = week_end.strftime(DF)
-                        
+                        current_rate = 0
                         bill = False
-                        if start_date <= proj.invoice_start_date:
-                            current_rate = proj.rate_per_hour
-                            print"current rate------",current_rate, proj
+                        
+                        domain = [
+                                ('invoice_start_date', '>=', end_date),
+                                ('invoice_start_date', '!=', False),
+                                ('invoice_end_date', '!=', False),
+                                ('project_id', '=', proj.id),
+                                ]
+                        
+                        bill = self.env['billing.history'].search(domain,limit=1)
+                        if bill:
+                            current_rate = bill.rate_per_hour
                         else:
-                            bill = self.env['billing.history'].search([('invoice_start_date', '>=', start_date),('invoice_end_date', '<=', end_date)])[-1:]
-#                             print "==========1=========",bill, bill.project_id, bill.invoice_start_date
-                        if not bill:
-                            bill = self.env['billing.history'].search([('invoice_start_date', '>=', start_date)])[-1:]
-#                             print "===========2========",bill, bill.project_id, bill.invoice_start_date
-                            
-                            
+                            current_rate = proj.rate_per_hour
+
                         worked_hour = 0
                         idel_hour = 0
                         break_hour = 0
@@ -325,15 +328,15 @@ class Project(models.Model):
                                     'invoice_end_date': week_end,
                                     'hour_selection': proj.hour_selection,
                                     'custom_work_hours': str(custom_work_hours) + str(' Hours'),
-                                    'rate_per_hour': proj.rate_per_hour,
-                                    'min_bill': custom_work_hours * proj.rate_per_hour,
+                                    'rate_per_hour': current_rate,
+                                    'min_bill': custom_work_hours * current_rate,
                                     'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
                                     'additional_hours': extra_hours,
                                     'hours_charged': hour_charged,
                                     'hours_charged_save': hour_charged,
-                                    'bill_amount': hour_charged * proj.rate_per_hour,
-                                    'final_amount': hour_charged * proj.rate_per_hour,
+                                    'bill_amount': hour_charged * current_rate,
+                                    'final_amount': hour_charged * current_rate,
                                     'holidays': len(holidays),
                                     'leave_hours': leave_hours,
                                     'leave_days': 0,
@@ -350,15 +353,15 @@ class Project(models.Model):
                                     'invoice_end_date': week_end,
                                     'hour_selection': proj.hour_selection,
                                     'custom_work_hours': str(custom_work_hours) + str(' Hours'),
-                                    'rate_per_hour': proj.rate_per_hour,
-                                    'min_bill': custom_work_hours * proj.rate_per_hour,
+                                    'rate_per_hour': current_rate,
+                                    'min_bill': custom_work_hours * current_rate,
                                     'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
                                     'additional_hours': extra_hours,
                                     'hours_charged': hour_charged,
                                     'hours_charged_save': hour_charged,
-                                    'bill_amount': hour_charged * proj.rate_per_hour,
-                                    'final_amount': hour_charged * proj.rate_per_hour,
+                                    'bill_amount': hour_charged * current_rate,
+                                    'final_amount': hour_charged * current_rate,
                                     'holidays': len(holidays),
                                     'leave_hours': leave_hours,
                                     'leave_days': 0,
@@ -372,7 +375,7 @@ class Project(models.Model):
     @api.multi
     def monthly_invoice_scheduler_queue(self):
 
-        project_obj = self.search([])
+        project_obj = self.search([('id', '=', 139)])
         for project in  project_obj:
             analytic_lines = self.env['account.analytic.account'].search([('project_ids', '=', project.id)])
             if analytic_lines:
@@ -441,7 +444,27 @@ class Project(models.Model):
 #                         else:
 #                             ideal_time = 0.00
 
-
+                        
+                        #code for billing by rate    
+                        start_date = month_start.strftime(DF)
+                        end_date = month_end.strftime(DF)
+                        current_rate = 0
+                        bill = False
+                        
+                        domain = [
+                                ('invoice_start_date', '>=', end_date),
+                                ('invoice_start_date', '!=', False),
+                                ('invoice_end_date', '!=', False),
+                                ('project_id', '=', proj.id),
+                                ]
+                        
+                        bill = self.env['billing.history'].search(domain,limit=1)
+                        if bill:
+                            current_rate = bill.rate_per_hour
+                        else:
+                            current_rate = proj.rate_per_hour
+                            
+                        
                         worked_hour,idel_hour,break_hour = 0,0,0
                         for line in timesheet_lines:
                             if line.type_of_view.billable:
@@ -472,15 +495,15 @@ class Project(models.Model):
                                     'hour_selection': proj.hour_selection,
                                     # 'custom_work_hours': str(custom_work_hours) + str(' Hours'),
                                     'custom_work_hours':  str(custom_work_hours) + " Hours", #proj.hour_selection + str(' Hours'),
-                                    'rate_per_hour': proj.rate_per_hour,
+                                    'rate_per_hour': current_rate,
                                     'min_bill': proj.total_rate,
                                     'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
                                     'additional_hours': extra_hours,
                                     'hours_charged': hour_charged,
                                     'hours_charged_save': hour_charged,
-                                    'bill_amount': hour_charged * proj.rate_per_hour,
-                                    'final_amount': hour_charged * proj.rate_per_hour,
+                                    'bill_amount': hour_charged * current_rate,
+                                    'final_amount': hour_charged * current_rate,
                                     'holidays': len(holidays),
                                     'holidays_hours': holidays_hours,
                                     'leave_days': 0,
@@ -498,15 +521,15 @@ class Project(models.Model):
                                     'hour_selection': proj.hour_selection,
                                     # 'custom_work_hours': str(custom_work_hours) + str(' Hours'),
                                     'custom_work_hours':  str(custom_work_hours) + " Hours", #proj.hour_selection + str(' Hours'),
-                                    'rate_per_hour': proj.rate_per_hour,
+                                    'rate_per_hour': current_rate,
                                     'min_bill': proj.total_rate,
                                     'worked_hours': worked_hour,
                                     'ideal_hours': ideal_time,
                                     'additional_hours': extra_hours,
                                     'hours_charged': hour_charged,
                                     'hours_charged_save': hour_charged,
-                                    'bill_amount': hour_charged * proj.rate_per_hour,
-                                    'final_amount': hour_charged * proj.rate_per_hour,
+                                    'bill_amount': hour_charged * current_rate,
+                                    'final_amount': hour_charged * current_rate,
                                     'holidays': len(holidays),
                                     'holidays_hours': holidays_hours,
                                     'leave_days': 0,
