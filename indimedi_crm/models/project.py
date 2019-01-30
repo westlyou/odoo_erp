@@ -33,30 +33,22 @@ class AccountAnalyticLine(models.Model):
 
     @api.multi
     def unlink(self):
-        flag = False
+        flag = True
         for rec in self:
-            flag = False
+            flag = True
             if not rec.active:
                 user = self.env.user.id
                 user_id = self.env['res.users'].search([('id', '=', user)])
                 project_gm_id = self.env.ref('indimedi_crm.group_project_general_manager')
-                
                 group_list = []
                 for group in user_id.groups_id:
                     group_list.append(group.id)
                 
-                for i in group_list:
-                    if i == project_gm_id.id:
-                        flag = True
-                        break
-            if flag:
-                break
-            
-        if not flag:
-            raise UserError("Its too late!")
+                if not project_gm_id.id in group_list:
+                    raise UserError("Its too late!")
             
         return super(AccountAnalyticLine, self).unlink()
-
+        
     @api.constrains('date')
     def validate_past_date(self):
         date = self.date
