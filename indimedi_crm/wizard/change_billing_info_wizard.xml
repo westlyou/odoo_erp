@@ -10,7 +10,7 @@
 						<field name="invoice_start_date" required="1"/>
 						<field name="rate_per_hour" required="1"/>
 						
-						<field name="invoicing_type_id"/>
+						<field name="invoicing_type_id" invisible="1"/>
 						<field name="hour_selection" required="1"/>
 						<field name="total_rate" />
 					</group>

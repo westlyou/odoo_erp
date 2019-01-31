@@ -154,6 +154,7 @@ class JobDescription(models.Model):
                     'rate_per_hour': self.rate_per_hour_jd,
                     'total_rate': self.total_rate,
                     'client_email': str(self.jd_email),
+                    'date_of_join': self.start_date_billing,
                 })
             
             bill_obj = self.env['billing.history']
