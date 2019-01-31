@@ -16,6 +16,7 @@
                     <field name="analytic_account_id" readonly="1" options='{"no_open": True, "no_create_edit": True, "no_create": True}' placeholder="timesheet@mail.com"/>
                     <field name="partner_id" invisible="1" readonly="1"/>
                     <field name="invoicing_type_id" widget="selection" readonly="1"/>
+                    <field name="date_of_join" readonly="1"/>
                     <field name="invoice_start_date" readonly="1"/>
                     <field name="invoice_end_date" readonly="1"/>
                     <field name="hour_selection" readonly="1" invisible="1"/>

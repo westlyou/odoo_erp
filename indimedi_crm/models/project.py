@@ -52,6 +52,13 @@ class AccountAnalyticLine(models.Model):
     @api.constrains('date')
     def validate_past_date(self):
         date = self.date
+        
+        timesheet_ids = self.env['account.analytic.line'].search([('active', '=', False),('task_id', '=', self.task_id.id)])
+        
+        for timesheet in timesheet_ids:
+            if timesheet.date == date:
+                raise ValidationError("Its Too late!")
+        
         invoice_id = self.env['timesheet.invoice'].sudo().search([('invoice_start_date', '<=', date),
                                                            '|',('invoice_end_date', '>=', date),
                                                            ('invoice_start_date', '>=', date),
