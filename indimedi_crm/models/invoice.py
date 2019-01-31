@@ -232,13 +232,15 @@ class Project(models.Model):
                         bill = False
                         
                         domain = [
-                                ('invoice_start_date', '>=', end_date),
+                                ('invoice_end_date', '>=', end_date),
                                 ('invoice_start_date', '!=', False),
                                 ('invoice_end_date', '!=', False),
                                 ('project_id', '=', proj.id),
                                 ]
                         
-                        bill = self.env['billing.history'].search(domain,limit=1)
+                        bill = self.env['billing.history'].search(domain, limit=1)
+                        print"bill===========",bill.mapped('invoice_start_date')
+                        
                         if bill:
                             current_rate = bill.rate_per_hour
                             hour_selection = bill.hour_selection
@@ -417,7 +419,7 @@ class Project(models.Model):
                         bill = False
                         
                         domain = [
-                                ('invoice_start_date', '>=', end_date),
+                                ('invoice_end_date', '>=', end_date),
                                 ('invoice_start_date', '!=', False),
                                 ('invoice_end_date', '!=', False),
                                 ('project_id', '=', proj.id),
@@ -617,7 +619,7 @@ class Project(models.Model):
                         bill = False
                         
                         domain = [
-                                ('invoice_start_date', '>=', end_date),
+                                ('invoice_end_date', '>=', end_date),
                                 ('invoice_start_date', '!=', False),
                                 ('invoice_end_date', '!=', False),
                                 ('project_id', '=', proj.id),
@@ -765,7 +767,7 @@ class Project(models.Model):
                         bill = False
                         
                         domain = [
-                                ('invoice_start_date', '>=', end_date),
+                                ('invoice_end_date', '>=', end_date),
                                 ('invoice_start_date', '!=', False),
                                 ('invoice_end_date', '!=', False),
                                 ('project_id', '=', proj.id),
