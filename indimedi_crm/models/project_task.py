@@ -31,6 +31,8 @@ class Project(models.Model):
     billing_history_ids = fields.One2many('billing.history', 'project_id', string="Billing History")
     invoice_end_date = fields.Date(string="Billing End Date", track_visibility='onchange')
     date_of_join = fields.Date(string="Date of Joining")
+    date_of_join_dummy = fields.Date(string="Date of Joining Dummy")
+    
     
     @api.multi
     def open_billing_wizard(self):
@@ -63,6 +65,9 @@ class Project(models.Model):
             phone_str = phone_str.replace('-', '').replace('-', '')
             phone = phone_str[0:3] + '-' + phone_str[3:6] + '-' + phone_str[6:10]
             vals['timesheet_phone'] = phone
+        if vals.get('date_of_join_dummy'):
+            if not self.date_of_join:
+                vals['date_of_join'] = vals.get('date_of_join_dummy') 
         res = super(Project, self).write(vals)
         return res
 
