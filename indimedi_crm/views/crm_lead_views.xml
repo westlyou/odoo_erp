@@ -165,13 +165,14 @@
         <field name="model">custom.activity</field>
         <field name="arch" type="xml">
             <tree string="Activity" create="false" decoration-danger="custom_date_action and (custom_date_action &lt; current_date)" default_order="custom_date_action">
-                <field name="mark_done"/>
+                <field name="mark_done" invisible="1"/>
                 <field name="name"/>
                 <field name="crm_activity_id"/>
                 <field name="assigned_to_act"/>
                 <field name="custom_date_action"/>
                 <!-- <field name="custom_date_deadline"/> -->
                 <field name="custom_title_action"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -181,10 +182,15 @@
         <field name="model">custom.activity</field>
         <field name="arch" type="xml">
             <form>
+            	<header>
+            		<button name="mark_as_done" string="Mask As Done" type="object" class="btn-primary" states="pending"/>
+            		<button name="action_cancel" string="Cancel" type="object"  states="pending"/>
+            		<field name="state" widget="statusbar"/>
+            	</header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="mark_done"/>
+                            <field name="mark_done" invisible="1"/>
                             <field name="crm_custom_id"/>
                             <field name="crm_activity_id" required="1"/>
                             <field name="assigned_to_act"/>
@@ -236,11 +242,42 @@
                 <field name="assigned_to_act"/>
                 <filter name="today" string="Today" domain="[('custom_date_action', '&gt;=', time.strftime('%Y-%m-%d 00:00:00')),('custom_date_action', '&lt;=', time.strftime('%Y-%m-%d 23:59:59'))]"/>
                 <separator />
-                <filter name="mark_done" string="Not Done" domain="[('mark_done','!=',True)]"/>
+                <filter name="mark_done" string="Pending" domain="[('state','=', 'pending')]"/>
             </search>
         </field>
     </record>
 
+	<record id="view_view_activity_action" model="ir.actions.act_window">
+      <field name="name">Mark As Done</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">custom.activity</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref='view_timesheet_invoice_tree'/>
+      <field name="search_view_id" ref="view_timesheet_invoice_search"/>
+  </record>
+
+        <record model="ir.actions.server" id="action_activity_server">
+            <field name="name">Mark As Done</field>
+            <field name="model_id" ref="indimedi_crm.model_custom_activity"/>
+            <field name="code">
+if records:
+    for i in records:
+        action = i.mark_as_done()
+
+            </field>
+        </record>
+	
+	
+	<record model="ir.values" id="val_activity">
+        <field name="model_id" ref="indimedi_crm.model_custom_activity" />
+        <field name="name">Mark As Done</field>
+        <field name="key2">client_action_multi</field>
+        <field name="value" eval="'ir.actions.server,' +str(ref('action_activity_server'))" />
+        <field name="key">action</field>
+        <field name="model">custom.activity</field>
+    </record>
+    
+	
     <!-- <record id="act_crm_lead_task_all" model="ir.actions.act_window">
         <field name="name">Tasks</field>
         <field name="res_model">project.task</field>
@@ -911,8 +948,8 @@
 
 
     <menuitem id="custom_activity_menu" action="custom_lead_activities_action"
-            parent="sales_team.menu_sales"
-            sequence="5"/>
+            parent="sales_team.menu_base_partner"
+            sequence="-1"/>
 
     <menuitem
         id="meetings_menu"

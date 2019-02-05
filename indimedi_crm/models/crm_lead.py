@@ -572,7 +572,17 @@ class CustomActivity(models.Model):
     custom_date_deadline = fields.Datetime(string="Due Date", help="Estimate of the date on which the activity will be won.")
     description = fields.Text(string="Description")
     team_id = fields.Many2one('crm.team', string='Sales Team')
+    state = fields.Selection([('pending', 'Pending'),('done','Done'),('cancel', 'Cancel')], string="State",
+                             default='pending', copy=False)
 
+    @api.multi
+    def mark_as_done(self):
+        self.state = 'done'
+        self.mark_done = True
+    
+    @api.multi
+    def action_cancel(self):
+        self.state = 'cancel'
 
 class WorkingTimezone(models.Model):
     _name = "working.timezone"
