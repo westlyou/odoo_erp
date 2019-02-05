@@ -535,12 +535,15 @@ if records:
                         <field name="custom_activity_ids" nolabel="1">
                             <tree string="Activity" editable="bottom">
                                 <!-- <field name="name"/> -->
-                                <field name="mark_done" />
+                                <field name="mark_done" invisible="1"/>
+                                <button name="mark_as_done" string="Done" type="object" 
+                                class="btn-primary" attrs="{'invisible': [('state', '!=', 'pending')]}"/>
                                 <field name="crm_activity_id" required="1" widget="selection"/>
                                 <field name="assigned_to_act" />
                                 <field name="custom_date_action"/>
                                 <!-- <field name="custom_date_deadline" /> -->
                                 <field name="custom_title_action" placeholder="e.g. Discuss proposal"/>
+                                <field name="state"/>
                             </tree>
                         </field>
                     </group>
