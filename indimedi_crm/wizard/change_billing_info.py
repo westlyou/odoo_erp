@@ -33,7 +33,15 @@ class ChangeBillingInfo(models.TransientModel):
         if not self.project_id.billing_history_ids:
             if self.invoice_start_date <= self.project_id.invoice_start_date:
                     raise UserError("Invoice start date should greater then last start date")
-        
+                
+        if self.project_id.invoicing_type_id.name in ['Weekly', 'Weekly Advance']:
+            date = fields.Datetime.from_string(self.invoice_start_date)
+            if date.weekday() != 6:
+                raise UserError("Start date should be on Sunday. for weekly invoice")
+        if self.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
+            date = fields.Datetime.from_string(self.invoice_start_date)
+            if date.day != 1:
+                raise UserError("Start date should be first date of month. for monthly invoice")
         
     @api.depends('hour_selection','rate_per_hour')
     def _get_total_rate(self):
