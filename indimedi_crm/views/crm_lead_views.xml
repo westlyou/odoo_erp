@@ -226,7 +226,6 @@
         <field name="view_id" ref='custom_lead_activity_view_tree'/>
         <field name="domain">[('custom_date_action', '!=', False)]</field>
         <field name="context">{
-                'search_default_today':1,
                 'search_default_assigned_to_act': uid,
                 'search_default_mark_done':1,
             }
@@ -951,7 +950,7 @@ if records:
 
 
     <menuitem id="custom_activity_menu" action="custom_lead_activities_action"
-            parent="sales_team.menu_base_partner"
+            
             sequence="-1"/>
 
     <menuitem

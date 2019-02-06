@@ -92,26 +92,39 @@ class TimesheetReportWizard(models.TransientModel):
             min_hour -= holidays_hours
 #             
             related_employee_id = self.env['hr.employee'].search([('user_id', '=', task.user_id.id)])
-            leaves = False
-            if related_employee_id:
-                leaves = self.env['hr.holidays'].search(
-                    [('employee_id', '=', related_employee_id.id),
-                    ('date_from', '>=', self.start_date),
-                    ('date_to', '<=', self.end_date),
-                    ('type', '=', 'remove')])
-                
-            leave_count = 0
-            leave_hours = 0
-            if leaves:
-                leave_count = abs(sum(leaves.mapped('number_of_days')))
+#             leaves = False
+#             if related_employee_id:
+#                 leaves = self.env['hr.holidays'].search(
+#                     [('employee_id', '=', related_employee_id.id),
+#                     ('date_from', '>=', self.start_date),
+#                     ('date_to', '<=', self.end_date),
+#                     ('type', '=', 'remove')])
+#                 
+#             leave_count = 0
+#             leave_hours = 0
+#             if leaves:
+#                 leave_count = abs(sum(leaves.mapped('number_of_days')))
+#             
+#             
+#             if leave_count > 0:
+#                 daily_hours = float(min_hour) / 5
+#                 leave_hours = daily_hours * leave_count
+#              
+#             min_hour -= leave_hours
+# #           
+            leave = self.env['project.leave'].search([
+                            ('start_date', '>=', self.start_date),
+                            ('end_date', '<=', self.end_date),
+                            ('project_id', '=', task.project_id.id),
+                            ('us_name_id', '=', task.project_id.jd_us_name_id.id),
+                            ('state', '=', 'sent')])
             
+            leave_hours = abs(sum(leave.mapped('leave_duration')))
             
-            if leave_count > 0:
-                daily_hours = float(min_hour) / 5
-                leave_hours = daily_hours * leave_count
-             
-            min_hour -= leave_hours
-#           
+#                         leave_hours = 0
+            if leave_hours >= 1.00:
+                min_hour =  round((min_hour - leave_hours),2)
+                        
             
                 
             project_name = task.project_id.name
