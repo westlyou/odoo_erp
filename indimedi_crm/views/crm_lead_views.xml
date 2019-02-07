@@ -164,7 +164,7 @@
         <field name="name">custom.lead.activity.view.tree</field>
         <field name="model">custom.activity</field>
         <field name="arch" type="xml">
-            <tree string="Activity" create="false" decoration-danger="custom_date_action and (custom_date_action &lt; current_date)" default_order="custom_date_action">
+            <tree string="Activity" decoration-danger="custom_date_action and (custom_date_action &lt; current_date)" default_order="custom_date_action">
                 <field name="mark_done" invisible="1"/>
                 <field name="name"/>
                 <field name="crm_activity_id"/>
@@ -776,6 +776,16 @@ if records:
                     <field name="title_action"/>
                     <field name="probability"/>
                     <field name="lost_reason"/>
+                    
+                    <field name="lead_partner_id"/>
+                    <field name="lead_fax"/>
+                    <field name="lead_website"/>
+                    <field name="lead_name"/>
+                    <field name="industry_served"/>
+                    <field name="category"/>
+                    <field name="firm"/>
+                    
+                    
                     <separator/>
                     <filter string="Won" name="won"
                             domain="['&amp;', ('stage_id.probability', '=', 100), ('stage_id.fold', '=', True)]"/>
