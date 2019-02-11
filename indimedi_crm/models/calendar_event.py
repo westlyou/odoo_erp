@@ -5,6 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 import time
+from odoo.exceptions import UserError
 
 
 class Meeting(models.Model):
@@ -22,3 +23,16 @@ class Meeting(models.Model):
     cal_country_id = fields.Many2one('res.country', string='Country')
     shedular = fields.Selection([('meeting','Meeting'),('call','Call')], string="Schedular")
     call_datetime = fields.Datetime("Datetime")
+    closing_option = fields.Selection([('voice', 'Voice Mail'),
+                                       ('reschedule', 'Reschedule'),
+                                       ('done', 'Done')])
+    status = fields.Selection([('pending', 'Pending'),
+                              ('done', 'Done')], copy=False, default='pending')
+    closing_feedback = fields.Text(string="Closing Feedback")
+    
+    
+    @api.multi
+    def action_done(self):
+        if not self.closing_feedback:
+            raise UserError("Please enter closing feedback before mark as done.")
+        self.status = 'done'

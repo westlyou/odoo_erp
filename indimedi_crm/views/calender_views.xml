@@ -17,6 +17,10 @@
             </xpath>
 
             <xpath expr="//field[@name='description']" position="after">
+            	<br/>
+            	<label for="closing_feedback"/>
+                <field name="closing_feedback"/>
+                <br/>
                 <label for="meeting_status" attrs="{'invisible': [('shedular', 'not in', ('meeting', False))]}"/>
                 <field name="meeting_status" attrs="{'invisible': [('shedular', 'not in', ('meeting', False))]}"/>
             </xpath>
@@ -36,6 +40,13 @@
                 <attribute name="attrs">{'invisible': [('shedular', 'not in', ('meeting', False))]}</attribute>
             </xpath>
 
+			<xpath expr="//sheet" position="before">
+				<header>
+					<button name="action_done" string="Mark As Done" type="object" class="btn-primary"
+					attrs="{'invisible': [('status', '!=', 'pending')]}"/>
+					<field name="status" widget="statusbar" />
+				</header>
+			</xpath>
 <!--             <xpath expr="//field[@name='duration']" position="attributes">
                 <attribute name="attrs">{'invisible': [('shedular', 'not in', ('meeting', False))]}</attribute>
             </xpath>

@@ -64,6 +64,13 @@ class CrmLead(models.Model):
     general_manager = fields.Many2one('res.users', string="General Manager")
     # is_gm = fields.Boolean(string="Custom Stage", default=False, compute="_onchange_stage_id")
     meeting_ids = fields.One2many('calendar.event', 'opportunity_id', stirng="Meetings")
+    client_priority = fields.Selection([('high', 'High'),
+                                        ('medium', 'Medium'),
+                                        ('low', 'Low')], string="Priority")
+    client_firm = fields.Selection([('big', 'Big Firm'),
+                                    ('normal', 'Normal Firm'),
+                                    ('small', 'Small Firm')], string="Client Firm")
+    
 
     @api.multi
     def action_schedule_meeting(self):
