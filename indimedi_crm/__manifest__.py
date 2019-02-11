@@ -59,6 +59,7 @@
             'wizard/change_billing_info_wizard.xml',
             'views/project_leave_view.xml',
             'data/project_leave_email.xml',
+            'security/meeting_security.xml',
         ],
     'qweb': [
         'static/lib/web_calendar/xml/*.xml',
