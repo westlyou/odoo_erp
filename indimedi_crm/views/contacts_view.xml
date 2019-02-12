@@ -60,6 +60,8 @@
                 <field name="comp_owner" attrs="{'invisible': [('is_company','=', False)]}"/>                
                 <field name="comp_team_id" attrs="{'invisible': [('is_company','=', False)]}"/>
                 <field name="comp_source_id" attrs="{'invisible': [('is_company','=', False)]}"/>
+                <field name="category" />
+                <field name="data_lable_ids" widget="many2many_tags"/>
                 
 <!--                 <field name="team_id"/>
  -->        </xpath>
@@ -331,8 +333,33 @@
                 <filter string="Contacts" name="customer" domain="[('is_company','=',1)]"/>
             </xpath>
             <xpath expr="//field[@name='name']" position="replace">
-                <field name="name" string="Full Search" filter_domain="['|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self),('mobile','ilike',self),('personal_email','ilike',self),('professional_no','ilike',self),('designation_id','ilike',self),('phone','ilike',self),('fax','ilike',self),('extension','ilike',self),('title','ilike',self),('lang','ilike',self),('twitter_id','ilike',self),('linkedin_link','ilike',self),('website','ilike',self),('category_id','ilike',self),('facebook_id','ilike',self),('skype_id','ilike',self),('company_street','ilike',self),('company_street2','ilike',self),('company_street3','ilike',self),('company_city','ilike',self),('company_state_id','ilike',self),('company_zip','ilike',self),('company_country_id','ilike',self),('comment','ilike',self),('enrolled_agent_license_number','ilike',self),('cpa_license_number','ilike',self),('ptin_number','ilike',self),('tax_attorney_license_number','ilike',self),('certified_bookkeeper_license_number','ilike',self),('financial_planner_license_number','ilike',self),('q_name','ilike',self),('others_license_number','ilike',self),('parent_id','ilike',self)]"/>
+                <field name="name" string="Full Search" 
+                filter_domain="['|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|',
+                ('display_name','ilike',self),('ref','=',self),('email','ilike',self),('mobile','ilike',self),('personal_email','ilike',self),('professional_no','ilike',self),('designation_id','ilike',self),('phone','ilike',self),('fax','ilike',self),('extension','ilike',self),('title','ilike',self),('lang','ilike',self),('twitter_id','ilike',self),('linkedin_link','ilike',self),('website','ilike',self),('category_id','ilike',self),('facebook_id','ilike',self),('skype_id','ilike',self),('company_street','ilike',self),('company_street2','ilike',self),('company_street3','ilike',self),('company_city','ilike',self),('company_state_id','ilike',self),('company_zip','ilike',self),('company_country_id','ilike',self),('comment','ilike',self),('enrolled_agent_license_number','ilike',self),('cpa_license_number','ilike',self),('ptin_number','ilike',self),('tax_attorney_license_number','ilike',self),('certified_bookkeeper_license_number','ilike',self),('financial_planner_license_number','ilike',self),('q_name','ilike',self),('others_license_number','ilike',self),('parent_id','ilike',self)]"/>
+                
+                
             </xpath>
+            <xpath expr="//search" position="inside">
+            	<field name="company_type"/>
+            	<field name="skype_id"/>
+            	<field name="twitter_id"/>
+            	<field name="linkedin_link"/>
+            	<field name="facebook_id"/>
+            	<field name="personal_email"/>
+            	<field name="q_name"/>
+            	<field name="enrolled_agent_license_number"/>
+            	<field name="cpa_license_number"/>
+            	<field name="tax_attorney_license_number"/>
+            	<field name="certified_bookkeeper_license_number"/>
+            	<field name="financial_planner_license_number"/>
+            	<field name="others_license_number"/>
+            	<field name="ptin_number"/>
+            	<field name="extension"/>
+            	<field name="professional_no"/>
+            	
+            	
+            </xpath>
+            
         </field>
     </record>
 

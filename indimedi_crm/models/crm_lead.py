@@ -63,8 +63,15 @@ class CrmLead(models.Model):
     to_be_post_sales = fields.Boolean('Convert to post Sales', default=False)
     general_manager = fields.Many2one('res.users', string="General Manager")
     # is_gm = fields.Boolean(string="Custom Stage", default=False, compute="_onchange_stage_id")
-
-
+    meeting_ids = fields.One2many('calendar.event', 'opportunity_id', stirng="Meetings")
+    client_priority = fields.Selection([('high', 'High'),
+                                        ('medium', 'Medium'),
+                                        ('low', 'Low')], string="Priority")
+    client_firm = fields.Selection([('big', 'Big Firm'),
+                                    ('normal', 'Normal Firm'),
+                                    ('small', 'Small Firm')], string="Client Firm")
+    subsidiary_id = fields.Many2one('subsidiary.master', string="Related Company")
+    
     @api.multi
     def action_schedule_meeting(self):
         """ Open meeting's calendar view to schedule meeting on current opportunity.
@@ -131,7 +138,7 @@ class CrmLead(models.Model):
         self.allocation_wfc = False    
         self.allocation_rs = False
         if(len(self.allocation)==0):
-             self.allocation_first=False
+            self.allocation_first=False
         if self.allocation:
             count=0
             for rec in self.allocation:

@@ -59,6 +59,7 @@
             'wizard/change_billing_info_wizard.xml',
             'views/project_leave_view.xml',
             'data/project_leave_email.xml',
+            'views/subsidiary_master.xml',
         ],
     'qweb': [
         'static/lib/web_calendar/xml/*.xml',

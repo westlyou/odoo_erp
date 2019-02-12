@@ -101,3 +101,5 @@ access_timesheet_invoice_manager_cancel,timesheet.invoice.manager.delete,model_t
 access_billing_history,billing.history,model_billing_history,group_timesheet_invoice_manager,1,1,1,0
 access_billing_history_user,billing.history.user,model_billing_history,,1,0,0,0
 access_project_leave_gm,project.leave.gm,model_project_leave,group_project_general_manager,1,1,1,1
+access_subsidiary_master,subsidiary.master,model_subsidiary_master,group_project_general_manager,1,1,1,1
+access_subsidiary_master_user,subsidiary.master.user,model_subsidiary_master,hr.group_hr_user,1,0,0,0
