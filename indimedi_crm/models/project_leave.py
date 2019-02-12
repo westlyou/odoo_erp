@@ -77,9 +77,10 @@ class ProjectLeave(models.Model):
     
     @api.multi
     def unlink(self):
-        for rec in self:
-            if rec.state == 'sent':
-                raise UserError("You can not delete sent leave request")
+        if not self.env.user.id == 1:
+            for rec in self:
+                if rec.state == 'sent':
+                    raise UserError("You can not delete sent leave request")
         return super(ProjectLeave, self).unlink()
     
     @api.multi
