@@ -82,6 +82,9 @@
                     </group>
                     <group col="4">
                         <field name="jd_email"/>
+                        <field name="client_priority"/>
+                        <field name="client_firm"/>
+                        <field name="subsidiary_id"/>
                         <field name="jd_google_page"/>
                         <field name="jd_twitter_id"/>
                         <field name="jd_facebook_page"/>

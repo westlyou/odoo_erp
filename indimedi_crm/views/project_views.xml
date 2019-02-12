@@ -337,6 +337,15 @@
                         	</tree>
                         </field>
                     </page>
+                    <page string="Extra Fields">
+                    	<group>
+                    		<group>
+                    			<field name="client_priority"/>
+                    			<field name="client_firm"/>
+                    			<field name="subsidiary_id"/>
+                    		</group>
+                    	</group>
+                    </page>
                 </xpath>
                 <xpath expr="//field[@name='message_follower_ids']" position="after">
                     <field name="message_ids" widget="mail_thread"/>
