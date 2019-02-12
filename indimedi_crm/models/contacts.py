@@ -74,6 +74,10 @@ class Partner(models.Model):
     customer_feedback = fields.One2many('customer.feedback','customers',string='Feedback',track_visibility='onchnage')
     timesheet_mail = fields.Boolean(string="Timesheet Contact")
 
+    #new fields
+    category = fields.Selection([('accounting','ACCOUNTING FIRM'),('business','Business'),('government','Government/Colleges/Others')], string="Category")
+    data_lable_ids = fields.Many2many('crm.lead.tag', string='Data Label', help="Classify and analyze your lead/opportunity categories like: Training, Service")
+    
     @api.model
     def create(self, vals):
         _logger.debug("Creating new contact user")
@@ -111,6 +115,7 @@ class Partner(models.Model):
         #Lead create automatically when customer is company
         if partner.company_type == 'company':
             _logger.debug("selected comapny in the new contact user")
+            
             lead = lead_obj.create({
                        'name': partner.name,
                        'lead_partner_id': partner.id,
@@ -131,7 +136,10 @@ class Partner(models.Model):
                        'lead_twitter': partner.twitter_id,
                        'user_id':partner.comp_owner.id,
                        'team_id':partner.comp_team_id.id,
-                       'source_id':partner.comp_source_id.id
+                       'source_id':partner.comp_source_id.id,
+                       'category': partner.category,
+                       'tag_ids': partner.data_lable_ids.ids,
+                       
                     })
             # lead_obj = self.env['crm.lead'].search([('parent_id', '!=', False), ('parent_id', '=', partner.parent_id.id)])
             # print ">>>>>> lead_obj >>>", lead_obj, partner.id

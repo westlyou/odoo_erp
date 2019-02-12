@@ -1,0 +1,25 @@
+<odoo>
+
+	<record id="subsidiary_master_view" model="ir.ui.view">
+	    <field name="name">subsidiary.master.tree</field>
+	    <field name="model">subsidiary.master</field>
+	    <field name="arch" type="xml">
+	    	<tree string="Company" editable="bottom">
+	    		<field name="name"/>
+	    	</tree>
+	    </field>
+	</record>
+	
+	<record id="subsidiary_master_action" model="ir.actions.act_window">
+	    <field name="name">Company Master</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">subsidiary.master</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree</field>
+	</record>
+	
+	<menuitem id="menu_subsidiary_master_action" action="subsidiary_master_action"
+            parent="sales_team.menu_sale_config" name="Company Master"
+            sequence="12"/>
+		
+</odoo>
