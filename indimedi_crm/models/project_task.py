@@ -32,7 +32,13 @@ class Project(models.Model):
     invoice_end_date = fields.Date(string="Billing End Date", track_visibility='onchange')
     date_of_join = fields.Date(string="Date of Joining")
     date_of_join_dummy = fields.Date(string="Date of Joining Dummy")
-    
+    client_priority = fields.Selection([('high', 'High'),
+                                        ('medium', 'Medium'),
+                                        ('low', 'Low')], string="Priority")
+    client_firm = fields.Selection([('big', 'Big Firm'),
+                                    ('normal', 'Normal Firm'),
+                                    ('small', 'Small Firm')], string="Client Firm")
+    subsidiary_id = fields.Many2one('subsidiary.master', string="Billing Company")
     
     @api.multi
     def open_billing_wizard(self):

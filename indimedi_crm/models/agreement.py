@@ -39,6 +39,13 @@ class JobDescription(models.Model):
     agreements_credentials = fields.One2many('credentials.agreement','agree',string="Credentials Agreement") 
     jd_post_timesheet_email = fields.Many2one('res.partner', string="Email Id")
     jd_post_timesheet_phone = fields.Char('Employee Phone')
+    client_priority = fields.Selection([('high', 'High'),
+                                        ('medium', 'Medium'),
+                                        ('low', 'Low')], string="Priority")
+    client_firm = fields.Selection([('big', 'Big Firm'),
+                                    ('normal', 'Normal Firm'),
+                                    ('small', 'Small Firm')], string="Client Firm")
+    subsidiary_id = fields.Many2one('subsidiary.master', string="Billing Company")
 
     # duration = fields.Float(help="Duration in minutes and seconds.", default=0.5)
 
@@ -155,6 +162,9 @@ class JobDescription(models.Model):
                     'total_rate': self.total_rate,
                     'client_email': str(self.jd_email),
                     'date_of_join': self.start_date_billing,
+                    'client_priority': self.client_priority,
+                    'client_firm': self.client_firm,
+                    'subsidiary_id': self.subsidiary_id.id
                 })
             
             bill_obj = self.env['billing.history']
@@ -281,7 +291,10 @@ class JobDescription(models.Model):
         res.jd_twitter_id = self.env['crm.lead'].browse(vals['crm_id']).lead_twitter
         res.jd_fax = self.env['crm.lead'].browse(vals['crm_id']).lead_fax
         res.jd_website = self.env['crm.lead'].browse(vals['crm_id']).lead_website
-
+        res.client_priority = self.env['crm.lead'].browse(vals['crm_id']).client_priority
+        res.client_firm = self.env['crm.lead'].browse(vals['crm_id']).client_firm
+        res.subsidiary_id = self.env['crm.lead'].browse(vals['crm_id']).subsidiary_id.id
+        
         #Pre to Post customer Transfer
         if res.agree:
             # import pdb
