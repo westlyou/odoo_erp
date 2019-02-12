@@ -70,8 +70,8 @@ class CrmLead(models.Model):
     client_firm = fields.Selection([('big', 'Big Firm'),
                                     ('normal', 'Normal Firm'),
                                     ('small', 'Small Firm')], string="Client Firm")
+    subsidiary_id = fields.Many2one('subsidiary.master', string="Related Company")
     
-
     @api.multi
     def action_schedule_meeting(self):
         """ Open meeting's calendar view to schedule meeting on current opportunity.

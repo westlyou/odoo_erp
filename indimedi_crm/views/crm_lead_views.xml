@@ -840,6 +840,7 @@ if records:
                     <field name="industry_served"/>
                     <field name="client_priority"/>
                     <field name="client_firm"/>
+                    <field name="subsidiary_id"/>
                     <field name="number_of_staff"/>
                     <field name="service_provided" widget="many2many_tags"/>
                     <field name="category"/>
