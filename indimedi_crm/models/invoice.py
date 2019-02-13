@@ -216,7 +216,7 @@ class Project(models.Model):
                 project_rec = analytic_lines.mapped('project_ids')
                 if project_rec.invoicing_type_id.name == 'Weekly':
                     for proj in project_rec:
-
+                        
                         dt = datetime.datetime.now()
                         a = datetime.date(int(dt.year), int(dt.month), int(dt.day)).isocalendar()[1]
                         b = int(dt.year)
@@ -228,6 +228,10 @@ class Project(models.Model):
                         #code for billing history by rate    
                         start_date = week_start.strftime(DF)
                         end_date = week_end.strftime(DF)
+                        
+#                         if proj.dummy_start_date > start_date:
+#                             continue
+                        
                         current_rate = 0
                         bill = False
                         
@@ -239,7 +243,6 @@ class Project(models.Model):
                                 ]
                         
                         bill = self.env['billing.history'].search(domain, limit=1)
-                        print"bill===========",bill.mapped('invoice_start_date')
                         
                         if bill:
                             current_rate = bill.rate_per_hour
