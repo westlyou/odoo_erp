@@ -56,7 +56,6 @@ class Project(models.Model):
             if rec.invoice_end_date:
                 if rec.invoice_end_date < today:
                     rec.is_expired = True
-        
     
     @api.multi
     def open_billing_wizard(self):
@@ -125,7 +124,6 @@ class ProjectTask(models.Model):
     comm_on_email = fields.Boolean(string="Email")
     comm_on_phone = fields.Boolean(string="Phone")
     comm_on_chat = fields.Boolean(string="Chat")
-    
         
     @api.model
     def create(self, vals):
@@ -179,8 +177,6 @@ class ProjectTask(models.Model):
             action['res_id'] = tasks[0].id
         return action
 
-
-
 class ClientReporting(models.Model):
     _name = 'client.reporting'
 
@@ -190,7 +186,6 @@ class CredentialsTask(models.Model):
     _name = 'credentials.task'
 
     name = fields.Char(string='Name')
-   
 
 class CredentialsTimsheet(models.Model):
     _name = 'credentials.timesheet'
