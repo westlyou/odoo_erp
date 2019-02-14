@@ -157,6 +157,7 @@ class JobDescription(models.Model):
                     'timesheet_phone': self.jd_post_timesheet_phone,
                     'invoicing_type_id': self.jd_invoicing_post.id,
                     'invoice_start_date': self.start_date_billing,
+                    'dummy_start_date': self.start_date_billing,
                     'hour_selection': self.hour_selection,
                     'rate_per_hour': self.rate_per_hour_jd,
                     'total_rate': self.total_rate,
