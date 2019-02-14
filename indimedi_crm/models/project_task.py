@@ -39,6 +39,23 @@ class Project(models.Model):
                                     ('normal', 'Normal Firm'),
                                     ('small', 'Small Firm')], string="Client Firm")
     subsidiary_id = fields.Many2one('subsidiary.master', string="Billing Company")
+    is_expired = fields.Boolean(compute='_check_project_expiry', string="Expired")
+    on_notice = fields.Boolean(compute='_check_on_notice', string="On Notice")
+    dummy_start_date = fields.Date(string="Dummy Start Date")
+    
+    @api.multi
+    def _check_on_notice(self):
+        for rec in self:
+            if rec.invoice_end_date:
+                rec.on_notice = True
+    
+    @api.multi
+    def _check_project_expiry(self):
+        for rec in self:
+            today = fields.Date.to_string(datetime.now().date())
+            if rec.invoice_end_date:
+                if rec.invoice_end_date < today:
+                    rec.is_expired = True
     
     @api.multi
     def open_billing_wizard(self):
@@ -107,7 +124,6 @@ class ProjectTask(models.Model):
     comm_on_email = fields.Boolean(string="Email")
     comm_on_phone = fields.Boolean(string="Phone")
     comm_on_chat = fields.Boolean(string="Chat")
-    
         
     @api.model
     def create(self, vals):
@@ -161,8 +177,6 @@ class ProjectTask(models.Model):
             action['res_id'] = tasks[0].id
         return action
 
-
-
 class ClientReporting(models.Model):
     _name = 'client.reporting'
 
@@ -172,7 +186,6 @@ class CredentialsTask(models.Model):
     _name = 'credentials.task'
 
     name = fields.Char(string='Name')
-   
 
 class CredentialsTimsheet(models.Model):
     _name = 'credentials.timesheet'
