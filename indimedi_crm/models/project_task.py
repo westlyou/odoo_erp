@@ -42,6 +42,8 @@ class Project(models.Model):
     is_expired = fields.Boolean(compute='_check_project_expiry', string="Expired")
     on_notice = fields.Boolean(compute='_check_on_notice', string="On Notice")
     dummy_start_date = fields.Date(string="Dummy Start Date")
+    last_invoice_id = fields.Many2one('timesheet.invoice', string="Last Invoice")
+    
     
     @api.multi
     def _check_on_notice(self):

@@ -215,8 +215,10 @@ class Project(models.Model):
             if analytic_lines:
                 project_rec = analytic_lines.mapped('project_ids')
                 if project_rec.invoicing_type_id.name == 'Weekly':
+                    
+                    is_last = False
                     for proj in project_rec:
-                        
+                        is_last = False
                         dt = datetime.datetime.now()
                         a = datetime.date(int(dt.year), int(dt.month), int(dt.day)).isocalendar()[1]
                         b = int(dt.year)
@@ -233,6 +235,15 @@ class Project(models.Model):
                         if proj.dummy_start_date > start_date:
                             continue
                         
+                        #if last invoice is created then dont create any more invoice
+                        if proj.last_invoice_id:
+                            continue
+                        
+                        #if end date is already passed then create last invoice
+                        if proj.invoice_end_date and proj.invoice_end_date <= end_date:
+                            print"=d========================",proj.invoice_end_date
+                            is_last = True
+                            
                         current_rate = 0
                         bill = False
                         
@@ -360,6 +371,9 @@ class Project(models.Model):
                                     'holidays_hours': holidays_hours,
                                     'date_of_join': proj.date_of_join,
                                 })
+                        if is_last:
+                            proj.last_invoice_id = invoice_lines.id
+                        is_last = False
 
         return True
 
@@ -374,6 +388,7 @@ class Project(models.Model):
             if analytic_lines:
                 project_rec = analytic_lines.mapped('project_ids')
                 if project_rec.invoicing_type_id.name == 'Monthly':
+                    is_last = False
                     for proj in project_rec:
 
                         # previous month logic
@@ -404,6 +419,15 @@ class Project(models.Model):
                         #if project start date is future date then dont create invoice
                         if proj.dummy_start_date > start_date:
                             continue
+                        
+                        #if last invoice is created then dont create any more invoice
+                        if proj.last_invoice_id:
+                            continue
+                        
+                        #if end date is already passed then create last invoice
+                        if proj.invoice_end_date and proj.invoice_end_date <= end_date and not proj.last_invoice_id:
+                            is_last = True
+                        
                         
                         current_rate = 0
                         bill = False
@@ -527,6 +551,9 @@ class Project(models.Model):
                                     'leave_hours': leave_hours,
                                     'date_of_join': proj.date_of_join,
                                 })
+                        if is_last:
+                            proj.last_invoice_id = invoice_lines.id
+                        is_last = False
 
         return True
 
@@ -544,6 +571,7 @@ class Project(models.Model):
             analytic_lines = self.env['account.analytic.account'].search([('project_ids', '=', project.id)])
             if analytic_lines:
                 project_rec = analytic_lines.mapped('project_ids')
+                is_last = False
                 if project_rec.invoicing_type_id.name == 'Monthly Advance':
                     for proj in project_rec:
 
@@ -591,6 +619,20 @@ class Project(models.Model):
                         #code for billing by rate    
                         start_date = month_start.strftime(DF)
                         end_date = month_end.strftime(DF)
+                        
+                        #if project start date is future date then dont create invoice
+                        if proj.dummy_start_date > start_date:
+                            continue
+                        
+                        #if last invoice is created then dont create any more invoice
+                        if proj.last_invoice_id:
+                            continue
+                        
+                        #if end date is already passed then create last invoice
+                        if proj.invoice_end_date and proj.invoice_end_date <= end_date and not proj.last_invoice_id:
+                            is_last = True
+                        
+                        
                         current_rate = 0
                         bill = False
                         
@@ -684,6 +726,9 @@ class Project(models.Model):
                                 'leave_hours': leave_hours,
                                 'date_of_join': proj.date_of_join,
                             })
+                        if is_last:
+                            proj.last_invoice_id = invoice_lines.id
+                        is_last = False
 
         return True
 
@@ -697,9 +742,9 @@ class Project(models.Model):
             analytic_lines = self.env['account.analytic.account'].search([('project_ids', '=', project.id)])
             if analytic_lines:
                 project_rec = analytic_lines.mapped('project_ids')
+                is_last = False
                 if project_rec.invoicing_type_id.name == 'Weekly Advance':
                     for proj in project_rec:
-
 
                         #Previous Week DateRange Logic
                         prev_dates = []
@@ -717,17 +762,28 @@ class Project(models.Model):
                         date_in_between = self._CurrentweekBoundaries(int(b), int(a))
                         week_start = date_in_between[0]
                         week_end = date_in_between[1]
-                        print "????????", week_start, week_end
 
                         #Holiday Count Logic
                         holidays = self.env['public.holiday'].search([
                             ('public_holiday_date', '>=', week_start.strftime(DF)),
                             ('public_holiday_date', '<=', week_end.strftime(DF))])
-                        print len(holidays)
 
                         #code for billing by rate    
                         start_date = week_start.strftime(DF)
                         end_date = week_end.strftime(DF)
+                        
+                        #if project start date is future date then dont create invoice
+                        if proj.dummy_start_date > start_date:
+                            continue
+                        
+                        #if last invoice is created then dont create any more invoice
+                        if proj.last_invoice_id:
+                            continue
+                        
+                        #if end date is already passed then create last invoice
+                        if proj.invoice_end_date and proj.invoice_end_date <= end_date and not proj.last_invoice_id:
+                            is_last = True
+                        
                         
                         current_rate = 0
                         bill = False
@@ -828,5 +884,7 @@ class Project(models.Model):
                                 'leave_hours': leave_hours,
                                 'date_of_join': proj.date_of_join,
                             })
+                        if is_last:
+                            proj.last_invoice_id = invoice_lines.id
 
         return True
