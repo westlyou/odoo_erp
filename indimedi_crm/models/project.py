@@ -69,6 +69,11 @@ class AccountAnalyticLine(models.Model):
             for inv in invoice_id:
                 if inv.invoicing_type_id.name in ['Weekly', 'Monthly']:
                     raise ValidationError("Its Too late!")
+        
+        today = fields.Date.to_string(datetime.now().date())
+        if self.project_id.invoice_end_date < today:
+            if self.project_id.is_expired:
+                raise ValidationError("This project is already expired on %s. \n You can not submit timesheet!"%(self.project_id.invoice_end_date))
             
             
     @api.onchange('user_id')
