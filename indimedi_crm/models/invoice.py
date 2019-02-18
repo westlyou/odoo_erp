@@ -241,7 +241,6 @@ class Project(models.Model):
                         
                         #if end date is already passed then create last invoice
                         if proj.invoice_end_date and proj.invoice_end_date <= end_date:
-                            print"=d========================",proj.invoice_end_date
                             is_last = True
                             
                         current_rate = 0
