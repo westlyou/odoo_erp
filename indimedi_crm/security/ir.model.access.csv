@@ -60,7 +60,7 @@ access_resume_sales_hr_user,resume.sales,model_resume_sales,hr.group_hr_user,1,1
 access_resume_sales_hr_manager,resume.sales,model_resume_sales,hr.group_hr_manager,1,1,1,1
 access_client_client_project_user,client.client,model_client_client,project.group_project_user,1,1,1,0
 access_client_client_project_manager,client.client,model_client_client,project.group_project_manager,1,1,1,1
-access_credentials_task_user,credentials.task.user,model_credentials_task,project.group_project_user,1,1,1,0
+access_credentials_task_user,credentials.task.user,model_credentials_task,project.group_project_user,1,1,0,0
 access_credentials_task_manager,credentials.task.manager,model_credentials_task,project.group_project_manager,1,1,1,1
 access_credentials_timesheet_user,credentials.timesheet.user,model_credentials_timesheet,project.group_project_user,1,1,1,1
 access_credentials_timesheet_manager,credentials.timesheet.manager,model_credentials_timesheet,project.group_project_manager,1,1,1,1
