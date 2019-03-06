@@ -31,47 +31,31 @@ class PeriodicReportWizard(models.TransientModel):
         task_ids = timesheet_obj.search(domain)
         task_ids = task_ids.mapped('task_id')
         
-        # Holiday Count Logic
-#         holidays = self.env['public.holiday'].search([
-#             ('public_holiday_date', '>=', self.start_date),
-#             ('public_holiday_date', '<=', self.end_date)])
-
-#         holidays_count = len(holidays)
         
         vals = []
         for task in task_ids:
-            if task.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
-                min_hour = (float(task.project_id.hour_selection))
-            else:
-                min_hour = float(task.project_id.hour_selection)
             
-#             holidays_hours = 0
-#             if holidays_count > 0:
-#                 daily_hours = float(min_hour) / 5
-#                 holidays_hours = daily_hours * holidays_count
-#              
-#             min_hour -= holidays_hours
+            #mapp with billing history
+            domain_bill = [
+                    ('invoice_end_date', '>=', self.end_date),
+                    ('invoice_start_date', '!=', False),
+                    ('invoice_end_date', '!=', False),
+                    ('project_id', '=', task.project_id.id),
+                    ]
+            
+            bill = self.env['billing.history'].search(domain_bill, limit=1)
+#             if bill:
+#                 hour_selection = bill.hour_selection
+#             else:
+#                 hour_selection = task.project_id.hour_selection
 #             
-#             related_employee_id = self.env['hr.employee'].search([('user_id', '=', task.user_id.id)])
-#             leaves = False
-#             if related_employee_id:
-#                 leaves = self.env['hr.holidays'].search(
-#                     [('employee_id', '=', related_employee_id.id),
-#                     ('date_from', '>=', self.start_date),
-#                     ('date_to', '<=', self.end_date),
-#                     ('type', '=', 'remove')])
-#                 
-#             leave_count = 0
-#             leave_hours = 0
-#             if leaves:
-#                 leave_count = abs(sum(leaves.mapped('number_of_days')))
 #             
-#             if leave_count > 0:
-#                 daily_hours = float(min_hour) / 5
-#                 leave_hours = daily_hours * leave_count
-#              
-#             min_hour -= leave_hours
-#           
+#             if task.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
+#                 min_hour = (float(hour_selection))
+#             else:
+#                 min_hour = float(hour_selection)
+            
+
             project_name = task.project_id.name
             
             min_hour_str = 0

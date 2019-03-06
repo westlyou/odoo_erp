@@ -60,29 +60,27 @@ class TimesheetReportWizard(models.TransientModel):
 
         holidays_count = len(holidays)
         
-        #previous month logic
-#         today = fields.Datetime.from_string(self.start_date)
-#         
-#         d = today - relativedelta(months=1)
-#         month_start = date(today.year, today.month, 1)
-#         month_end = date(today.year, today.month, 1) - relativedelta(days=1)
-# 
-#         #working Days count logic between months
-#         start_date = month_start
-#         end_date = month_end
-#         days = end_date - start_date
-#         valid_date_list = {(start_date + datetime.timedelta(days=x)).strftime('%d-%b-%Y')
-#                                 for x in range(days.days+1)
-#                                 if (start_date + datetime.timedelta(days=x)).isoweekday() <= 5
-#                                }
-#         working_days = len(valid_date_list)
-        
         vals = []
         for task in task_ids:
-            if task.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
-                min_hour = (float(task.project_id.hour_selection) / 4)
+            
+            #mapp with billing history
+            domain_bill = [
+                    ('invoice_end_date', '>=', self.end_date),
+                    ('invoice_start_date', '!=', False),
+                    ('invoice_end_date', '!=', False),
+                    ('project_id', '=', task.project_id.id),
+                    ]
+            
+            bill = self.env['billing.history'].search(domain_bill, limit=1)
+            if bill:
+                hour_selection = bill.hour_selection
             else:
-                min_hour = float(task.project_id.hour_selection)
+                hour_selection = task.project_id.hour_selection
+            
+            if task.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
+                min_hour = (float(hour_selection) / 4)
+            else:
+                min_hour = float(hour_selection)
             
             holidays_hours = 0
             if holidays_count > 0:
@@ -90,28 +88,7 @@ class TimesheetReportWizard(models.TransientModel):
                 holidays_hours = daily_hours * holidays_count
              
             min_hour -= holidays_hours
-#             
-            related_employee_id = self.env['hr.employee'].search([('user_id', '=', task.user_id.id)])
-#             leaves = False
-#             if related_employee_id:
-#                 leaves = self.env['hr.holidays'].search(
-#                     [('employee_id', '=', related_employee_id.id),
-#                     ('date_from', '>=', self.start_date),
-#                     ('date_to', '<=', self.end_date),
-#                     ('type', '=', 'remove')])
-#                 
-#             leave_count = 0
-#             leave_hours = 0
-#             if leaves:
-#                 leave_count = abs(sum(leaves.mapped('number_of_days')))
-#             
-#             
-#             if leave_count > 0:
-#                 daily_hours = float(min_hour) / 5
-#                 leave_hours = daily_hours * leave_count
-#              
-#             min_hour -= leave_hours
-# #           
+          
             leave = self.env['project.leave'].search([
                             ('start_date', '>=', self.start_date),
                             ('end_date', '<=', self.end_date),
@@ -121,7 +98,6 @@ class TimesheetReportWizard(models.TransientModel):
             
             leave_hours = abs(sum(leave.mapped('leave_duration')))
             
-#                         leave_hours = 0
             if leave_hours >= 1.00:
                 min_hour =  round((min_hour - leave_hours),2)
                         

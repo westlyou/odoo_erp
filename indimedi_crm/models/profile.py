@@ -17,6 +17,7 @@ class MailMail(models.Model):
         mail_server_id = self.mail_server_id.search([('smtp_user', '=', res.author_id.email)], limit=1) # remove [0] and added limit=1 to prevent list out of bound error
         if mail_server_id:
             res.mail_server_id = mail_server_id.id
+        res.reply_to = False
         return res
 
 class ResUser(models.Model):
