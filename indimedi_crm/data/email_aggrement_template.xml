@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+		<record id="email_template_agreement_crm_signup" model="mail.template">
+			<field name="name">Standard Permanent Agreeement</field>
+			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+			<field name="subject">Thanks for signing up with Entigrity Remote Staffing</field>
+			<field name="email_to">${ctx['email_to']|safe}</field> 
+			<field name="email_cc"> ${object.email} </field>
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<field name="auto_delete" eval="True"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html"><![CDATA[
+				<table width="100%" style="margin:0;padding:0;" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+        <td align="left" valign="top">
+            <table style="background:#FFF; width:100%; " border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                <tr>
+                    <td style="padding:0px;" align="center" valign="top">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                            <tr>
+                                <td style="padding-bottom:12px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#404040;" align="left" valign="top">
+                                    Hi&nbsp; Raj,
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:justify;padding-bottom:12px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#404040;" align="left" valign="top">
+                                    Thanks for Signing Up with Entigrity Solutions LLC. We look forward to work with you. following are your details as per sign up.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-bottom:15px;" align="left" valign="top">
+                                    <table width="600" border="0" cellspacing="1" cellpadding="1">
+                                        <tbody>
+                                        <tr>
+                                            <td colspan="2"  align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+                                                <strong>Client Details</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="190"  align="left" valign="top" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                                                Name:
+                                            </td>
+                                            <td width="403" align="left" valign="top" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                                                Raj Malhotra
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Company Name :
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                Entigrity
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Address Line 1:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                703 President house
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Suite No/Room No:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                703
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                City:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                Ahmedabad
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                State:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                Gujarat
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Zip:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                380015
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Phone:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                9898262626
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Email:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                Test@gmail.com
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"  align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+                                                <strong>Hiring Options</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Hiring Model:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                Default
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Numbers Of Hours Per Week:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                8 hours
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Hourly Rate:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                100
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"  align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+                                                <strong>Season-Non Season</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Hourly Rate:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                50
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Numbers Of Hours Per Week:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                8 hours
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                To :
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                test@gmail.com
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                From :
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                raj@gmail.com
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"  align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+                                                <strong>Job Description</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Profile:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                HTML Developer
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Experience in years
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                1
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Tasks to be done 1
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                HTML Done
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Tasks to be done 2
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                HTML Done
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Tasks to be done 3
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                HTML Done
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Tasks to be done 4
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                HTML Done
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Tasks to be done 5
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                HTML Done
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Software Experience:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                HTML Done
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Reporting:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                HTML Done
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Tentative Start Date:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                HTML Done
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Working Time Zone:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                6 month
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Working Time From:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                6 may
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;"  align="left" valign="top" bgcolor="#f15a29">
+                                                Working Time To:
+                                            </td>
+                                            <td style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;" align="left" valign="top" bgcolor="#f15a29">
+                                                10 am
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-bottom:12px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#404040;" align="left" valign="top">
+                                    We have enclosed herewith terms and conditions of sign up in pdf. Your account manager will get in touch with you soon.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-bottom:12px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#404040;" align="left" valign="top">
+                                    In case of any correction or for further assistance please reach out to your account manager or email us at
+                                    <a href="mailto:info@entigrity.com">info@entigrity.com</a>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-bottom:12px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#404040;" align="left" valign="top">
+                                    Regards,
+                                </td>
+                            </tr>
+                            
+                                <tr>
+                                    <td align="left" valign="top">
+                                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <tbody>
+                                            <tr>
+                                                <td style="padding-bottom:3px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    <strong>Entigrity Solutions LLC </strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom:3px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    <a href="mailto:jack@entigrity.com">jack@entigrity.com</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom:5px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    (O) 646-827-4348
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom:5px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    (W) <a href="www.entigrity.com" target="_blank">www.entigrity.com</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 12px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    (E) <a href="mailto:info@entigrity.com">info@entigrity.com</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            
+                                <tr>
+                                    <td align="left" valign="top">
+                                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <tbody>
+                                            <tr>
+                                                <td style="padding-bottom:3px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    <strong>Entigrity Solutions LLC </strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom:5px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    (O) 646-827-4348
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom:5px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    (M) 631-513-1521
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom:5px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    (W) <a href="www.entigrity.com" target="_blank">www.entigrity.com</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 12px;font-family:Arial, Helvetica, sans-serif;color:#484848;font-size:13px;" valign="top" align="left">
+                                                    (E) <a href="mailto:ted@entigritysolutions.com">ted@entigritysolutions.com</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>														
+			]]>
+			</field>
+		</record>
+	</data>
+</odoo>
+        		

@@ -412,20 +412,21 @@ class JobDescription(models.Model):
             self.ensure_one()
             ir_model_data = self.env['ir.model.data']
             try:
-                if self.hiring_model == 'permanent' and self.permanent_hour_selection in ['40_20','20_10'] :
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_part_time')[1]   
-                elif self.hiring_model == 'permanent':
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
-                elif self.hiring_model == 'temporary':
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_second')[1]
-                else:
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
+                template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_signup')[1]
+#                 if self.hiring_model == 'permanent' and self.permanent_hour_selection in ['40_20','20_10'] :
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_signup')[1]   
+#                 elif self.hiring_model == 'permanent':
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
+#                 elif self.hiring_model == 'temporary':
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_second')[1]
+#                 else:
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
             except ValueError:
-                    template_id = False
+                template_id = False
             try:
-                    compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+                compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
             except ValueError:
-                    compose_form_id = False
+                compose_form_id = False
 
             # self.resume_details = [(6, 0 , [y for y in (self.env['ir.attachment'].search([('res_model','=','resume.details')]).ids)])]
             us_email_id = str(self.env.user.email)
