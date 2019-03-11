@@ -11,17 +11,21 @@
 			<field name="auto_delete" eval="True"/>
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
+				<p>
+					Hi ${object.crm_id.name} <br/><br/>
+					Thanks for Signing Up with Entigrity Solutions LLC. We look forward to work with you. following are your details as per sign up.<br/><br/> 
+				</p>
 				<table class="text-center" border="2" style="vertical-align:middle;width:75%; ">
                         <tbody class="tbody" style="border: solid 2px; text-align: left;">
 	                        <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;">CLIENT DETAILS</td>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>CLIENT DETAILS</strong></td>
 	                        </tr>
 	                        <tr style="border: solid 1px;">
 	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
 	                               Name:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.crm_id.name}
 	                            </td>
 	                            
 	                        </tr>
@@ -30,7 +34,7 @@
 	                               Company Name :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.crm_id.subsidiary_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -39,7 +43,7 @@
 	                               Address Line 1:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.crm_id.c_street2 or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -48,7 +52,7 @@
 	                               Suite No/Room No:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.crm_id.c_street or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -57,7 +61,7 @@
 	                               City:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.crm_id.c_city or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -66,7 +70,7 @@
 	                               State:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.crm_id.c_state_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -75,7 +79,7 @@
 	                               Zip:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.crm_id.c_zip or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -84,7 +88,7 @@
 	                               Phone:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.crm_id.phone or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -93,7 +97,7 @@
 	                               Email:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.crm_id.email_from or ''}
 	                            </td>
 	                        </tr>
 	                        
@@ -101,14 +105,14 @@
 	                        
 	                        
 	                        <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;">HIRING OPTIONS</td>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>HIRING OPTIONS</strong></td>
 	                        </tr>
 	                        <tr style="border: solid 1px;">
 	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
 	                               Hiring Model:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.hiring_model or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -117,7 +121,7 @@
 	                               Numbers Of Hours Per Week:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.permanent_hour_selection or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -126,13 +130,13 @@
 	                               Hourly Rate:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.rate_per_hour or ''}
 	                            </td>
 	                        </tr>
 	                        
                             
                             <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;">SEASON-NON SEASON</td>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>SEASON-NON SEASON</strong></td>
 	                        </tr>
 	                        <tr style="border: solid 1px;">
 	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
@@ -172,14 +176,14 @@
 	                        
 	                        
 	                        <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;">JOB DESCRIPTION</td>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>JOB DESCRIPTION</strong></td>
 	                        </tr>
 	                        <tr style="border: solid 1px;">
 	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
 	                               Profile:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.job_profile_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -188,7 +192,7 @@
 	                               Experience in years:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.experience_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -197,7 +201,7 @@
 	                               Tasks to be done :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.task_tobe_done or ''}
 	                            </td>
 	                        </tr>
 	                        <tr style="border: solid 1px;">
@@ -205,7 +209,7 @@
 	                               Software Experience :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.email_software_exp_value()}
 	                            </td>
 	                        </tr>
 	                        <tr style="border: solid 1px;">
@@ -213,7 +217,7 @@
 	                               Reporting:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.reporting_id.name or ''}
 	                            </td>
 	                        </tr>
                             <tr style="border: solid 1px;">
@@ -221,7 +225,7 @@
 	                               Tentative Start Date :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.tentative_date or ''}
 	                            </td>
 	                        </tr>
                             <tr style="border: solid 1px;">
@@ -229,7 +233,7 @@
 	                               Working Time Zone :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.timezone_id.name or ''}
 	                            </td>
 	                        </tr>
                             <tr style="border: solid 1px;">
@@ -237,7 +241,7 @@
 	                               Working Time From :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.from_timezone_id.name or ''}
 	                            </td>
 	                        </tr>
                             <tr style="border: solid 1px;">
@@ -245,13 +249,19 @@
 	                               Working Time To :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
+	                               ${object.to_timezone_id.name or ''}
 	                            </td>
 	                        </tr>
-                            
-                            
                         </tbody>
-                    </table>															
+                    </table>	
+                 <br/>
+                 <br/>
+                 <p>
+                 	We have enclosed herewith terms and conditions of sign up in pdf. Your account manager will get in touch with you soon.<br/>
+
+					In case of any correction or for further assistance please reach out to your account manager or email us at info@entigrity.com. 
+                 </p> 
+                   														
 			]]>
 			</field>
 		</record>

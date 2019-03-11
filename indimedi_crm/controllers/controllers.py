@@ -2,13 +2,44 @@
 from odoo import http, _
 from odoo.http import request
 import os.path
+from odoo.addons.website_form.controllers.main import WebsiteForm
 # from Tkinter import *
 # import tkMessageBox
 import logging
 
 _logger = logging.getLogger(__name__)
 
+# class AgreementConfirm(WebsiteForm):
+#     
+#     @http.route(['/agreement_confirm/agreement/<model("job.description"):agreement'], type='http', auth="public", website=True)
+#     def agreement_confirm(self, agreement, **kwargs):
+#         return request.render('indimedi_crm.i_agree_form', {})
+    
 
+class AgreementConfirm(http.Controller):
+    @http.route('/agreement_confirm/<agreement>', type='http', auth='public', website=True)
+    def agreement_confirm(self, agreement, **post):
+        data = {}
+        if agreement:
+            data = {'agreement': agreement}
+        return request.render('indimedi_crm.i_agree_form', data)
+    
+    @http.route('/agreement_done/<agreement>', type='http', auth='public', website=True)
+    def agreement_yes(self, agreement, **post):
+        data = {}
+        ip = request.httprequest.environ["REMOTE_ADDR"]
+        
+        agreement_id = request.env['job.description'].sudo().search([('id', '=', agreement)])
+        if agreement_id.agree:
+            return request.render('indimedi_crm.already_agreed', data)
+        agreement_id.sudo().write({'agree': True,
+                                   'ip_add_of_user': ip})
+        
+        if agreement:
+            data = {'agreement': agreement}
+        return request.render('indimedi_crm.i_agree', data)
+    
+    
 class MailMail(http.Controller):
     @http.route([ '/indimedi_crm/data'], methods=['GET'], type='http', auth="none", website=True,)
     def index(self, **get):
@@ -72,3 +103,6 @@ class MailMail(http.Controller):
     # def make_payment(self, **kw):
     #     print "\n==>BHOOMMM"
     #     return http.local_redirect("https://www.google.com/")
+    
+    
+    

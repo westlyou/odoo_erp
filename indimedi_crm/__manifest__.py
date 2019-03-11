@@ -55,6 +55,7 @@
              'data/analysis_timesheet_sent.xml',
              'views/invoice_views.xml',
              'views/hide_menus_customer.xml',
+             'views/template.xml',
              
             #new file added
             'wizard/change_billing_info_wizard.xml',

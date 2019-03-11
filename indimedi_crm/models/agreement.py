@@ -48,6 +48,15 @@ class JobDescription(models.Model):
     subsidiary_id = fields.Many2one('subsidiary.master', string="Billing Company")
 
     # duration = fields.Float(help="Duration in minutes and seconds.", default=0.5)
+    
+    @api.multi
+    def email_software_exp_value(self):
+        value = ''
+        if self.s_accounting_ids:
+            value = ", ".join(self.s_accounting_ids.mapped('name'))
+            
+        return value    
+            
 
     @api.onchange('interview_start_date')
     def onchange_interview_start_date(self):
