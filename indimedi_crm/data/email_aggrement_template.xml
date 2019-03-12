@@ -111,18 +111,32 @@
 	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
 	                               Hiring Model:
 	                            </td>
+	                            
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
 	                               ${object.hiring_model or ''}
 	                            </td>
 	                            
 	                        </tr>
+	                        
 	                        <tr style="border: solid 1px;">
 	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
 	                               Numbers Of Hours Per Week:
 	                            </td>
+	                            %if object.hiring_model == 'permanent':
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
 	                               ${object.permanent_hour_selection or ''}
 	                            </td>
+	                             %endif
+	                             %if object.hiring_model == 'On Demand':
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.permanent_hour_selection or ''}
+	                            </td>
+	                             %endif
+	                             %if object.hiring_model == 'temporary':
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.temporary_hour_selection or ''}
+	                            </td>
+	                             %endif
 	                            
 	                        </tr>
 	                        <tr style="border: solid 1px;">
@@ -135,45 +149,6 @@
 	                        </tr>
 	                        
                             
-                            <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>SEASON-NON SEASON</strong></td>
-	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
-	                               Hourly Rate:
-	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
-	                            </td>
-	                            
-	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
-	                               Numbers Of Hours Per Week:
-	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
-	                            </td>
-	                            
-	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
-	                               To :
-	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
-	                            </td>
-	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
-	                               From :
-	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               Test
-	                            </td>
-	                        </tr>
-	                        
-	                        
 	                        
 	                        <tr>
 	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>JOB DESCRIPTION</strong></td>
@@ -206,7 +181,7 @@
 	                        </tr>
 	                        <tr style="border: solid 1px;">
 	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
-	                               Software Experience :
+	                               Accounting Software :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
 	                               ${object.email_software_exp_value()}
@@ -214,13 +189,93 @@
 	                        </tr>
 	                        <tr style="border: solid 1px;">
 	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
-	                               Reporting:
+	                               Tax Software :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.email_tax_software_value()}
+	                            </td>
+	                        </tr>
+                            <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Working Period :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.hiring_period or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Invoicing :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.jd_invoicing.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Writing Skill :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.writing_skill or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Speaking Skill :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.speaking_skill or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Communication Medium :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.email_comm_medium_value() or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Software Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.soft_access or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Software Remote Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.soft_remote_id.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Document Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.doc_access or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Document Remote Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.doc_remote_id.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Reporting :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
 	                               ${object.reporting_id.name or ''}
 	                            </td>
 	                        </tr>
-                            <tr style="border: solid 1px;">
+	                        <tr style="border: solid 1px;">
 	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
 	                               Tentative Start Date :
 	                            </td>
@@ -256,6 +311,11 @@
                     </table>	
                  <br/>
                  <br/>
+                 
+			    <center>
+			        <a href="${object.get_agreement_url()}" style="background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;" class="o_default_snippet_text">Confirm Agreement</a>
+			        <br/><br/><br/>
+			    </center>
                  <p>
                  	We have enclosed herewith terms and conditions of sign up in pdf. Your account manager will get in touch with you soon.<br/>
 

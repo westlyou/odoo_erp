@@ -6,34 +6,60 @@ from odoo.addons.website_form.controllers.main import WebsiteForm
 # from Tkinter import *
 # import tkMessageBox
 import logging
+import requests
+import json
+import httpagentparser
+
 
 _logger = logging.getLogger(__name__)
-
-# class AgreementConfirm(WebsiteForm):
-#     
-#     @http.route(['/agreement_confirm/agreement/<model("job.description"):agreement'], type='http', auth="public", website=True)
-#     def agreement_confirm(self, agreement, **kwargs):
-#         return request.render('indimedi_crm.i_agree_form', {})
     
 
 class AgreementConfirm(http.Controller):
-    @http.route('/agreement_confirm/<agreement>', type='http', auth='public', website=True)
-    def agreement_confirm(self, agreement, **post):
+    @http.route('/agreement_confirm/<agreement>/<token>', type='http', auth='public', website=True)
+    def agreement_confirm(self, agreement, token, **post):
         data = {}
-        if agreement:
-            data = {'agreement': agreement}
+        job_id = request.env['job.description'].search([('id', '=', agreement),('random_token', '=', token)])
+        
+        if job_id.agree:
+            return request.render('indimedi_crm.already_agreed', data)
+        
+        if not job_id:
+            return request.render('indimedi_crm.i_agree_form', {'error': "Invalid Agreement Access Token!"})
+        data = {'agreement': agreement, 'token': token}
         return request.render('indimedi_crm.i_agree_form', data)
     
-    @http.route('/agreement_done/<agreement>', type='http', auth='public', website=True)
-    def agreement_yes(self, agreement, **post):
+    @http.route('/agreement_done/<agreement>/<token>', type='http', auth='public', website=True)
+    def agreement_yes(self, agreement, token, **post):
         data = {}
         ip = request.httprequest.environ["REMOTE_ADDR"]
+#         ip = request.httprequest.remote_addr
         
-        agreement_id = request.env['job.description'].sudo().search([('id', '=', agreement)])
+        print"===============================",ip 
+        agent = request.httprequest.environ.get('HTTP_USER_AGENT')
+        browser = httpagentparser.detect(agent)
+        print"browser=================================",browser
+        
+        agreement_id = request.env['job.description'].sudo().search([('id', '=', agreement),('random_token', '=', token)])
+        if not agreement_id:
+            return request.render('indimedi_crm.i_agree_form', {'error': "Invalid Access Token!"})
         if agreement_id.agree:
             return request.render('indimedi_crm.already_agreed', data)
+        
+        #get IP Info
+        send_url = 'http://api.ipstack.com/check?access_key=53ef5675bc86a5f8ae76707f13060ae0&format=1'
+        r = requests.get(send_url)
+        j = json.loads(r.text)
+        
+        ip_info = ''
+        if j.get('ip'):
+            ip = j.get('ip')
+            ip_info = j 
+        else:
+            ip = request.httprequest.environ["REMOTE_ADDR"] 
+        
         agreement_id.sudo().write({'agree': True,
-                                   'ip_add_of_user': ip})
+                                   'ip_add_of_user': ip,
+                                   'ip_info': ip_info})
         
         if agreement:
             data = {'agreement': agreement}
