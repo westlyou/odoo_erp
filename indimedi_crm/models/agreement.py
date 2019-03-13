@@ -46,9 +46,11 @@ class JobDescription(models.Model):
                                     ('normal', 'Normal Firm'),
                                     ('small', 'Small Firm')], string="Client Firm")
     subsidiary_id = fields.Many2one('subsidiary.master', string="Billing Company")
-    random_token = fields.Char(string="Token")
+    random_token = fields.Char(string="Token", readonly=True)
     ip_info = fields.Text(string="IP Info", readonly=True)
     # duration = fields.Float(help="Duration in minutes and seconds.", default=0.5)
+    device_name = fields.Char("Device", readonly=True)
+    signed_at = fields.Char(string="Signed At", readonly=True)
     
     @api.multi
     def get_agreement_url(self):

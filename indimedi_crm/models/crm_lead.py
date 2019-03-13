@@ -433,7 +433,7 @@ class JobDescription(models.Model):
             user_name = str(self.env.user.name)
             ctx = dict(email_from= us_email_id,
                         user_name= user_name,
-                        attachment_ids=[(4, 19561)])
+                        default_attachment_ids=[(6,0, [20554])]) #20554 server 
             ctx.update({
                     'default_model': 'job.description',
                     'default_res_id': self.ids[0],
