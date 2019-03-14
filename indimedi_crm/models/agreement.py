@@ -52,6 +52,11 @@ class JobDescription(models.Model):
     device_name = fields.Char("Device", readonly=True)
     signed_at = fields.Char(string="Signed At", readonly=True)
     
+    is_client_confim = fields.Boolean(string="Client Confirmed")
+    
+    @api.multi
+    def action_send_staff_confirmation(self):
+        pass
     
     @api.multi
     def get_contact_name(self):
@@ -172,6 +177,7 @@ class JobDescription(models.Model):
         #     vals.update({'stage_hide':False})
 #         random_token = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVQXYZ') for i in range(29))
 #         vals['random_token'] = random_token
+        
         res = super(JobDescription, self).write(vals)
         stage_name = str(self.agreement_stage_id.name)
 
@@ -243,17 +249,19 @@ class JobDescription(models.Model):
                 })
 
         if stage_name == 'Assignment Of Employee':
-            if self.jd_ea_working_id and self.jd_us_name_id and self.jd_manager_id.id:
+            if self.jd_ea_working_id and self.jd_us_name_id and self.jd_manager_id.id and self.is_client_confim:
                 pass
             else:
-                raise ValidationError(_('Please Fill All Require fields'))
+                if not self.jd_ea_working_id or not self.jd_us_name_id or not self.jd_manager_id.id:
+                    raise ValidationError(_('Please Fill All Require fields'))
+                else:
+                    raise UserError("Client not sighed staff selection yet!")
 
         else:
-            if self.jd_ea_working_id and self.jd_us_name_id and self.jd_manager_id.id and stage == 'Employee Selected':
+            if self.jd_ea_working_id and self.jd_us_name_id and self.jd_manager_id.id and stage == 'Employee Selected' and self.is_client_confim:
                 name_stage = self.env['agreement.stage'].search([('name','=','Assignment Of Employee')])
                 self.agreement_stage_id = name_stage.id
-
- 
+            
         if not self.stage_hide:
             if stage_name == 'Interview Done':
                 self.stage_hide = True

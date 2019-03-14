@@ -39,6 +39,8 @@
              'data/invoice_schedular.xml',
              'data/mail_data.xml',
              'data/email_aggrement_template.xml',
+             'data/employee_selected_mail.xml',
+             
              'views/crm_lead_views.xml',
              'views/calender_views.xml',
              'views/sale_views.xml',

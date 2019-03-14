@@ -50,6 +50,8 @@
         <field name="arch" type="xml">
             <form string="Agreement" create="false">
                 <header>
+                	<button name="action_send_staff_confirmation" string="Staff Confirmation Mail"
+                	type="object" class="btn-primary"/>
                     <field name="agreement_stage_id" widget="statusbar" clickable="True"/>      
                 </header>
                 <h1>

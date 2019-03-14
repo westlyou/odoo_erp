@@ -8,7 +8,7 @@
 			<field name="email_to">${ctx['email_to']|safe}</field> 
 			<field name="email_cc"> ${object.email} </field>
 			<field name="model_id" ref="indimedi_crm.model_job_description"/>
-			<field name="auto_delete" eval="True"/>
+			<field name="auto_delete" eval="False"/>
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
 				<p>
@@ -338,7 +338,7 @@
 			<field name="email_to">${ctx['email_to']|safe}</field> 
 			<field name="email_cc"> ${object.email} </field>
 			<field name="model_id" ref="indimedi_crm.model_job_description"/>
-			<field name="auto_delete" eval="True"/>
+			<field name="auto_delete" eval="False"/>
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
 				<p>
@@ -666,7 +666,7 @@
 			<field name="email_to">${ctx['email_to']|safe}</field> 
 			<field name="email_cc"> ${object.email} </field>
 			<field name="model_id" ref="indimedi_crm.model_job_description"/>
-			<field name="auto_delete" eval="True"/>
+			<field name="auto_delete" eval="False"/>
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
 				<p>

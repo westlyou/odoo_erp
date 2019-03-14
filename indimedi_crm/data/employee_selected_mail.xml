@@ -1,0 +1,44 @@
+<odoo>
+
+	<!-- email with users ip and device info -->
+		<record id="email_template_confirmation_of_staff" model="mail.template">
+			<field name="name">Confirmation of Staff</field>
+			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+			<field name="subject">Confirmation of Staff</field>
+			<field name="email_to">${ctx['email_to']|safe}</field> 
+			<field name="email_cc"> ${object.email} </field>
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<field name="auto_delete" eval="False"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html"><![CDATA[
+				<p>
+				Hi ${object.get_contact_name()}<br/>
+				
+				Good Morning <br/></br>
+				
+				Hope you are doing well.<br/>
+				
+				</p>
+				<h2><b><u>Confirmation</u></b></h2> 
+				
+				<p>
+					We are excited to confirm that ${object.jd_us_name_id.name or '  '} has accepted the offer. He will begin working with you on ${object.start_date_billing or ''} as your ${object.job_profile_id.name}. Kindly execute and confirm the same.
+				</p>
+				
+				<h2><b><u>Introductory Call</u></b></h2>
+				<p>I request to set up an introductory call before he joins, so you can walk him through your process. Please let me know a day and time and we can connect accordingly.<p>
+				
+				<h2><b><u>IT Setup</u></b></h2>
+				<p>
+					Please share the remote desktop / software connection credentials so that we can check if it is up and running.
+				</p>
+				
+				<h2><b><u>Staff Details</u></b></h2> 
+				
+				
+                   														
+			]]>
+			</field>
+		</record>
+
+</odoo>
