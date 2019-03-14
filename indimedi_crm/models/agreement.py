@@ -46,9 +46,58 @@ class JobDescription(models.Model):
                                     ('normal', 'Normal Firm'),
                                     ('small', 'Small Firm')], string="Client Firm")
     subsidiary_id = fields.Many2one('subsidiary.master', string="Billing Company")
-
+    random_token = fields.Char(string="Token", readonly=True)
+    ip_info = fields.Text(string="IP Info", readonly=True)
     # duration = fields.Float(help="Duration in minutes and seconds.", default=0.5)
-
+    device_name = fields.Char("Device", readonly=True)
+    signed_at = fields.Char(string="Signed At", readonly=True)
+    
+    
+    @api.multi
+    def get_contact_name(self):
+        vals = ''
+        if self.child_ids:
+            for contact in self.child_ids:
+                if contact.primary_contact:
+                    vals = contact.name
+                    break
+            if not vals:
+                vals = self.child_ids[0].name
+        return vals
+    
+    @api.multi
+    def get_agreement_url(self):
+        base_url = ''
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = base_url + '/agreement_done/%s/%s'%(self.id, self.random_token)
+        return base_url
+    
+        
+    @api.multi
+    def email_comm_medium_value(self):
+        value = ''
+        if self.comm_medium_ids:
+            value = ", ".join(self.comm_medium_ids.mapped('name'))
+            
+        return value
+    
+    @api.multi
+    def email_tax_software_value(self):
+        value = ''
+        if self.s_tax_id_ids:
+            value = ", ".join(self.s_tax_id_ids.mapped('name'))
+            
+        return value
+    
+    @api.multi
+    def email_software_exp_value(self):
+        value = ''
+        if self.s_accounting_ids:
+            value = ", ".join(self.s_accounting_ids.mapped('name'))
+            
+        return value    
+            
+    
     @api.onchange('interview_start_date')
     def onchange_interview_start_date(self):
         for rec in self:
@@ -93,6 +142,7 @@ class JobDescription(models.Model):
     @api.multi
     def write(self, vals):
         #Employee Phone Number Format Logic
+        
         if vals.get('jd_post_timesheet_phone'):
             track_list  = []
             for i in vals.get('jd_post_timesheet_phone'):
@@ -120,7 +170,8 @@ class JobDescription(models.Model):
         #for hide tabs if stage is not ib Employee selected and Assignment Of Employee
         # if self.stage_hide:
         #     vals.update({'stage_hide':False})
-
+#         random_token = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVQXYZ') for i in range(29))
+#         vals['random_token'] = random_token
         res = super(JobDescription, self).write(vals)
         stage_name = str(self.agreement_stage_id.name)
 
@@ -268,7 +319,9 @@ class JobDescription(models.Model):
             'agreement_stage_id' : new_stage_id.id
         })
         res = super(JobDescription, self).create(vals)
-
+        random_token = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVQXYZ') for i in range(29))
+        res.random_token = random_token
+        
         random_var = ''.join(random.choice('0123456789') for i in range(3))
         seq = self.env['ir.sequence'].next_by_code('job.description').split('/')
         if vals.get('hiring_model','') == 'permanent':
@@ -413,3 +466,11 @@ class CredentialsAgreement(models.Model):
     cred_agreement_post = fields.Many2one('credentials.task',string="Name")
     cred_agreement_description_post = fields.Text(name="Description")
     agree = fields.Many2one('job.description',string="Jobs")
+    
+class AgreementAtt(models.Model):
+    _name = 'agreement.att'
+    
+    file = fields.Binary(string="FIle")
+    file_name = fields.Char(string="File Name")
+    
+    

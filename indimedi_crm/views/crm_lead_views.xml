@@ -766,9 +766,9 @@ if records:
                                     <!-- <field name="hiring_option" style="width:50%;"/>
                                     <field name="full_time_hr" attrs="{'invisible': ['|',('hiring_option','in','part_time'),('hiring_option','in', False)]}" style="width:50%;"/>
                                     <field name="part_time_hr" attrs="{'invisible': ['|',('hiring_option','in','full_time'),('hiring_option','in', False)]}" style="width:50%;"/> -->
-                                    <field name="permanent_hour_selection" style="width:50%;" attrs="{'invisible': ['|',('hiring_model', '=', 'temporary'),('hiring_model', 'in', False)]}"/>
-                                    <field name="temporary_hour_selection" style="width:50%;" attrs="{'invisible': ['|',('hiring_model', 'in', 'permanent'),('hiring_model', 'in', False)]}"/>
-                                    <field name="hour_selection" style="width:50%;" attrs="{'invisible': [('hiring_model', 'in', ('permanent', 'temporary',False))]}"/>
+                                    <field name="permanent_hour_selection" style="width:50%;" attrs="{'invisible': ['|',('hiring_model', 'not in', ['permanent', 'On Demand']),('hiring_model', 'in', False)]}"/>
+                                    <field name="temporary_hour_selection" style="width:50%;" attrs="{'invisible': ['|',('hiring_model', 'in', ['permanent', 'On Demand']),('hiring_model', 'in', False)]}"/>
+                                    <field name="hour_selection" style="width:50%;" attrs="{'invisible': [('hiring_model', 'in', ('permanent', 'temporary','On Demand',False))]}"/>
                                     <!-- <field name="hour_selection" style="width:50%;"/> -->
                                 </group>
                                 <group col="4">
