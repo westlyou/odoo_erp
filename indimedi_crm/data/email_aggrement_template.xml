@@ -12,7 +12,7 @@
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
 				<p>
-					Hi ${object.crm_id.name} <br/><br/>
+					Hi ${object.get_contact_name()} <br/><br/>
 					Thanks for sharing information over a call. Below I have mentioned your requirement. I have also attached terms and conditions for signing up.<br/><br/>
 					Once you confirm we will move forward. <br/><br/> 
 				</p>
@@ -26,7 +26,7 @@
 	                               Name:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               ${object.crm_id.name}
+	                               ${object.get_contact_name()}
 	                            </td>
 	                            
 	                        </tr>
@@ -35,7 +35,7 @@
 	                               Company Name :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               ${object.crm_id.subsidiary_id.name or ''}
+	                               ${object.crm_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -342,7 +342,7 @@
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
 				<p>
-					Hi ${object.crm_id.name} <br/><br/>
+					Hi ${object.get_contact_name()} <br/><br/>
 					Thanks for Signing Up with Entigrity Solutions LLC. We look forward to work with you. following are your details as per sign up.  <br/><br/> 
 				</p>
 				<table class="text-center" border="2" style="vertical-align:middle;width:75%; ">
@@ -355,7 +355,7 @@
 	                               Name:
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               ${object.crm_id.name}
+	                               ${object.get_contact_name()}
 	                            </td>
 	                            
 	                        </tr>
@@ -364,7 +364,7 @@
 	                               Company Name :
 	                            </td>
 	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-	                               ${object.crm_id.subsidiary_id.name or ''}
+	                               ${object.crm_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
@@ -670,7 +670,7 @@
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
 				<p>
-					Hi ${object.crm_id.name} <br/><br/>
+					Hi ${object.get_contact_name()} <br/><br/>
 					Thanks for signing document.<br/><br/> 
 				</p>
 				<h2>SIGNERS<h2>
@@ -684,7 +684,7 @@
                             <strong>Name:</strong>
                          </td>
                          <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
-                            ${object.crm_id.name or ''}
+                            ${object.get_contact_name() or ''}
                          </td>
                      </tr>
                      

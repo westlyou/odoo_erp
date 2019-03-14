@@ -52,6 +52,19 @@ class JobDescription(models.Model):
     device_name = fields.Char("Device", readonly=True)
     signed_at = fields.Char(string="Signed At", readonly=True)
     
+    
+    @api.multi
+    def get_contact_name(self):
+        vals = ''
+        if self.child_ids:
+            for contact in self.child_ids:
+                if contact.primary_contact:
+                    vals = contact.name
+                    break
+            if not vals:
+                vals = self.child_ids[0].name
+        return vals
+    
     @api.multi
     def get_agreement_url(self):
         base_url = ''
