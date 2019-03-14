@@ -2,13 +2,107 @@
 from odoo import http, _
 from odoo.http import request
 import os.path
+from odoo.addons.website_form.controllers.main import WebsiteForm
 # from Tkinter import *
 # import tkMessageBox
 import logging
+import requests
+import json
+import httpagentparser
+from datetime import datetime
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
+
 
 _logger = logging.getLogger(__name__)
+    
 
-
+class AgreementConfirm(http.Controller):
+#     @http.route('/agreement_confirm/<agreement>/<token>', type='http', auth='public', website=True)
+#     def agreement_confirm(self, agreement, token, **post):
+#         data = {}
+#         job_id = request.env['job.description'].search([('id', '=', agreement),('random_token', '=', token)])
+#         
+#         if job_id.agree:
+#             return request.render('indimedi_crm.already_agreed', data)
+#         
+#         if not job_id:
+#             return request.render('indimedi_crm.i_agree_form', {'error': "Invalid Agreement Access Token!"})
+#         data = {'agreement': agreement, 'token': token}
+#         return request.render('indimedi_crm.i_agree_form', data)
+    
+    
+    @http.route('/agreement_done/<agreement>/<token>', type='http', auth='public', website=True)
+    def agreement_yes(self, agreement, token, **post):
+        data = {}
+        ip = request.httprequest.environ["REMOTE_ADDR"]
+#         ip = request.httprequest.remote_addr
+        
+        #get browser info
+        agent = request.httprequest.environ.get('HTTP_USER_AGENT')
+        browser = httpagentparser.detect(agent)
+        
+        #get device info
+        platform = browser['os']['name']
+        browser_name = browser['browser']['name']
+        
+        device_name = browser_name + " via " + platform
+        agreement_id = request.env['job.description'].sudo().search([('id', '=', agreement),('random_token', '=', token)])
+        if not agreement_id:
+            return request.render('indimedi_crm.i_agree_form', {'error': "Invalid Access Token!"})
+        if agreement_id.agree:
+            return request.render('indimedi_crm.already_agreed', data)
+        
+        #get IP Info
+        send_url = 'http://api.ipstack.com/check?access_key=53ef5675bc86a5f8ae76707f13060ae0&format=1'
+        r = requests.get(send_url)
+        j = json.loads(r.text)
+        
+        ip_info = ''
+        if j.get('ip'):
+            ip = j.get('ip')
+            ip_info = j 
+        else:
+            ip = request.httprequest.environ["REMOTE_ADDR"] 
+        today = datetime.strftime(datetime.now(), DEFAULT_SERVER_DATETIME_FORMAT)
+        
+        vals = {'agree': True,
+               'ip_add_of_user': ip,
+#                'ip_info': ip_info,
+               'device_name': device_name,
+               'signed_at': today + " UTC"}
+        
+        agreement_id.sudo().write(vals)
+        
+        #send signup confirmation email
+        template_id = request.env.ref('indimedi_crm.email_template_agreement_crm_signup_confirm').sudo()
+        email_vals = template_id.sudo().generate_email(agreement_id.id)
+        
+        superuser_id = request.env['res.users'].sudo().search([('id', '=', 1)])
+        
+        email_vals['attachment_ids'] = [(6,0, [20554])] #20554 server | local 19561
+        email_vals['email_from'] = superuser_id.email
+        email_vals['email_to'] = agreement_id.crm_id.email_from
+        
+        mail_id = request.env['mail.mail'].sudo().create(email_vals)
+        mail_id.send()
+        
+        #send device info email
+        template_id = request.env.ref('indimedi_crm.email_template_agreement_crm_signup_device').sudo()
+        email_vals = template_id.sudo().generate_email(agreement_id.id)
+         
+        superuser_id = request.env['res.users'].sudo().search([('id', '=', 1)])
+        
+        email_vals['email_from'] = superuser_id.email
+        email_vals['email_to'] = agreement_id.crm_id.email_from
+        
+        mail_id = request.env['mail.mail'].sudo().create(email_vals)
+        mail_id.send()
+        
+        if agreement:
+            data = {'agreement': agreement}
+        return request.render('indimedi_crm.i_agree', data)
+    
+    
 class MailMail(http.Controller):
     @http.route([ '/indimedi_crm/data'], methods=['GET'], type='http', auth="none", website=True,)
     def index(self, **get):
@@ -72,3 +166,6 @@ class MailMail(http.Controller):
     # def make_payment(self, **kw):
     #     print "\n==>BHOOMMM"
     #     return http.local_redirect("https://www.google.com/")
+    
+    
+    

@@ -38,6 +38,7 @@
              'data/post_sale_resume.xml',
              'data/invoice_schedular.xml',
              'data/mail_data.xml',
+             'data/email_aggrement_template.xml',
              'views/crm_lead_views.xml',
              'views/calender_views.xml',
              'views/sale_views.xml',
@@ -54,6 +55,7 @@
              'data/analysis_timesheet_sent.xml',
              'views/invoice_views.xml',
              'views/hide_menus_customer.xml',
+             'views/template.xml',
              
             #new file added
             'wizard/change_billing_info_wizard.xml',

@@ -1,0 +1,44 @@
+<odoo>
+	
+    <template id="i_agree_form" name="Agrement">
+       <t t-call="website.layout">
+        <div class="oe_structure">
+          <div class="container">
+          <t t-if="not error">
+	            <center><h3>Do you agree with the term and condition?</h3>
+	            <p>
+	              <a class="btn btn-primary btn-lg" t-att-href="'/agreement_done/%s/%s' % (agreement, token)">I Agree</a>
+	            </p>
+	            </center>
+           </t>
+           <p class="alert alert-danger" t-if="error">
+               <t t-esc="error"/>
+            </p>
+          </div>
+        </div>
+      </t>
+    </template>
+    
+    <template id="i_agree" name="Agrement">
+       <t t-call="website.layout">
+        <div class="oe_structure">
+          <div class="container">
+            <center><h3>Thanks for accepting terms and conditions. <br/>Your signup is completed now.</h3>
+            </center>
+          </div>
+        </div>
+      </t>
+    </template>
+    
+    <template id="already_agreed" name="Agrement">
+       <t t-call="website.layout">
+        <div class="oe_structure">
+          <div class="container">
+            <center><h3>You already accepted teams and condition.</h3>
+            </center>
+          </div>
+        </div>
+      </t>
+    </template>
+	
+</odoo>

@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+		<record id="email_template_agreement_crm_signup" model="mail.template">
+			<field name="name">Standard Permanent Agreeement</field>
+			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+			<field name="subject">Signup Confirmation with Entigrity Remote Staffing</field>
+			<field name="email_to">${ctx['email_to']|safe}</field> 
+			<field name="email_cc"> ${object.email} </field>
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<field name="auto_delete" eval="True"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html"><![CDATA[
+				<p>
+					Hi ${object.get_contact_name()} <br/><br/>
+					Thanks for sharing information over a call. Below I have mentioned your requirement. I have also attached terms and conditions for signing up.<br/><br/>
+					Once you confirm we will move forward. <br/><br/> 
+				</p>
+				<table class="text-center" border="2" style="vertical-align:middle;width:75%; ">
+                        <tbody class="tbody" style="border: solid 2px; text-align: left;">
+	                        <tr>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>CLIENT DETAILS</strong></td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Name:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.get_contact_name()}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Company Name :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.name or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Address Line 1:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_street2 or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Suite No/Room No:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_street or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               City:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_city or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               State:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_state_id.name or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Zip:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_zip or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Phone:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.phone or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Email:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.email_from or ''}
+	                            </td>
+	                        </tr>
+	                        
+	                        
+	                        
+	                        
+	                        <tr>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>HIRING OPTIONS</strong></td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Hiring Model:
+	                            </td>
+	                            
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.hiring_model or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Numbers Of Hours Per Week:
+	                            </td>
+	                            %if object.hiring_model == 'permanent':
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.permanent_hour_selection or ''}
+	                            </td>
+	                             %endif
+	                             %if object.hiring_model == 'On Demand':
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.permanent_hour_selection or ''}
+	                            </td>
+	                             %endif
+	                             %if object.hiring_model == 'temporary':
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.temporary_hour_selection or ''}
+	                            </td>
+	                             %endif
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Hourly Rate:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.rate_per_hour or ''}
+	                            </td>
+	                        </tr>
+	                        
+                            
+	                        
+	                        <tr>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>JOB DESCRIPTION</strong></td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Profile:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.job_profile_id.name or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Experience in years:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.experience_id.name or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Tasks to be done :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.task_tobe_done or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Accounting Software :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.email_software_exp_value()}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Tax Software :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.email_tax_software_value()}
+	                            </td>
+	                        </tr>
+                            <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Working Period :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.hiring_period or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Invoicing :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.jd_invoicing.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Writing Skill :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.writing_skill or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Speaking Skill :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.speaking_skill or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Communication Medium :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.email_comm_medium_value() or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Software Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.soft_access or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Software Remote Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.soft_remote_id.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Document Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.doc_access or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Document Remote Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.doc_remote_id.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Reporting :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.reporting_id.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Tentative Start Date :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.tentative_date or ''}
+	                            </td>
+	                        </tr>
+                            <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Working Time Zone :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.timezone_id.name or ''}
+	                            </td>
+	                        </tr>
+                            <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Working Time From :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.from_timezone_id.name or ''}
+	                            </td>
+	                        </tr>
+                            <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Working Time To :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.to_timezone_id.name or ''}
+	                            </td>
+	                        </tr>
+                        </tbody>
+                    </table>	
+                 <br/>
+                 <br/>
+                 
+			    <center>
+			        <a href="${object.get_agreement_url()}" style="background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;" class="o_default_snippet_text">Confirm Agreement</a>
+			        <br/><br/><br/>
+			    </center>
+                 
+                   														
+			]]>
+			</field>
+		</record>
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- signup confirmation email -->
+		<record id="email_template_agreement_crm_signup_confirm" model="mail.template">
+			<field name="name">Signup Agreeement Confirm</field>
+			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+			<field name="subject">Thanks for signing up with Entigrity Remote Staffing</field>
+			<field name="email_to">${ctx['email_to']|safe}</field> 
+			<field name="email_cc"> ${object.email} </field>
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<field name="auto_delete" eval="True"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html"><![CDATA[
+				<p>
+					Hi ${object.get_contact_name()} <br/><br/>
+					Thanks for Signing Up with Entigrity Solutions LLC. We look forward to work with you. following are your details as per sign up.  <br/><br/> 
+				</p>
+				<table class="text-center" border="2" style="vertical-align:middle;width:75%; ">
+                        <tbody class="tbody" style="border: solid 2px; text-align: left;">
+	                        <tr>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>CLIENT DETAILS</strong></td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Name:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.get_contact_name()}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Company Name :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.name or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Address Line 1:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_street2 or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Suite No/Room No:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_street or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               City:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_city or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               State:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_state_id.name or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Zip:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.c_zip or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Phone:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.phone or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Email:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.crm_id.email_from or ''}
+	                            </td>
+	                        </tr>
+	                        
+	                        
+	                        
+	                        
+	                        <tr>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>HIRING OPTIONS</strong></td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Hiring Model:
+	                            </td>
+	                            
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.hiring_model or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Numbers Of Hours Per Week:
+	                            </td>
+	                            %if object.hiring_model == 'permanent':
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.permanent_hour_selection or ''}
+	                            </td>
+	                             %endif
+	                             %if object.hiring_model == 'On Demand':
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.permanent_hour_selection or ''}
+	                            </td>
+	                             %endif
+	                             %if object.hiring_model == 'temporary':
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.temporary_hour_selection or ''}
+	                            </td>
+	                             %endif
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Hourly Rate:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.rate_per_hour or ''}
+	                            </td>
+	                        </tr>
+	                        
+                            
+	                        
+	                        <tr>
+	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>JOB DESCRIPTION</strong></td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Profile:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.job_profile_id.name or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Experience in years:
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.experience_id.name or ''}
+	                            </td>
+	                            
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Tasks to be done :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.task_tobe_done or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Accounting Software :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.email_software_exp_value()}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Tax Software :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.email_tax_software_value()}
+	                            </td>
+	                        </tr>
+                            <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Working Period :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.hiring_period or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Invoicing :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.jd_invoicing.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Writing Skill :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.writing_skill or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Speaking Skill :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.speaking_skill or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Communication Medium :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.email_comm_medium_value() or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Software Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.soft_access or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Software Remote Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.soft_remote_id.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Document Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.doc_access or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Document Remote Access :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.doc_remote_id.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Reporting :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.reporting_id.name or ''}
+	                            </td>
+	                        </tr>
+	                        <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Tentative Start Date :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.tentative_date or ''}
+	                            </td>
+	                        </tr>
+                            <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Working Time Zone :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.timezone_id.name or ''}
+	                            </td>
+	                        </tr>
+                            <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Working Time From :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.from_timezone_id.name or ''}
+	                            </td>
+	                        </tr>
+                            <tr style="border: solid 1px;">
+	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                               Working Time To :
+	                            </td>
+	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                               ${object.to_timezone_id.name or ''}
+	                            </td>
+	                        </tr>
+                        </tbody>
+                    </table>	
+                 <br/>
+                 <br/>
+                 
+			    <p>
+			    	We have enclosed herewith terms and conditions of sign up in pdf. Your account manager will get in touch with you soon.<br/><br/>
+
+					In case of any correction or for further assistance please reach out to your account manager or email us at info@entigrity.com. <br/><br/>
+			    </p>
+                 
+                   														
+			]]>
+			</field>
+		</record>
+		
+		
+		
+		
+		
+		
+		<!-- email with users ip and device info -->
+		<record id="email_template_agreement_crm_signup_device" model="mail.template">
+			<field name="name">Signup Agreeement Device</field>
+			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+			<field name="subject">Document Signed</field>
+			<field name="email_to">${ctx['email_to']|safe}</field> 
+			<field name="email_cc"> ${object.email} </field>
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<field name="auto_delete" eval="True"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html"><![CDATA[
+				<p>
+					Hi ${object.get_contact_name()} <br/><br/>
+					Thanks for signing document.<br/><br/> 
+				</p>
+				<h2>SIGNERS<h2>
+				<table class="text-center" border="2" style="vertical-align:middle;width:75%; ">
+                    <tbody class="tbody" style="border: solid 2px; text-align: left;">
+                     <tr>
+                     	<td colspan="2" style="height:35px;padding:7px;"><strong>SIGNER</strong></td>
+                   	 </tr>
+                     <tr style="border: solid 1px;">
+                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <strong>Name:</strong>
+                         </td>
+                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                            ${object.get_contact_name() or ''}
+                         </td>
+                     </tr>
+                     
+                     <tr style="border: solid 1px;">
+                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <strong>Email:</strong>
+                         </td>
+                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                            ${object.crm_id.email_from or ''}
+                         </td>
+                     </tr>
+                     
+                     
+                     
+                     <tr>
+                     	<td colspan="2" style="height:35px;padding:7px;"><strong>E-SIGNATURE</strong></td>
+                   	 </tr>
+                     <tr style="border: solid 1px;">
+                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <strong>Status:</strong>
+                         </td>
+                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                            signed
+                         </td>
+                     </tr>
+                     <tr style="border: solid 1px;">
+                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <strong>IP Address:</strong>
+                         </td>
+                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                            ${object.ip_add_of_user or ''}
+                         </td>
+                     </tr>
+                     
+                     <tr style="border: solid 1px;">
+                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <strong>Device:</strong>
+                         </td>
+                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                            ${object.device_name or ''}
+                         </td>
+                     </tr>
+                     
+                     <tr style="border: solid 1px;">
+                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <strong>Signed At:</strong>
+                         </td>
+                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                            ${object.signed_at or ''}
+                         </td>
+                     </tr>
+                 </table>
+                 <br/>
+                 <br/>
+                 Thanks.
+                 
+                   														
+			]]>
+			</field>
+		</record>
+		
+	</data>
+</odoo>
+        		

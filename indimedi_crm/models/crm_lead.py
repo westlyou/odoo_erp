@@ -267,7 +267,7 @@ class JobDescription(models.Model):
     task_tobe_done = fields.Char(string="Task to be Done")
     s_accounting_ids = fields.Many2many('accounting.software','job_acc_software_rel','s_accounting_id','crm_id', string="Accounting Software")
     s_tax_id_ids = fields.Many2many('tax.software','job_tax_software_rel','s_tax_id_id','crm_id', string="Tax Software")
-    hiring_model = fields.Selection([('permanent','Permanent'),('temporary','Temporary')],default='permanent', string="Hiring Model")
+    hiring_model = fields.Selection([('permanent','Permanent'),('temporary','Temporary'),('On Demand', 'On Demand')],default='permanent', string="Hiring Model")
     hiring_option = fields.Selection([('full_time','Full Time'),('part_time','Part Time')], string="Hiring Option")
     # full_time_hr = fields.Selection([('40','40 Hours a Week'),('160','160 Hours a Week'),('180','180 Hours a Week'),('200','200 Hours a Week')], default='40', string="Full Time Hours")
     # part_time_hr = fields.Selection([('10','10 Hours a Week'),('20','20 Hours a Week'),('30','30 Hours a Week'),('80','80 Hours a Week'),('90','90 Hours a Week'),('100','100 Hours a Week'),('40-20','40-20 Hours a Week'),('20-10','20-10 Hours a Week')], string="Part Time Hours")
@@ -412,26 +412,28 @@ class JobDescription(models.Model):
             self.ensure_one()
             ir_model_data = self.env['ir.model.data']
             try:
-                if self.hiring_model == 'permanent' and self.permanent_hour_selection in ['40_20','20_10'] :
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_part_time')[1]   
-                elif self.hiring_model == 'permanent':
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
-                elif self.hiring_model == 'temporary':
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_second')[1]
-                else:
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
+                template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_signup')[1]
+#                 if self.hiring_model == 'permanent' and self.permanent_hour_selection in ['40_20','20_10'] :
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_signup')[1]   
+#                 elif self.hiring_model == 'permanent':
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
+#                 elif self.hiring_model == 'temporary':
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_second')[1]
+#                 else:
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
             except ValueError:
-                    template_id = False
+                template_id = False
             try:
-                    compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+                compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
             except ValueError:
-                    compose_form_id = False
+                compose_form_id = False
 
             # self.resume_details = [(6, 0 , [y for y in (self.env['ir.attachment'].search([('res_model','=','resume.details')]).ids)])]
             us_email_id = str(self.env.user.email)
             user_name = str(self.env.user.name)
             ctx = dict(email_from= us_email_id,
-                        user_name= user_name)
+                        user_name= user_name,
+                        default_attachment_ids=[(6,0, [20554])]) #20554 server 
             ctx.update({
                     'default_model': 'job.description',
                     'default_res_id': self.ids[0],
