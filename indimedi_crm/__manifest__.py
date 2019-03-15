@@ -64,6 +64,7 @@
             'views/project_leave_view.xml',
             'data/project_leave_email.xml',
             'views/subsidiary_master.xml',
+            'wizard/massage_wizard.xml',
         ],
     'qweb': [
         'static/lib/web_calendar/xml/*.xml',

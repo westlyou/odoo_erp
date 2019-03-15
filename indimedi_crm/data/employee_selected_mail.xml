@@ -11,6 +11,7 @@
 			<field name="auto_delete" eval="False"/>
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
+				
 				<p>
 				Hi ${object.get_contact_name()}<br/>
 				
@@ -34,8 +35,63 @@
 				</p>
 				
 				<h2><b><u>Staff Details</u></b></h2> 
+				<table width="60%">
+					<tr>
+						<td width="35%">Name :</td>
+						<td width="65%">
+							${object.jd_us_name_id.name or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Email ID :</td>
+						<td width="65%">
+							${object.jd_post_timesheet_email or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Skype ID :</td>
+						<td width="65%">
+							${object.jd_skype_email or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Phone No :</td>
+						<td width="65%">
+							${object.jd_post_timesheet_phone or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Staff Start Date :</td>
+						<td width="65%">
+							${object.start_date_billing or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Working Location :</td>
+						<td width="65%">
+							Entigrity India, Office:  18 Patel Society, C.G.Road, Ahmedabad 380006
+						</td>
+					<tr>
+				</table>
+				<br/>
 				
+				<h2><b><u>Working Hours and Timings</u></b></h2>
+				<p>
+				Following should be the work timings – (including 1 hour break) <br/><br/>
 				
+				Daily Shift Hours : pending<br/>
+				Indian Timings : pending </br/>
+				US Timings : pending
+				
+				</p>
+				
+				<h2><b><u>Working Hours and Timings</u></b></h2>
+				<p>The work performed by Company for firm shall be performed at the rate set forth below.</p>
+				
+				<h2><b><u>Hourly Fee’s</u></b></h2>
+				<p>${object.rate_per_hour_inv} per Hour (Pursuant to clause no. 2 (Fee’s) of Exhibit A of the agreement
+				
+								
                    														
 			]]>
 			</field>

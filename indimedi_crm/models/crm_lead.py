@@ -412,7 +412,7 @@ class JobDescription(models.Model):
             self.ensure_one()
             ir_model_data = self.env['ir.model.data']
             try:
-                template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_signup')[1]
+                template_id = self.env.ref('indimedi_crm.email_template_agreement_crm_signup')
 #                 if self.hiring_model == 'permanent' and self.permanent_hour_selection in ['40_20','20_10'] :
 #                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_signup')[1]   
 #                 elif self.hiring_model == 'permanent':
@@ -433,27 +433,50 @@ class JobDescription(models.Model):
             user_name = str(self.env.user.name)
             ctx = dict(email_from= us_email_id,
                         user_name= user_name,
-                        default_attachment_ids=[(6,0, [20554])]) #20554 server 
+                        default_attachment_ids=[(6,0, [20554])]) #20554 server
+            
+            
+            
+            
+             
             ctx.update({
                     'default_model': 'job.description',
                     'default_res_id': self.ids[0],
-                    'default_use_template': bool(template_id),
-                    'default_template_id': template_id,
-                    'default_composition_mode': 'comment',
+#                     'default_use_template': bool(template_id),
+#                     'default_template_id': template_id,
+#                     'default_composition_mode': 'comment',
                     'mark_so_as_sent': True,
                     'custom_layout': "email_template_agreement_crm",
                     'email_to' : self.crm_id.email_from, #default set recepient as company email in template
             })
+
+            email_vals = template_id.with_context(ctx).sudo().generate_email(self.id)
+            email_vals['attachment_ids'] = [(6,0, [20554])]
+            mail_id = self.env['mail.mail'].sudo().create(email_vals)
+            mail_id.send()
+            
+            view_id = self.env.ref('indimedi_crm.popup_massage_wizard')
             return {
+                    'name': "Notification",
                     'type': 'ir.actions.act_window',
                     'view_type': 'form',
                     'view_mode': 'form',
-                    'res_model': 'mail.compose.message',
-                    'views': [(compose_form_id, 'form')],
-                    'view_id': compose_form_id,
+                    'res_model': 'popup.massage',
+                    'view_id': view_id.id,
                     'target': 'new',
-                    'context': ctx,
-            }
+                    'context': {'default_name': "Email successfully sent"},
+                    
+                }
+#             return {
+#                     'type': 'ir.actions.act_window',
+#                     'view_type': 'form',
+#                     'view_mode': 'form',
+#                     'res_model': 'mail.compose.message',
+#                     'views': [(compose_form_id, 'form')],
+#                     'view_id': compose_form_id,
+#                     'target': 'new',
+#                     'context': ctx,
+#             }
 
     @api.multi
     def action_resume_send(self):
