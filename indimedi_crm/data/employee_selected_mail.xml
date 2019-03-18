@@ -13,11 +13,11 @@
 			<field name="body_html"><![CDATA[
 				
 				<p>
-				Hi ${object.get_contact_name()}<br/>
+				Hi ${object.get_contact_name()}<br/><br/>
 				
-				Good Morning <br/></br>
+				Good Morning <br/></br><br/>
 				
-				Hope you are doing well.<br/>
+				Hope you are doing well.<br/><br/>
 				
 				</p>
 				<h2><b><u>Confirmation</u></b></h2> 
@@ -91,7 +91,17 @@
 				<h2><b><u>Hourly Fee’s</u></b></h2>
 				<p>${object.rate_per_hour_inv} per Hour (Pursuant to clause no. 2 (Fee’s) of Exhibit A of the agreement
 				
-								
+				<h2><b><u>Payment</u></b></h2>
+				<p style="color:red"><strong>
+				Invoices shall be issued to Firm by Company weekly after performance of the Work, and payment shall be due immediately on receipt of invoices through Email.
+				</strong></p>
+				
+				<p>If you have any questions, please let me know.<p/>
+				
+				<center>
+			        <a href="${object.get_agreement_url()}" style="background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;" class="o_default_snippet_text">Confirm Staff</a>
+			        <br/><br/><br/>
+			    </center>				
                    														
 			]]>
 			</field>

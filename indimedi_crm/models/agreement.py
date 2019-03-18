@@ -53,11 +53,49 @@ class JobDescription(models.Model):
     signed_at = fields.Char(string="Signed At", readonly=True)
     
     is_client_confim = fields.Boolean(string="Client Confirmed")
+    payment_method = fields.Selection([('bank', 'Bank'),
+                                       ('credit_card', 'Credit Card')], string="Payment Method")
+    name_of_account = fields.Char(string="Name of Account")
+    name_of_bank = fields.Char(string="Name of Bank")
+    type_of_bank = fields.Char(string="Type of Bank")
+    account_number = fields.Char(string="Account Number")
+    bank_routing = fields.Char(string="Bank Routing")
+    
+    name_on_card = fields.Char(string="Name On Card")
+    type_of_card = fields.Char(string="Type of Card")
+    expiry_date = fields.Date(string="Expiry Date")
+    cvv = fields.Char(string="CVV")
+    pin = fields.Char(string="PIN")
+    
+    
     
     @api.multi
     def action_send_staff_confirmation(self):
-        pass
-    
+        template_id = self.env.ref('indimedi_crm.email_template_confirmation_of_staff')
+        
+        
+        ctx = dict(email_from= self.agreement_general_manager.email,
+                        user_name= self.agreement_general_manager.name,
+                        ) #20554 server
+             
+        ctx.update({
+                'default_model': 'job.description',
+                'default_res_id': self.ids[0],
+#                     'default_use_template': bool(template_id),
+#                     'default_template_id': template_id,
+#                     'default_composition_mode': 'comment',
+                'mark_so_as_sent': True,
+                'custom_layout': "email_template_agreement_crm",
+                'email_to' : self.jd_email, #default set recepient as company email in template
+        })
+            
+        
+        email_vals = template_id.with_context(ctx).sudo().generate_email(self.id)
+#         email_vals['attachment_ids'] = [(6,0, [20554])]
+        mail_id = self.env['mail.mail'].sudo().create(email_vals)
+        mail_id.send()
+        
+        
     @api.multi
     def get_contact_name(self):
         vals = ''

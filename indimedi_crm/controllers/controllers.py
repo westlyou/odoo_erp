@@ -103,6 +103,17 @@ class AgreementConfirm(http.Controller):
         return request.render('indimedi_crm.i_agree', data)
     
     
+    @http.route('/staff_confirmation/<agreement>/<token>', type='http', auth='public', website=True)
+    def staff_confirmation(self, agreement, token, **post):
+        data = {'agreement': agreement, 'token': token}
+        return request.render('indimedi_crm.staff_confirmation_form', data)
+    
+    @http.route('/staff_confirmed/<agreement>/<token>', type='http', auth='public', website=True, csrf=False)
+    def staff_confirmed(self, agreement, token, **post):
+        data = {'agreement': agreement, 'token': token}
+        return request.render('indimedi_crm.staff_confirmed', data)
+    
+    
 class MailMail(http.Controller):
     @http.route([ '/indimedi_crm/data'], methods=['GET'], type='http', auth="none", website=True,)
     def index(self, **get):
