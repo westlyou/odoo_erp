@@ -105,11 +105,22 @@ class AgreementConfirm(http.Controller):
     
     @http.route('/staff_confirmation/<agreement>/<token>', type='http', auth='public', website=True)
     def staff_confirmation(self, agreement, token, **post):
+        agreement_id = request.env['job.description'].sudo().search([('id', '=', agreement),('token_staff_confirm', '=', token),('active', '=', False)])
+        
+        
+        if not agreement_id:
+            return request.render('indimedi_crm.i_agree_form', {'error': "Invalid Access Token!"})
+        
         data = {'agreement': agreement, 'token': token}
         return request.render('indimedi_crm.staff_confirmation_form', data)
     
     @http.route('/staff_confirmed/<agreement>/<token>', type='http', auth='public', website=True, csrf=False)
     def staff_confirmed(self, agreement, token, **post):
+        agreement_id = request.env['job.description'].sudo().search([('id', '=', agreement),('token_staff_confirm', '=', token),('active', '=', False)])
+        if not agreement_id:
+            return request.render('indimedi_crm.i_agree_form', {'error': "Invalid Access Token!"})
+        
+        print"=========================",post
         data = {'agreement': agreement, 'token': token}
         return request.render('indimedi_crm.staff_confirmed', data)
     
