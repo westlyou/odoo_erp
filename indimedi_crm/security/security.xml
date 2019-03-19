@@ -1,0 +1,8 @@
+<odoo>
+
+	<record id="group_payment_method" model="res.groups">
+         <field name="name">Can View Payment Method</field>
+         <field name="comment">User with this group can view payment information on agreement.</field>
+     </record>
+        
+</odoo>

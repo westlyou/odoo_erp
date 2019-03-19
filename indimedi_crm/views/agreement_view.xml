@@ -371,20 +371,20 @@
                                 <field name="temporary_hour_jd" attrs="{'invisible': [('hiring_model','=','permanent')]}"/>
                             </group>
                         </page>
-                        <page string="Payment Method">
+                        <page string="Payment Method" groups="indimedi_crm.group_payment_method">
                         	<group>
                         		<group>
-                        			<field name="payment_method"/>
-                        			<field name="name_of_account" attrs="{'invisible': [('payment_method', '!=', 'bank')]}"/>
-                        			<field name="name_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}"/>
-                        			<field name="type_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}"/>
-                        			<field name="account_number" attrs="{'invisible': [('payment_method', '!=', 'bank')]}"/>
-                        			<field name="bank_routing" attrs="{'invisible': [('payment_method', '!=', 'bank')]}"/>
-                        			<field name="name_on_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}"/>
-                        			<field name="type_of_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}"/>
-                        			<field name="expiry_date" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}"/>
-                        			<field name="cvv" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}"/>
-                        			<field name="pin" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}"/>
+                        			<field name="payment_method" readonly="1"/>
+                        			<field name="name_of_account" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1"/>
+                        			<field name="name_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1"/>
+                        			<field name="type_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1"/>
+                        			<field name="account_number" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1"/>
+                        			<field name="bank_routing" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1"/>
+                        			<field name="name_on_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
+                        			<field name="type_of_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
+                        			<field name="expiry_date" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
+                        			<field name="cvv" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
+                        			<field name="pin" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
                         		</group>
                         	</group>
                         </page>

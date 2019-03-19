@@ -107,6 +107,8 @@ class AgreementConfirm(http.Controller):
     def staff_confirmation(self, agreement, token, **post):
         agreement_id = request.env['job.description'].sudo().search([('id', '=', agreement),('token_staff_confirm', '=', token),('active', '=', False)])
         
+        if agreement_id.is_client_confim:
+            return request.render('indimedi_crm.confirmation_detail_submited', {})
         
         if not agreement_id:
             return request.render('indimedi_crm.i_agree_form', {'error': "Invalid Access Token!"})
@@ -120,9 +122,58 @@ class AgreementConfirm(http.Controller):
         if not agreement_id:
             return request.render('indimedi_crm.i_agree_form', {'error': "Invalid Access Token!"})
         
-        print"=========================",post
-        data = {'agreement': agreement, 'token': token}
-        return request.render('indimedi_crm.staff_confirmed', data)
+        vals = {
+                'agreement': agreement,
+                'token': token,
+                }
+        
+        if agreement_id.is_client_confim:
+            return request.render('indimedi_crm.confirmation_detail_submited', vals)
+        
+        if not post.get('payment_type'):
+            vals.update({'error': "Please select payment type!"})
+            return request.render('indimedi_crm.staff_confirmation_form', vals)
+        
+        if post.get('payment_type') == 'bank':
+            payment_type = post.get('payment_type')
+            name_of_account = post.get('name_of_account')
+            account_number = post.get('account_number')
+            name_of_bank = post.get('name_of_bank')
+            type_of_bank = post.get('type_of_bank')
+            bank_routing = post.get('bank_routing')
+            
+            payment_vals = {
+                            'payment_method': payment_type,
+                            'name_of_account':name_of_account,
+                            'account_number': account_number,
+                            'name_of_bank': name_of_bank,
+                            'type_of_bank':type_of_bank,
+                            'bank_routing':bank_routing,
+                            'is_client_confim': True
+                            }
+            agreement_id.with_context({'bypass_write': True}).write(payment_vals)
+            
+        if post.get('payment_type') == 'credit_card':
+            name_on_card = post.get('name_on_card')
+            card_number = post.get('card_number')
+            type_of_card = post.get('type_of_card')
+            expiry_date = post.get('expiry_date')
+            cvv = post.get('cvv')
+            pin = post.get('pin')
+            
+            payment_vals = {
+                            'payment_method': payment_type,
+                            'name_on_card': name_on_card,
+                            'card_number':card_number,
+                            'type_of_card': type_of_card,
+                            'expiry_date': expiry_date,
+                            'cvv':cvv,
+                            'pin':pin,
+                            'is_client_confim': True
+                            }
+            agreement_id.with_context({'bypass_write': True}).write(payment_vals)
+            
+        return request.render('indimedi_crm.staff_confirmed', vals)
     
     
 class MailMail(http.Controller):

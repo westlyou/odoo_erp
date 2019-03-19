@@ -53,6 +53,8 @@ class JobDescription(models.Model):
     signed_at = fields.Char(string="Signed At", readonly=True)
     
     is_client_confim = fields.Boolean(string="Client Confirmed")
+    
+    token_staff_confirm = fields.Char(string="Staff Confirm Token")
     payment_method = fields.Selection([('bank', 'Bank'),
                                        ('credit_card', 'Credit Card')], string="Payment Method")
     name_of_account = fields.Char(string="Name of Account")
@@ -68,9 +70,19 @@ class JobDescription(models.Model):
     pin = fields.Char(string="PIN")
     
     
+    @api.multi
+    def get_staff_confirm_token(self):
+        base_url = ''
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = base_url + '/staff_confirmation/%s/%s'%(self.id, self.token_staff_confirm)
+        return base_url
     
     @api.multi
     def action_send_staff_confirmation(self):
+        if not self.token_staff_confirm:
+            token_staff_confirm = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVQXYZ') for i in range(29))
+            self.with_context({'bypass_write': True}).write({'token_staff_confirm': token_staff_confirm})
+    
         template_id = self.env.ref('indimedi_crm.email_template_confirmation_of_staff')
         
         
@@ -114,6 +126,7 @@ class JobDescription(models.Model):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         base_url = base_url + '/agreement_done/%s/%s'%(self.id, self.random_token)
         return base_url
+    
     
         
     @api.multi
@@ -202,7 +215,8 @@ class JobDescription(models.Model):
 
         stage = str(self.agreement_stage_id.name)
         if stage == 'Assignment Of Employee':
-            raise ValidationError(_("Can't Change the stage" ))
+            if not self._context.get('bypass_write'):
+                raise ValidationError(_("Can't Change the stage" ))
 
         cr_details = {}
         for each in self.agreements_credentials:
@@ -513,10 +527,10 @@ class CredentialsAgreement(models.Model):
     cred_agreement_description_post = fields.Text(name="Description")
     agree = fields.Many2one('job.description',string="Jobs")
     
-class AgreementAtt(models.Model):
-    _name = 'agreement.att'
-    
-    file = fields.Binary(string="FIle")
-    file_name = fields.Char(string="File Name")
-    
+# class AgreementAtt(models.Model):
+#     _name = 'agreement.att'
+#     
+#     file = fields.Binary(string="FIle")
+#     file_name = fields.Char(string="File Name")
+#     
     
