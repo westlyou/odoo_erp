@@ -134,6 +134,35 @@ class AgreementConfirm(http.Controller):
             vals.update({'error': "Please select payment type!"})
             return request.render('indimedi_crm.staff_confirmation_form', vals)
         
+        
+        #get IP Information of device
+        ip = request.httprequest.environ["REMOTE_ADDR"]
+#         ip = request.httprequest.remote_addr
+        
+        #get browser info
+        agent = request.httprequest.environ.get('HTTP_USER_AGENT')
+        browser = httpagentparser.detect(agent)
+        
+        #get device info
+        platform = browser['os']['name']
+        browser_name = browser['browser']['name']
+        
+        device_name = browser_name + " via " + platform
+        
+        #get IP Info
+        send_url = 'http://api.ipstack.com/check?access_key=53ef5675bc86a5f8ae76707f13060ae0&format=1'
+        r = requests.get(send_url)
+        j = json.loads(r.text)
+        
+        ip_info = ''
+        if j.get('ip'):
+            ip = j.get('ip')
+            ip_info = j 
+        else:
+            ip = request.httprequest.environ["REMOTE_ADDR"] 
+        today = datetime.strftime(datetime.now(), DEFAULT_SERVER_DATETIME_FORMAT)
+        
+        
         if post.get('payment_type') == 'bank':
             payment_type = post.get('payment_type')
             name_of_account = post.get('name_of_account')
@@ -149,15 +178,20 @@ class AgreementConfirm(http.Controller):
                             'name_of_bank': name_of_bank,
                             'type_of_bank':type_of_bank,
                             'bank_routing':bank_routing,
+                            'ip_add_of_user': ip,
+                           'device_name': device_name,
+                           'signed_at': today + " UTC",
                             'is_client_confim': True
                             }
             agreement_id.with_context({'bypass_write': True}).write(payment_vals)
-            
+        
         if post.get('payment_type') == 'credit_card':
+            payment_type = post.get('payment_type')
             name_on_card = post.get('name_on_card')
             card_number = post.get('card_number')
             type_of_card = post.get('type_of_card')
-            expiry_date = post.get('expiry_date')
+            expiry_month = post.get('expiry_month')
+            expiry_year = post.get('expiry_year')
             cvv = post.get('cvv')
             pin = post.get('pin')
             
@@ -166,13 +200,44 @@ class AgreementConfirm(http.Controller):
                             'name_on_card': name_on_card,
                             'card_number':card_number,
                             'type_of_card': type_of_card,
-                            'expiry_date': expiry_date,
+                            'expiry_month': expiry_month,
+                            'expiry_year': expiry_year,
                             'cvv':cvv,
                             'pin':pin,
+                            'ip_add_of_user': ip,
+                            'device_name': device_name,
+                            'signed_at': today + " UTC",
                             'is_client_confim': True
                             }
             agreement_id.with_context({'bypass_write': True}).write(payment_vals)
+        
+        
+        # send mail to client with device info
+        template_id = request.env.ref('indimedi_crm.signing_confirmation_of_staff')
+        
+        
+        ctx = dict(email_from= agreement_id.agreement_general_manager.email,
+                        user_name= agreement_id.agreement_general_manager.name,
+                        ) #20554 server
+             
+        ctx.update({
+                'default_model': 'job.description',
+                'default_res_id': agreement_id.ids[0],
+#                     'default_use_template': bool(template_id),
+#                     'default_template_id': template_id,
+#                     'default_composition_mode': 'comment',
+                'mark_so_as_sent': True,
+                'custom_layout': "email_template_agreement_crm",
+                'email_to' : agreement_id.jd_email, #default set recepient as company email in template
+        })
             
+        
+        email_vals = template_id.with_context(ctx).sudo().generate_email(agreement_id.id)
+#         email_vals['attachment_ids'] = [(6,0, [20554])]
+        mail_id = request.env['mail.mail'].sudo().create(email_vals)
+        mail_id.send()
+        
+         
         return request.render('indimedi_crm.staff_confirmed', vals)
     
     

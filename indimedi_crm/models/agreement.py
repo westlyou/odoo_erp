@@ -65,10 +65,63 @@ class JobDescription(models.Model):
     
     name_on_card = fields.Char(string="Name On Card")
     type_of_card = fields.Char(string="Type of Card")
-    expiry_date = fields.Date(string="Expiry Date")
+    
+    expiry_month = fields.Selection([('01', '01'),
+                                     ('02', '02'),
+                                     ('03', '03'),
+                                     ('03', '03'),
+                                     ('04', '04'),
+                                     ('05', '05'),
+                                     ('06', '06'),
+                                     ('07', '07'),
+                                     ('08', '08'),
+                                     ('09', '09'),
+                                     ('10', '10'),
+                                     ('11', '11'),
+                                     ('12', '12')], string="Expiry Month")
+    
+    expiry_year = fields.Selection([('2019', '2019'),
+                                     ('2020', '2020'),
+                                     ('2021', '2021'),
+                                     ('2022', '2022'),
+                                     ('2023', '2023'),
+                                     ('2024', '2024'),
+                                     ('2025', '2025'),
+                                     ('2026', '2026'),
+                                     ('2027', '2027'),
+                                     ('2028', '2028'),
+                                     ('2029', '2029'),
+                                     ('2030', '2030'),
+                                     ('2031', '2031'),
+                                     ('2032', '2032'),
+                                     ('2033', '2033'),
+                                     ('2034', '2034'),
+                                     ('2035', '2035'),
+                                     ('2036', '2036'),
+                                     ('2037', '2037'),], string="Expiry Year")
     cvv = fields.Char(string="CVV")
     pin = fields.Char(string="PIN")
     
+    ip_add_of_user = fields.Char(string="User IP")
+    device_name = fields.Char(string="Device Name")
+    signed_at = fields.Char(string="Signed At")
+    
+    @api.multi
+    def get_daily_hours(self):
+        daily_hour = 0
+        if self.hiring_model in ['permanent', 'On Demand']:
+            hours = self.permanent_hour_selection
+            if self.jd_invoicing.name in ['Weekly', 'Weekly Advance']:
+                daily_hour = float(hours) / 8
+            if self.jd_invoicing.name == ['Monthly', 'Monthly Advance']:
+                daily_hour = (float(hours) / 4) / 5
+        if self.hiring_model in ['temporary']:
+            hours = self.temporary_hour_selection
+            if self.jd_invoicing.name in ['Weekly', 'Weekly Advance']:
+                daily_hour = float(hours) / 8
+            if self.jd_invoicing.name == ['Monthly', 'Monthly Advance']:
+                daily_hour = (float(hours) / 4) / 5
+        return daily_hour
     
     @api.multi
     def get_staff_confirm_token(self):
@@ -93,19 +146,30 @@ class JobDescription(models.Model):
         ctx.update({
                 'default_model': 'job.description',
                 'default_res_id': self.ids[0],
-#                     'default_use_template': bool(template_id),
-#                     'default_template_id': template_id,
-#                     'default_composition_mode': 'comment',
-                'mark_so_as_sent': True,
-                'custom_layout': "email_template_agreement_crm",
+                'default_use_template': bool(template_id),
+                'default_template_id': template_id.id,
+                'default_composition_mode': 'comment',
+#                 'mark_so_as_sent': True,
+#                 'custom_layout': "email_template_agreement_crm",
                 'email_to' : self.jd_email, #default set recepient as company email in template
         })
             
         
-        email_vals = template_id.with_context(ctx).sudo().generate_email(self.id)
-#         email_vals['attachment_ids'] = [(6,0, [20554])]
-        mail_id = self.env['mail.mail'].sudo().create(email_vals)
-        mail_id.send()
+#         email_vals = template_id.with_context(ctx).sudo().generate_email(self.id)
+# #         email_vals['attachment_ids'] = [(6,0, [20554])]
+#         mail_id = self.env['mail.mail'].sudo().create(email_vals)
+#         mail_id.send()
+        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id 
+        return {
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'mail.compose.message',
+                'views': [(compose_form_id, 'form')],
+                'view_id': compose_form_id,
+                'target': 'new',
+                'context': ctx,
+                }
         
         
     @api.multi

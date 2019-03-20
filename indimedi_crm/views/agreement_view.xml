@@ -51,7 +51,7 @@
             <form string="Agreement" create="false">
                 <header>
                 	<button name="action_send_staff_confirmation" string="Staff Confirmation Mail"
-                	type="object" class="btn-primary"/>
+                	type="object" class="btn-primary" attrs="{'invisible': ['|',('stage_hide', '=', False),('is_client_confim', '=', True)]}"/>
                     <field name="agreement_stage_id" widget="statusbar" clickable="True"/>      
                 </header>
                 <h1>
@@ -371,9 +371,10 @@
                                 <field name="temporary_hour_jd" attrs="{'invisible': [('hiring_model','=','permanent')]}"/>
                             </group>
                         </page>
-                        <page string="Payment Method" groups="indimedi_crm.group_payment_method">
+                        <page string="Payment Method" groups="indimedi_crm.group_payment_method" attrs="{'invisible': [('stage_hide', '=', False)]}">
                         	<group>
                         		<group>
+                        			<field name="is_client_confim" readonly="1"/>
                         			<field name="payment_method" readonly="1"/>
                         			<field name="name_of_account" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1"/>
                         			<field name="name_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1"/>
@@ -382,7 +383,8 @@
                         			<field name="bank_routing" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1"/>
                         			<field name="name_on_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
                         			<field name="type_of_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
-                        			<field name="expiry_date" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
+                        			<field name="expiry_month" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
+                        			<field name="expiry_year" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
                         			<field name="cvv" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
                         			<field name="pin" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
                         		</group>
@@ -409,6 +411,10 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>
