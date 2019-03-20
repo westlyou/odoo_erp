@@ -267,7 +267,7 @@ class JobDescription(models.Model):
     task_tobe_done = fields.Char(string="Task to be Done")
     s_accounting_ids = fields.Many2many('accounting.software','job_acc_software_rel','s_accounting_id','crm_id', string="Accounting Software")
     s_tax_id_ids = fields.Many2many('tax.software','job_tax_software_rel','s_tax_id_id','crm_id', string="Tax Software")
-    hiring_model = fields.Selection([('permanent','Permanent'),('temporary','Temporary')],default='permanent', string="Hiring Model")
+    hiring_model = fields.Selection([('permanent','Permanent'),('temporary','Temporary'),('On Demand', 'On Demand')],default='permanent', string="Hiring Model")
     hiring_option = fields.Selection([('full_time','Full Time'),('part_time','Part Time')], string="Hiring Option")
     # full_time_hr = fields.Selection([('40','40 Hours a Week'),('160','160 Hours a Week'),('180','180 Hours a Week'),('200','200 Hours a Week')], default='40', string="Full Time Hours")
     # part_time_hr = fields.Selection([('10','10 Hours a Week'),('20','20 Hours a Week'),('30','30 Hours a Week'),('80','80 Hours a Week'),('90','90 Hours a Week'),('100','100 Hours a Week'),('40-20','40-20 Hours a Week'),('20-10','20-10 Hours a Week')], string="Part Time Hours")
@@ -276,8 +276,8 @@ class JobDescription(models.Model):
 
     permanent_hour_selection = fields.Selection(PERMANENT_HOURS, string="Working Hours")
     temporary_hour_selection = fields.Selection(TEMPORARY_HOURS, string="Working Hours")
-    permanent_hour_jd = fields.Selection(related='permanent_hour_selection', string="Minimum Hours", readonly="1")
-    temporary_hour_jd = fields.Selection(related='temporary_hour_selection', string="Minimum Hours", readonly="1")
+    permanent_hour_jd = fields.Selection(related='permanent_hour_selection', string="Minimum Hours")
+    temporary_hour_jd = fields.Selection(related='temporary_hour_selection', string="Minimum Hours")
     start_date_billing = fields.Date(string="Start Date")
     general_manager = fields.Many2one('res.users', string="General Manager", compute="_onchange_stage_id", readonly=False, store=True)
     is_gm = fields.Boolean(string="Custom Stage", default=False, compute="_onchange_stage_id")
@@ -327,7 +327,7 @@ class JobDescription(models.Model):
     jd_minimum_hours = fields.Integer(string="Minimum Hours")
     jd_invoicing = fields.Many2one('job.invoicing',string="Invoicing")
     jd_invoicing_post = fields.Many2one(related='jd_invoicing', string="Invoicing", readonly="1")
-    jd_invoicing_bill = fields.Many2one(related='jd_invoicing', string="Invoicing", readonly="1")
+    jd_invoicing_bill = fields.Many2one(related='jd_invoicing', string="Invoicing")
     jd_ea_working_id = fields.Many2one('res.users',string="EA Working")
     jd_us_name_id = fields.Many2one('res.users',string="US Name")
     jd_manager_id = fields.Many2one('res.users',string="Manager")
@@ -368,8 +368,8 @@ class JobDescription(models.Model):
 
     hiring_period = fields.Selection([('week','Week'),('month','Month')], string="Working Period",default='week')
     rate_per_hour = fields.Float(string="Rate Per Hour")
-    rate_per_hour_jd = fields.Float(related='rate_per_hour', string="Rate Per Hour", readonly="1")
-    rate_per_hour_inv = fields.Float(related='rate_per_hour', string="Rate Per Hour", readonly="1")
+    rate_per_hour_jd = fields.Float(related='rate_per_hour', string="Rate Per Hour")
+    rate_per_hour_inv = fields.Float(related='rate_per_hour', string="Rate Per Hour")
     writing_skill = fields.Selection([('average','Average'),('good','Good'),('excellent','Excellent')], string="Writing Skill :")
     speaking_skill = fields.Selection([('average','Average'),('good','Good'),('excellent','Excellent')], string="Speaking Skill :")
     comm_medium_ids = fields.Many2many('comm.medium','job_comm_rel','comm_medium_id','crm_id', string="Communication Medium")
@@ -412,46 +412,71 @@ class JobDescription(models.Model):
             self.ensure_one()
             ir_model_data = self.env['ir.model.data']
             try:
-                if self.hiring_model == 'permanent' and self.permanent_hour_selection in ['40_20','20_10'] :
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_part_time')[1]   
-                elif self.hiring_model == 'permanent':
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
-                elif self.hiring_model == 'temporary':
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_second')[1]
-                else:
-                    template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
+                template_id = self.env.ref('indimedi_crm.email_template_agreement_crm_signup')
+#                 if self.hiring_model == 'permanent' and self.permanent_hour_selection in ['40_20','20_10'] :
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_signup')[1]   
+#                 elif self.hiring_model == 'permanent':
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
+#                 elif self.hiring_model == 'temporary':
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm_second')[1]
+#                 else:
+#                     template_id = ir_model_data.get_object_reference('indimedi_crm', 'email_template_agreement_crm')[1]
             except ValueError:
-                    template_id = False
+                template_id = False
             try:
-                    compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+                compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
             except ValueError:
-                    compose_form_id = False
+                compose_form_id = False
 
             # self.resume_details = [(6, 0 , [y for y in (self.env['ir.attachment'].search([('res_model','=','resume.details')]).ids)])]
             us_email_id = str(self.env.user.email)
             user_name = str(self.env.user.name)
             ctx = dict(email_from= us_email_id,
-                        user_name= user_name)
+                        user_name= user_name,
+                        default_attachment_ids=[(6,0, [20554])]) #20554 server
+            
+            
+            
+            
+             
             ctx.update({
                     'default_model': 'job.description',
                     'default_res_id': self.ids[0],
-                    'default_use_template': bool(template_id),
-                    'default_template_id': template_id,
-                    'default_composition_mode': 'comment',
+#                     'default_use_template': bool(template_id),
+#                     'default_template_id': template_id,
+#                     'default_composition_mode': 'comment',
                     'mark_so_as_sent': True,
                     'custom_layout': "email_template_agreement_crm",
                     'email_to' : self.crm_id.email_from, #default set recepient as company email in template
             })
+
+            email_vals = template_id.with_context(ctx).sudo().generate_email(self.id)
+            email_vals['attachment_ids'] = [(6,0, [20554])]
+            mail_id = self.env['mail.mail'].sudo().create(email_vals)
+            mail_id.send()
+            
+            view_id = self.env.ref('indimedi_crm.popup_massage_wizard')
             return {
+                    'name': "Notification",
                     'type': 'ir.actions.act_window',
                     'view_type': 'form',
                     'view_mode': 'form',
-                    'res_model': 'mail.compose.message',
-                    'views': [(compose_form_id, 'form')],
-                    'view_id': compose_form_id,
+                    'res_model': 'popup.massage',
+                    'view_id': view_id.id,
                     'target': 'new',
-                    'context': ctx,
-            }
+                    'context': {'default_name': "Email successfully sent"},
+                    
+                }
+#             return {
+#                     'type': 'ir.actions.act_window',
+#                     'view_type': 'form',
+#                     'view_mode': 'form',
+#                     'res_model': 'mail.compose.message',
+#                     'views': [(compose_form_id, 'form')],
+#                     'view_id': compose_form_id,
+#                     'target': 'new',
+#                     'context': ctx,
+#             }
 
     @api.multi
     def action_resume_send(self):

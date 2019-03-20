@@ -1,0 +1,201 @@
+<odoo>
+
+	<!-- email with users ip and device info -->
+		<record id="email_template_confirmation_of_staff" model="mail.template">
+			<field name="name">Confirmation of Staff</field>
+			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+			<field name="subject">Confirmation of Staff</field>
+			<field name="email_to">${ctx['email_to']|safe}</field> 
+			<field name="email_cc"> ${object.email} </field>
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<field name="auto_delete" eval="False"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html"><![CDATA[
+				
+				<p>
+				Hi ${object.get_contact_name()}<br/><br/>
+				
+				Good Morning <br/></br><br/>
+				
+				Hope you are doing well.<br/><br/>
+				
+				</p>
+				<h2><b><u>Confirmation</u></b></h2> 
+				
+				<p>
+					We are excited to confirm that ${object.jd_us_name_id.name or '  '} has accepted the offer. He will begin working with you on ${object.start_date_billing or ''} as your ${object.job_profile_id.name}. Kindly execute and confirm the same.
+				</p>
+				
+				<h2><b><u>Introductory Call</u></b></h2>
+				<p>I request to set up an introductory call before he joins, so you can walk him through your process. Please let me know a day and time and we can connect accordingly.<p>
+				
+				<h2><b><u>IT Setup</u></b></h2>
+				<p>
+					Please share the remote desktop / software connection credentials so that we can check if it is up and running.
+				</p>
+				
+				<h2><b><u>Staff Details</u></b></h2> 
+				<table width="60%">
+					<tr>
+						<td width="35%">Name :</td>
+						<td width="65%">
+							${object.jd_us_name_id.name or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Email ID :</td>
+						<td width="65%">
+							${object.jd_post_timesheet_email.name or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Skype ID :</td>
+						<td width="65%">
+							${object.jd_skype_email or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Phone No :</td>
+						<td width="65%">
+							${object.jd_post_timesheet_phone or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Staff Start Date :</td>
+						<td width="65%">
+							${object.start_date_billing or '  '}
+						</td>
+					<tr>
+					<tr>
+						<td width="35%">Working Location :</td>
+						<td width="65%">
+							Entigrity India, Office:  18 Patel Society, C.G.Road, Ahmedabad 380006
+						</td>
+					<tr>
+				</table>
+				<br/>
+				
+				<h2><b><u>Working Hours and Timings</u></b></h2>
+				<p>
+				Following should be the work timings – (including 1 hour break) <br/><br/>
+				
+				<strong>Daily Shift Hours : </strong> ${object.get_daily_hours()}<br/>
+				<strong>US Timings :</strong> ${object.from_timezone_id.name} to ${object.to_timezone_id.name} (${object.timezone_id.name})<br/>
+				
+				</p>
+				
+				<h2><b><u>Working Hours and Timings</u></b></h2>
+				<p>The work performed by Company for firm shall be performed at the rate set forth below.</p>
+				
+				<h2><b><u>Hourly Fee’s</u></b></h2>
+				<p>${object.rate_per_hour_inv} per Hour (Pursuant to clause no. 2 (Fee’s) of Exhibit A of the agreement
+				
+				<h2><b><u>Payment</u></b></h2>
+				<p style="color:red"><strong>
+				Invoices shall be issued to Firm by Company weekly after performance of the Work, and payment shall be due immediately on receipt of invoices through Email.
+				</strong></p>
+				
+				<p>If you have any questions, please let me know.<p/>
+				
+				<center>
+			        <a href="${object.get_staff_confirm_token()}" style="background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;" class="o_default_snippet_text">Confirm Staff</a>
+			        <br/><br/><br/>
+			    </center>				
+                   														
+			]]>
+			</field>
+		</record>
+		
+		
+		<record id="signing_confirmation_of_staff" model="mail.template">
+			<field name="name">Certificate of Signing Confirmation of Staff</field>
+			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+			<field name="subject">Certificate of Signing Confirmation of Staff</field>
+			<field name="email_to">${ctx['email_to']|safe}</field> 
+			<field name="email_cc"> ${object.email} </field>
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<field name="auto_delete" eval="False"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html"><![CDATA[
+				
+				<p>
+				Hi ${object.get_contact_name()}<br/><br/>
+				
+				<p>Thanks for Providing and Confirming Details.</p>
+				
+				<h2>SIGNERS<h2>
+				<table class="text-center" border="0" style="vertical-align:middle;width:75%; ">
+                    <tbody class="tbody" border="0">
+                     <tr>
+                     	<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+                                                <strong>SIGNER</strong>
+                                            </td>
+                   	 </tr>
+                     <tr>
+                         <td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                                                Name:
+                                            </td>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            ${object.get_contact_name() or ''}
+                         </td>
+                     </tr>
+                     
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            <strong>Email:</strong>
+                         </td>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            ${object.crm_id.email_from or ''}
+                         </td>
+                     </tr>
+                     
+                     
+                     
+                     <tr>
+                     	<td align="left" valign="center" bgcolor="#7B7B7B" colspan="2" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;"><strong>E-SIGNATURE</strong></td>
+                   	 </tr>
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            <strong>Status:</strong>
+                         </td>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            signed
+                         </td>
+                     </tr>
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            <strong>IP Address:</strong>
+                         </td>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            ${object.ip_add_of_user or ''}
+                         </td>
+                     </tr>
+                     
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            <strong>Device:</strong>
+                         </td>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            ${object.device_name or ''}
+                         </td>
+                     </tr>
+                     
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            <strong>Signed At:</strong>
+                         </td>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                            ${object.signed_at or ''}
+                         </td>
+                     </tr>
+                 </table>
+                 <br/>
+                 <br/>
+                 Thanks.				
+                   														
+			]]>
+			</field>
+		</record>
+		
+
+</odoo>

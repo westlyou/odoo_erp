@@ -46,9 +46,178 @@ class JobDescription(models.Model):
                                     ('normal', 'Normal Firm'),
                                     ('small', 'Small Firm')], string="Client Firm")
     subsidiary_id = fields.Many2one('subsidiary.master', string="Billing Company")
-
+    random_token = fields.Char(string="Token", readonly=True)
+    ip_info = fields.Text(string="IP Info", readonly=True)
     # duration = fields.Float(help="Duration in minutes and seconds.", default=0.5)
-
+    device_name = fields.Char("Device", readonly=True)
+    signed_at = fields.Char(string="Signed At", readonly=True)
+    
+    is_client_confim = fields.Boolean(string="Client Confirmed")
+    
+    token_staff_confirm = fields.Char(string="Staff Confirm Token")
+    payment_method = fields.Selection([('bank', 'Bank'),
+                                       ('credit_card', 'Credit Card')], string="Payment Method")
+    name_of_account = fields.Char(string="Name of Account")
+    name_of_bank = fields.Char(string="Name of Bank")
+    type_of_bank = fields.Char(string="Type of Bank")
+    account_number = fields.Char(string="Account Number")
+    bank_routing = fields.Char(string="Bank Routing")
+    
+    name_on_card = fields.Char(string="Name On Card")
+    type_of_card = fields.Char(string="Type of Card")
+    
+    expiry_month = fields.Selection([('01', '01'),
+                                     ('02', '02'),
+                                     ('03', '03'),
+                                     ('03', '03'),
+                                     ('04', '04'),
+                                     ('05', '05'),
+                                     ('06', '06'),
+                                     ('07', '07'),
+                                     ('08', '08'),
+                                     ('09', '09'),
+                                     ('10', '10'),
+                                     ('11', '11'),
+                                     ('12', '12')], string="Expiry Month")
+    
+    expiry_year = fields.Selection([('2019', '2019'),
+                                     ('2020', '2020'),
+                                     ('2021', '2021'),
+                                     ('2022', '2022'),
+                                     ('2023', '2023'),
+                                     ('2024', '2024'),
+                                     ('2025', '2025'),
+                                     ('2026', '2026'),
+                                     ('2027', '2027'),
+                                     ('2028', '2028'),
+                                     ('2029', '2029'),
+                                     ('2030', '2030'),
+                                     ('2031', '2031'),
+                                     ('2032', '2032'),
+                                     ('2033', '2033'),
+                                     ('2034', '2034'),
+                                     ('2035', '2035'),
+                                     ('2036', '2036'),
+                                     ('2037', '2037'),], string="Expiry Year")
+    cvv = fields.Char(string="CVV")
+    pin = fields.Char(string="PIN")
+    
+    ip_add_of_user = fields.Char(string="User IP")
+    device_name = fields.Char(string="Device Name")
+    signed_at = fields.Char(string="Signed At")
+    
+    @api.multi
+    def get_daily_hours(self):
+        daily_hour = 0
+        if self.hiring_model in ['permanent', 'On Demand']:
+            hours = self.permanent_hour_selection
+            if self.jd_invoicing.name in ['Weekly', 'Weekly Advance']:
+                daily_hour = float(hours) / 8
+            if self.jd_invoicing.name == ['Monthly', 'Monthly Advance']:
+                daily_hour = (float(hours) / 4) / 5
+        if self.hiring_model in ['temporary']:
+            hours = self.temporary_hour_selection
+            if self.jd_invoicing.name in ['Weekly', 'Weekly Advance']:
+                daily_hour = float(hours) / 8
+            if self.jd_invoicing.name == ['Monthly', 'Monthly Advance']:
+                daily_hour = (float(hours) / 4) / 5
+        return daily_hour
+    
+    @api.multi
+    def get_staff_confirm_token(self):
+        base_url = ''
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = base_url + '/staff_confirmation/%s/%s'%(self.id, self.token_staff_confirm)
+        return base_url
+    
+    @api.multi
+    def action_send_staff_confirmation(self):
+        if not self.token_staff_confirm:
+            token_staff_confirm = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVQXYZ') for i in range(29))
+            self.with_context({'bypass_write': True}).write({'token_staff_confirm': token_staff_confirm})
+    
+        template_id = self.env.ref('indimedi_crm.email_template_confirmation_of_staff')
+        
+        
+        ctx = dict(email_from= self.agreement_general_manager.email,
+                        user_name= self.agreement_general_manager.name,
+                        ) #20554 server
+             
+        ctx.update({
+                'default_model': 'job.description',
+                'default_res_id': self.ids[0],
+                'default_use_template': bool(template_id),
+                'default_template_id': template_id.id,
+                'default_composition_mode': 'comment',
+#                 'mark_so_as_sent': True,
+#                 'custom_layout': "email_template_agreement_crm",
+                'email_to' : self.jd_email, #default set recepient as company email in template
+        })
+            
+        
+#         email_vals = template_id.with_context(ctx).sudo().generate_email(self.id)
+# #         email_vals['attachment_ids'] = [(6,0, [20554])]
+#         mail_id = self.env['mail.mail'].sudo().create(email_vals)
+#         mail_id.send()
+        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id 
+        return {
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'mail.compose.message',
+                'views': [(compose_form_id, 'form')],
+                'view_id': compose_form_id,
+                'target': 'new',
+                'context': ctx,
+                }
+        
+        
+    @api.multi
+    def get_contact_name(self):
+        vals = ''
+        if self.child_ids:
+            for contact in self.child_ids:
+                if contact.primary_contact:
+                    vals = contact.name
+                    break
+            if not vals:
+                vals = self.child_ids[0].name
+        return vals
+    
+    @api.multi
+    def get_agreement_url(self):
+        base_url = ''
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = base_url + '/agreement_done/%s/%s'%(self.id, self.random_token)
+        return base_url
+    
+    
+        
+    @api.multi
+    def email_comm_medium_value(self):
+        value = ''
+        if self.comm_medium_ids:
+            value = ", ".join(self.comm_medium_ids.mapped('name'))
+            
+        return value
+    
+    @api.multi
+    def email_tax_software_value(self):
+        value = ''
+        if self.s_tax_id_ids:
+            value = ", ".join(self.s_tax_id_ids.mapped('name'))
+            
+        return value
+    
+    @api.multi
+    def email_software_exp_value(self):
+        value = ''
+        if self.s_accounting_ids:
+            value = ", ".join(self.s_accounting_ids.mapped('name'))
+            
+        return value    
+            
+    
     @api.onchange('interview_start_date')
     def onchange_interview_start_date(self):
         for rec in self:
@@ -93,6 +262,7 @@ class JobDescription(models.Model):
     @api.multi
     def write(self, vals):
         #Employee Phone Number Format Logic
+        
         if vals.get('jd_post_timesheet_phone'):
             track_list  = []
             for i in vals.get('jd_post_timesheet_phone'):
@@ -109,7 +279,8 @@ class JobDescription(models.Model):
 
         stage = str(self.agreement_stage_id.name)
         if stage == 'Assignment Of Employee':
-            raise ValidationError(_("Can't Change the stage" ))
+            if not self._context.get('bypass_write'):
+                raise ValidationError(_("Can't Change the stage" ))
 
         cr_details = {}
         for each in self.agreements_credentials:
@@ -120,7 +291,9 @@ class JobDescription(models.Model):
         #for hide tabs if stage is not ib Employee selected and Assignment Of Employee
         # if self.stage_hide:
         #     vals.update({'stage_hide':False})
-
+#         random_token = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVQXYZ') for i in range(29))
+#         vals['random_token'] = random_token
+        
         res = super(JobDescription, self).write(vals)
         stage_name = str(self.agreement_stage_id.name)
 
@@ -192,17 +365,19 @@ class JobDescription(models.Model):
                 })
 
         if stage_name == 'Assignment Of Employee':
-            if self.jd_ea_working_id and self.jd_us_name_id and self.jd_manager_id.id:
+            if self.jd_ea_working_id and self.jd_us_name_id and self.jd_manager_id.id and self.is_client_confim:
                 pass
             else:
-                raise ValidationError(_('Please Fill All Require fields'))
+                if not self.jd_ea_working_id or not self.jd_us_name_id or not self.jd_manager_id.id:
+                    raise ValidationError(_('Please Fill All Require fields'))
+                else:
+                    raise UserError("Client not sighed staff selection yet!")
 
         else:
-            if self.jd_ea_working_id and self.jd_us_name_id and self.jd_manager_id.id and stage == 'Employee Selected':
+            if self.jd_ea_working_id and self.jd_us_name_id and self.jd_manager_id.id and stage == 'Employee Selected' and self.is_client_confim:
                 name_stage = self.env['agreement.stage'].search([('name','=','Assignment Of Employee')])
                 self.agreement_stage_id = name_stage.id
-
- 
+            
         if not self.stage_hide:
             if stage_name == 'Interview Done':
                 self.stage_hide = True
@@ -268,7 +443,9 @@ class JobDescription(models.Model):
             'agreement_stage_id' : new_stage_id.id
         })
         res = super(JobDescription, self).create(vals)
-
+        random_token = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVQXYZ') for i in range(29))
+        res.random_token = random_token
+        
         random_var = ''.join(random.choice('0123456789') for i in range(3))
         seq = self.env['ir.sequence'].next_by_code('job.description').split('/')
         if vals.get('hiring_model','') == 'permanent':
@@ -413,3 +590,11 @@ class CredentialsAgreement(models.Model):
     cred_agreement_post = fields.Many2one('credentials.task',string="Name")
     cred_agreement_description_post = fields.Text(name="Description")
     agree = fields.Many2one('job.description',string="Jobs")
+    
+# class AgreementAtt(models.Model):
+#     _name = 'agreement.att'
+#     
+#     file = fields.Binary(string="FIle")
+#     file_name = fields.Char(string="File Name")
+#     
+    
