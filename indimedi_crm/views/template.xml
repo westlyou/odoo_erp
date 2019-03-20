@@ -19,7 +19,7 @@
       </t>
     </template>
     
-    <template id="i_agree" name="Agrement">
+    <template id="i_agree" name="Agrement Confirmation">
        <t t-call="website.layout">
         <div class="oe_structure">
           <div class="container">
@@ -30,11 +30,248 @@
       </t>
     </template>
     
-    <template id="already_agreed" name="Agrement">
+    <template id="already_agreed" name="Agreement">
        <t t-call="website.layout">
         <div class="oe_structure">
           <div class="container">
             <center><h3>You already accepted term and condition.</h3>
+            </center>
+          </div>
+        </div>
+      </t>
+    </template>
+    
+    <!-- staff confirmation -->
+    <template id="staff_confirmation_form" name="Staff Confirmation">
+       <t t-call="website.layout">
+        <div class="oe_structure">
+          <div class="container">
+          	<form t-att-action="'/staff_confirmed/%s/%s' % (agreement, token)" method="post">
+          		<script type="text/javascript">
+
+					function checkPaymentMethod() {
+					    if (document.getElementById('bank').checked) {
+					        document.getElementById('bank_details').style.display = 'block';
+					        document.getElementById('credit_card_details').style.display = 'none';
+					        
+					        document.getElementById('name_of_account').setAttribute("required", "true");
+					        document.getElementById('name_of_bank').setAttribute("required", "true");
+					        document.getElementById('type_of_bank').setAttribute("required", "true");
+					        document.getElementById('account_number').setAttribute("required", "true");
+					        document.getElementById('bank_routing').setAttribute("required", "true");
+					        
+					        document.getElementById('name_on_card').removeAttribute("required");
+					        document.getElementById('type_of_card').removeAttribute("required");
+					        document.getElementById('expiry_date').removeAttribute("required");
+					        document.getElementById('cvv').removeAttribute("required");
+					        document.getElementById('card_number').removeAttribute("required");
+					        
+					    }
+					    if (document.getElementById('credit_card').checked) {
+					        document.getElementById('bank_details').style.display = 'none';
+					        document.getElementById('credit_card_details').style.display = 'block';
+					        
+					        document.getElementById('name_of_account').removeAttribute("required");
+					        document.getElementById('name_of_bank').removeAttribute("required");
+					        document.getElementById('type_of_bank').removeAttribute("required");
+					        document.getElementById('account_number').removeAttribute("required");
+					        document.getElementById('bank_routing').removeAttribute("required");
+					        
+					        document.getElementById('name_on_card').setAttribute("required", "true");
+					        document.getElementById('type_of_card').setAttribute("required", "true");
+					        document.getElementById('expiry_date').setAttribute("required", "true");
+					        document.getElementById('cvv').setAttribute("required", "true");
+					        document.getElementById('card_number').setAttribute("required", "true");
+					    }
+					}
+					
+					
+				
+					</script>
+          		<h2>ACH Authorization.</h2>
+          		<p>Firm authorizes Company to charge Bank Account indicated below for making payment of Services against invoices raised.</p>
+          		<br/>
+          		<div t-attf-class="form-group">
+	                <label class="col-md-2 col-sm-2 control-label">Payment Method</label>
+	                <div class="col-md-5 col-sm-5">
+	                    <input type="radio" id="bank" name="payment_type" value="bank" onclick="checkPaymentMethod()"/>Bank<br/>
+  						<input type="radio" id="credit_card" name="payment_type" value="credit_card" onclick="checkPaymentMethod()"/>Credit Card<br/>
+	                </div>
+	            </div>
+	            <br/>
+	            <br/>
+	            <p class="alert alert-danger" t-if="error">
+	               <t t-esc="error"/>
+	            </p>
+	            <div id="bank_details" style="display:none;">
+          		<div t-attf-class="form-group">
+	                <label class="col-md-2 col-sm-2 control-label">Name on Account</label>
+	                <div class="col-md-5 col-sm-5">
+	                    <input type="text" class="form-control" name="name_of_account" id="name_of_account"/>
+	                </div>
+	            </div>
+	            <br/>
+	            <br/>
+	            <div t-attf-class="form-group">
+	                <label class="col-md-2 col-sm-2 control-label">Name of Bank</label>
+	                <div class="col-md-5 col-sm-5">
+	                    <input type="text" class="form-control" name="name_of_bank" id="name_of_bank"/>
+	                </div>
+	            </div>
+	            <br/>
+	            <br/>
+	            <div t-attf-class="form-group">
+	                <label class="col-md-2 col-sm-2 control-label">Type of Account</label>
+	                <div class="col-md-5 col-sm-5">
+	                    <input type="text" class="form-control" name="type_of_bank" id="type_of_bank"/>
+	                </div>
+	            </div>
+	            <br/>
+	            <br/>
+	            <div t-attf-class="form-group">
+	                <label class="col-md-2 col-sm-2 control-label">Account Number</label>
+	                <div class="col-md-5 col-sm-5">
+	                    <input type="text" class="form-control" name="account_number" id="account_number"/>
+	                </div>
+	            </div>
+	            <br/>
+	            <br/>
+	            <div t-attf-class="form-group">
+	                <label class="col-md-2 col-sm-2 control-label">Bank Routing No.</label>
+	                <div class="col-md-5 col-sm-5">
+	                    <input type="text" class="form-control" name="bank_routing" id="bank_routing"/>
+	                </div>
+	            </div>
+	            <br/>
+	            <br/>
+          		
+	           </div>
+	           
+	           
+          		<div id="credit_card_details" style="display:none;">
+	       			<div t-attf-class="form-group">	
+	       				<label class="col-md-4 col-sm-4 control-label">Credit card – 3% extra charges</label>
+	       			</div>
+          			<br/>
+          			<br/>
+          			<div t-attf-class="form-group">
+		                <label class="col-md-2 col-sm-2 control-label">Name On Card</label>
+		                <div class="col-md-5 col-sm-5">
+		                    <input type="text" class="form-control" name="name_on_card" id="name_on_card"/>
+		                </div>
+		            </div>
+		            <br/>
+		            <br/>
+		            <div t-attf-class="form-group">
+		                <label class="col-md-2 col-sm-2 control-label">Card Number</label>
+		                <div class="col-md-5 col-sm-5">
+		                    <input type="text" class="form-control" name="card_number" id="card_number"/>
+		                </div>
+		            </div>
+		            <br/>
+		            <br/>
+		            <div t-attf-class="form-group">
+		                <label class="col-md-2 col-sm-2 control-label">Type of Card</label>
+		                <div class="col-md-5 col-sm-5">
+		                    <input type="text" class="form-control" name="type_of_card" id="type_of_card"/>
+		                </div>
+		            </div>
+	            <br/>
+	            <br/>
+	            <div t-attf-class="form-group">
+	                <label class="col-md-2 col-sm-2 control-label">Expiry Date</label>
+	                <div class="col-md-2 col-sm-2">
+	                    <select id="expiry_month" name="expiry_month" class="form-control">
+							<option value="01"> 01 </option>
+							<option value="02"> 02 </option>
+							<option value="03"> 03 </option>
+							<option value="04"> 04 </option>
+							<option value="06"> 05 </option>
+							<option value="06"> 06 </option>
+							<option value="07"> 07 </option>
+							<option value="08"> 08 </option>
+							<option value="09"> 09 </option>
+							<option value="10"> 10 </option>
+							<option value="11"> 11 </option>
+							<option value="12"> 12 </option>
+						 </select>
+					</div>
+					<div class="col-md-3 col-sm-3">
+						 <select id="expiry_year" name="expiry_year" class="form-control">
+							<option value="2019"> 2019 </option>
+							<option value="2020"> 2020 </option>
+							<option value="2021"> 2021 </option>
+							<option value="2022"> 2022 </option>
+							<option value="2023"> 2023 </option>
+							<option value="2024"> 2024 </option>
+							<option value="2025"> 2025 </option>
+							<option value="2026"> 2026 </option>
+							<option value="2027"> 2027 </option>
+							<option value="2028"> 2028 </option>
+							<option value="2029"> 2029 </option>
+							<option value="2030"> 2030 </option>
+							<option value="2031"> 2031 </option>
+							<option value="2032"> 2032 </option>
+							<option value="2033"> 2033 </option>
+							<option value="2034"> 2034 </option>
+							<option value="2035"> 2035 </option>
+							<option value="2036"> 2036 </option>
+							<option value="2037"> 2037 </option>
+						 </select>
+	                    
+	                </div>
+	            </div>
+	           	
+	           	
+	            <br/>
+	            <br/>
+	            <div t-attf-class="form-group">
+	                <label class="col-md-2 col-sm-2 control-label">CVV</label>
+	                <div class="col-md-5 col-sm-5">
+	                    <input type="text" class="form-control" name="cvv" id="cvv"/>
+	                </div>
+	            </div>
+	            <br/>
+	            <br/>
+	            <div t-attf-class="form-group">
+	                <label class="col-md-2 col-sm-2 control-label">PIN (if any)</label>
+	                <div class="col-md-5 col-sm-5">
+	                    <input type="text" class="form-control" name="pin" id="pin"/>
+	                </div>
+	            </div>
+	            <br/>
+	            <br/>
+	            </div>
+	            
+          		<div class="form-group">
+	                <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+	                    <button class="btn btn-primary btn-lg">Confirm</button>
+	                </div>
+	            </div>
+          	</form>
+          </div>
+        </div>
+      </t>
+    </template>
+    
+    
+    <template id="staff_confirmed" name="Staff Confirmed">
+       <t t-call="website.layout">
+        <div class="oe_structure">
+          <div class="container">
+            <center><h3 class="text-success">Thanks for providing and confirming details. <br/></h3>
+            </center>
+          </div>
+        </div>
+      </t>
+    </template>
+    
+	
+	<template id="confirmation_detail_submited" name="Staff Confirmation">
+       <t t-call="website.layout">
+        <div class="oe_structure">
+          <div class="container">
+            <center><h3 class="text-success">Your staff confirmation already proceed.</h3>
             </center>
           </div>
         </div>

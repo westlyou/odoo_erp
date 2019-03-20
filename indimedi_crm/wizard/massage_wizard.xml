@@ -1,0 +1,15 @@
+<odoo>
+	<record id="popup_massage_wizard" model="ir.ui.view">
+        <field name="name">popup.massage.from</field>
+        <field name="model">popup.massage</field>
+        <field name="arch" type="xml">
+        	<form string="Massage">
+        			<strong><field name="name" readonly="1"/></strong>
+        		<footer>
+        			<button name="cancel" special="cancel" string="Close" class="oe_link"/>
+        		</footer>
+        	</form>
+        </field>
+	</record>
+        
+</odoo>

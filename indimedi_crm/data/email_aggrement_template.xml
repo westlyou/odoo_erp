@@ -8,96 +8,97 @@
 			<field name="email_to">${ctx['email_to']|safe}</field> 
 			<field name="email_cc"> ${object.email} </field>
 			<field name="model_id" ref="indimedi_crm.model_job_description"/>
-			<field name="auto_delete" eval="True"/>
+			<field name="auto_delete" eval="False"/>
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
+			
 				<p>
 					Hi ${object.get_contact_name()} <br/><br/>
 					Thanks for sharing information over a call. Below I have mentioned your requirement. I have also attached terms and conditions for signing up.<br/><br/>
 					Once you confirm we will move forward. <br/><br/> 
 				</p>
-				<table class="text-center" border="2" style="vertical-align:middle;width:75%; ">
-                        <tbody class="tbody" style="border: solid 2px; text-align: left;">
+				<table class="text-center" border="0" style="vertical-align:middle;width:75%; ">
+                        <tbody class="tbody">
 	                        <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>CLIENT DETAILS</strong></td>
+	                        	<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;"><strong>CLIENT DETAILS</strong></td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Name:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.get_contact_name()}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Company Name :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Address Line 1:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_street2 or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Suite No/Room No:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_street or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               City:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_city or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               State:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_state_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Zip:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_zip or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Phone:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.phone or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Email:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.email_from or ''}
 	                            </td>
 	                        </tr>
@@ -106,45 +107,43 @@
 	                        
 	                        
 	                        <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>HIRING OPTIONS</strong></td>
+	                        	<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;"><strong>HIRING OPTIONS</strong></td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Hiring Model:
 	                            </td>
 	                            
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.hiring_model or ''}
 	                            </td>
 	                            
 	                        </tr>
 	                        
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Numbers Of Hours Per Week:
 	                            </td>
-	                            %if object.hiring_model == 'permanent':
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                           
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.permanent_hour_selection or ''}
 	                            </td>
-	                             %endif
-	                             %if object.hiring_model == 'On Demand':
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                             
+	                            <!-- <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.permanent_hour_selection or ''}
 	                            </td>
-	                             %endif
-	                             %if object.hiring_model == 'temporary':
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                             
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.temporary_hour_selection or ''}
 	                            </td>
-	                             %endif
+	                              -->
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Hourly Rate:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.rate_per_hour or ''}
 	                            </td>
 	                        </tr>
@@ -152,159 +151,159 @@
                             
 	                        
 	                        <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>JOB DESCRIPTION</strong></td>
+	                        	<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;"><strong>JOB DESCRIPTION</strong></td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Profile:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.job_profile_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Experience in years:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.experience_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Tasks to be done :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.task_tobe_done or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Accounting Software :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.email_software_exp_value()}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Tax Software :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.email_tax_software_value()}
 	                            </td>
 	                        </tr>
-                            <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Working Period :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.hiring_period or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Invoicing :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.jd_invoicing.name or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Writing Skill :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.writing_skill or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Speaking Skill :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.speaking_skill or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Communication Medium :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.email_comm_medium_value() or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Software Access :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.soft_access or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Software Remote Access :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.soft_remote_id.name or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Document Access :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.doc_access or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Document Remote Access :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.doc_remote_id.name or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Reporting :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.reporting_id.name or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Tentative Start Date :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.tentative_date or ''}
 	                            </td>
 	                        </tr>
-                            <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Working Time Zone :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.timezone_id.name or ''}
 	                            </td>
 	                        </tr>
-                            <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Working Time From :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.from_timezone_id.name or ''}
 	                            </td>
 	                        </tr>
-                            <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Working Time To :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.to_timezone_id.name or ''}
 	                            </td>
 	                        </tr>
@@ -317,6 +316,7 @@
 			        <a href="${object.get_agreement_url()}" style="background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;" class="o_default_snippet_text">Confirm Agreement</a>
 			        <br/><br/><br/>
 			    </center>
+
                  
                    														
 			]]>
@@ -338,95 +338,96 @@
 			<field name="email_to">${ctx['email_to']|safe}</field> 
 			<field name="email_cc"> ${object.email} </field>
 			<field name="model_id" ref="indimedi_crm.model_job_description"/>
-			<field name="auto_delete" eval="True"/>
+			<field name="auto_delete" eval="False"/>
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
-				<p>
+				
+<p>
 					Hi ${object.get_contact_name()} <br/><br/>
 					Thanks for Signing Up with Entigrity Solutions LLC. We look forward to work with you. following are your details as per sign up.  <br/><br/> 
 				</p>
-				<table class="text-center" border="2" style="vertical-align:middle;width:75%; ">
-                        <tbody class="tbody" style="border: solid 2px; text-align: left;">
+				<table class="text-center" border="0" style="vertical-align:middle;width:75%; ">
+                        <tbody class="tbody">
 	                        <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>CLIENT DETAILS</strong></td>
+	                        	<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;"><strong>CLIENT DETAILS</strong></td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Name:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.get_contact_name()}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Company Name :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Address Line 1:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_street2 or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Suite No/Room No:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_street or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               City:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_city or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               State:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_state_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Zip:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.c_zip or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Phone:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.phone or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Email:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.crm_id.email_from or ''}
 	                            </td>
 	                        </tr>
@@ -435,45 +436,43 @@
 	                        
 	                        
 	                        <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>HIRING OPTIONS</strong></td>
+	                        	<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;"><strong>HIRING OPTIONS</strong></td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Hiring Model:
 	                            </td>
 	                            
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.hiring_model or ''}
 	                            </td>
 	                            
 	                        </tr>
 	                        
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Numbers Of Hours Per Week:
 	                            </td>
-	                            %if object.hiring_model == 'permanent':
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                             
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.permanent_hour_selection or ''}
 	                            </td>
-	                             %endif
-	                             %if object.hiring_model == 'On Demand':
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                              
+	                           <!--  <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.permanent_hour_selection or ''}
 	                            </td>
-	                             %endif
-	                             %if object.hiring_model == 'temporary':
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                             
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.temporary_hour_selection or ''}
-	                            </td>
-	                             %endif
+	                            </td> -->
+	                             
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Hourly Rate:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.rate_per_hour or ''}
 	                            </td>
 	                        </tr>
@@ -481,159 +480,159 @@
                             
 	                        
 	                        <tr>
-	                        	<td colspan="2" style="height:35px;padding:7px;"><strong>JOB DESCRIPTION</strong></td>
+	                        	<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;"><strong>JOB DESCRIPTION</strong></td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Profile:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.job_profile_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Experience in years:
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.experience_id.name or ''}
 	                            </td>
 	                            
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Tasks to be done :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.task_tobe_done or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Accounting Software :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.email_software_exp_value()}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Tax Software :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.email_tax_software_value()}
 	                            </td>
 	                        </tr>
-                            <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Working Period :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.hiring_period or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Invoicing :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.jd_invoicing.name or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Writing Skill :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.writing_skill or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Speaking Skill :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.speaking_skill or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Communication Medium :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.email_comm_medium_value() or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Software Access :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.soft_access or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Software Remote Access :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.soft_remote_id.name or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Document Access :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.doc_access or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Document Remote Access :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.doc_remote_id.name or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Reporting :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.reporting_id.name or ''}
 	                            </td>
 	                        </tr>
-	                        <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+	                        <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Tentative Start Date :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.tentative_date or ''}
 	                            </td>
 	                        </tr>
-                            <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Working Time Zone :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.timezone_id.name or ''}
 	                            </td>
 	                        </tr>
-                            <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Working Time From :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.from_timezone_id.name or ''}
 	                            </td>
 	                        </tr>
-                            <tr style="border: solid 1px;">
-	                            <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                            <tr>
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               Working Time To :
 	                            </td>
-	                            <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+	                            <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 	                               ${object.to_timezone_id.name or ''}
 	                            </td>
 	                        </tr>
@@ -647,7 +646,7 @@
 
 					In case of any correction or for further assistance please reach out to your account manager or email us at info@entigrity.com. <br/><br/>
 			    </p>
-                 
+
                    														
 			]]>
 			</field>
@@ -666,33 +665,36 @@
 			<field name="email_to">${ctx['email_to']|safe}</field> 
 			<field name="email_cc"> ${object.email} </field>
 			<field name="model_id" ref="indimedi_crm.model_job_description"/>
-			<field name="auto_delete" eval="True"/>
+			<field name="auto_delete" eval="False"/>
 			<field name="user_signature" eval="False"/>
 			<field name="body_html"><![CDATA[
-				<p>
+				
+<p>
 					Hi ${object.get_contact_name()} <br/><br/>
 					Thanks for signing document.<br/><br/> 
 				</p>
 				<h2>SIGNERS<h2>
-				<table class="text-center" border="2" style="vertical-align:middle;width:75%; ">
-                    <tbody class="tbody" style="border: solid 2px; text-align: left;">
+				<table class="text-center" border="0" style="vertical-align:middle;width:75%; ">
+                    <tbody class="tbody" border="0">
                      <tr>
-                     	<td colspan="2" style="height:35px;padding:7px;"><strong>SIGNER</strong></td>
+                     	<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+                                                <strong>SIGNER</strong>
+                                            </td>
                    	 </tr>
-                     <tr style="border: solid 1px;">
-                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
-                            <strong>Name:</strong>
-                         </td>
-                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                     <tr>
+                         <td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+                                                Name:
+                                            </td>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             ${object.get_contact_name() or ''}
                          </td>
                      </tr>
                      
-                     <tr style="border: solid 1px;">
-                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             <strong>Email:</strong>
                          </td>
-                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             ${object.crm_id.email_from or ''}
                          </td>
                      </tr>
@@ -700,39 +702,39 @@
                      
                      
                      <tr>
-                     	<td colspan="2" style="height:35px;padding:7px;"><strong>E-SIGNATURE</strong></td>
+                     	<td align="left" valign="center" bgcolor="#7B7B7B" colspan="2" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;"><strong>E-SIGNATURE</strong></td>
                    	 </tr>
-                     <tr style="border: solid 1px;">
-                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             <strong>Status:</strong>
                          </td>
-                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             signed
                          </td>
                      </tr>
-                     <tr style="border: solid 1px;">
-                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             <strong>IP Address:</strong>
                          </td>
-                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             ${object.ip_add_of_user or ''}
                          </td>
                      </tr>
                      
-                     <tr style="border: solid 1px;">
-                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             <strong>Device:</strong>
                          </td>
-                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             ${object.device_name or ''}
                          </td>
                      </tr>
                      
-                     <tr style="border: solid 1px;">
-                         <td style="border: solid 1px;height:35px;width:35%;padding:5px;">
+                     <tr>
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             <strong>Signed At:</strong>
                          </td>
-                         <td style="border: solid 1px;height:35px;width:65%;padding:5px;">
+                         <td align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
                             ${object.signed_at or ''}
                          </td>
                      </tr>
@@ -740,6 +742,7 @@
                  <br/>
                  <br/>
                  Thanks.
+
                  
                    														
 			]]>
