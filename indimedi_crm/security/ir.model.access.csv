@@ -103,3 +103,23 @@ access_billing_history_user,billing.history.user,model_billing_history,,1,0,0,0
 access_project_leave_gm,project.leave.gm,model_project_leave,group_project_general_manager,1,1,1,1
 access_subsidiary_master,subsidiary.master,model_subsidiary_master,group_project_general_manager,1,1,1,1
 access_subsidiary_master_user,subsidiary.master.user,model_subsidiary_master,hr.group_hr_user,1,0,0,0
+,,,,,,,
+,,,,,,,
+access_job_description_portal,job.description.portal,model_job_description,indimedi_crm.group_agreement_portal_user,1,1,0,0
+access_accounting_software_portal,accounting.software.portal,model_accounting_software,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_nature_experience_portal,nature.experience.portal,model_nature_experience,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_job_invoicing_portal,job.invoicing.portal,model_job_invoicing,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_comm_medium_portal,comm.medium.portal,model_comm_medium,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_software_remote_portal,software.remote.portal,model_software_remote,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_document_remote_portal,document.remote.portal,model_document_remote,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_working_timezone_portal,working.timezone.portal,model_working_timezone,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_from_timezone_portal,from.timezone.portal,model_from_timezone,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_ to_timezone_portal,to.timezone.portal,model_to_timezone,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_software_cloud_portal,software.cloud.portal,model_software_cloud,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_document_sharing_portal,document.sharing.portal,model_document_sharing,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_job_profile_portal,job.profile.portal,model_job_profile,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_job_experience_portal,job.experience.portal,model_job_experience,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_tax_software_portal,tax.software.portal,model_tax_software,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_software_local_portal,software.local.portal,model_software_local,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_document_cloud_portal, document.cloud.portal,model_document_cloud,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_agreement_stage_portal, agreement.stage.portal,model_agreement_stage,indimedi_crm.group_agreement_portal_user,1,0,0,0

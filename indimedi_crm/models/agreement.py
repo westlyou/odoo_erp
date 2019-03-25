@@ -102,6 +102,24 @@ class JobDescription(models.Model):
     cvv = fields.Char(string="CVV")
     pin = fields.Char(string="PIN")
     
+    #Dummy payment detail field
+    dummy_payment_method = fields.Selection(related='payment_method', string="Payment Method")
+    dummy_name_of_account = fields.Char(related='name_of_account', string="Name of Account")
+    dummy_name_of_bank = fields.Char(related='name_of_bank',string="Name of Bank")
+    dummy_type_of_bank = fields.Char(related='type_of_bank', string="Type of Bank")
+    dummy_account_number = fields.Char(related='account_number', string="Account Number")
+    dummy_bank_routing = fields.Char(related='bank_routing', string="Bank Routing")
+    
+    dummy_name_on_card = fields.Char(related='name_on_card', string="Name On Card")
+    dummy_type_of_card = fields.Char(related='type_of_card', string="Type of Card")
+    
+    dummy_expiry_month = fields.Selection(related='expiry_month', string="Expiry Month")
+    
+    dummy_expiry_year = fields.Selection(related='expiry_year', string="Expiry Year")
+    dummy_cvv = fields.Char(related='cvv', string="CVV")
+    dummy_pin = fields.Char(related='pin', string="PIN")
+    
+    
     ip_add_of_user = fields.Char(string="User IP")
     device_name = fields.Char(string="Device Name")
     signed_at = fields.Char(string="Signed At")

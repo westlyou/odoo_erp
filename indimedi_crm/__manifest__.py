@@ -15,6 +15,7 @@
     This Module contains the custom crm and contact module functionalities
     ''',
     'data': [
+            'security/portal_security.xml',
              'security/project_security.xml',
              'security/invoice_security.xml',
              'security/holidays_security.xml',
@@ -66,6 +67,8 @@
             'views/subsidiary_master.xml',
             'wizard/massage_wizard.xml',
             'security/security.xml',
+            
+            'views/client_agreement_portal.xml',
         ],
     'qweb': [
         'static/lib/web_calendar/xml/*.xml',

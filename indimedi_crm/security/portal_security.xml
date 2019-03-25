@@ -1,0 +1,13 @@
+<odoo>
+
+	<record id="group_agreement_portal_user" model="res.groups">
+         <field name="name">Agreement Portal User</field>
+         <field name="comment">User with this group can view his own agreement.</field>
+     </record>
+     
+     <record id="group_show_post_sales_user" model="res.groups">
+         <field name="name">Show Post Sales</field>
+         <field name="comment">User with this group can view Post Sales menu.</field>
+     </record>
+        
+</odoo>
