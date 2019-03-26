@@ -123,6 +123,8 @@ class JobDescription(models.Model):
     ip_add_of_user = fields.Char(string="User IP")
     device_name = fields.Char(string="Device Name")
     signed_at = fields.Char(string="Signed At")
+    user_id = fields.Many2one('res.users', string="Client Name")
+    
     
     @api.multi
     def get_daily_hours(self):
@@ -210,7 +212,6 @@ class JobDescription(models.Model):
         return base_url
     
     
-        
     @api.multi
     def email_comm_medium_value(self):
         value = ''

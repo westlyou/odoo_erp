@@ -9,5 +9,12 @@
          <field name="name">Show Post Sales</field>
          <field name="comment">User with this group can view Post Sales menu.</field>
      </record>
+     
+     <record model="ir.rule" id="agreement_job_portal_rule">
+	     <field name="name">Portal User: Agreement</field>
+	     <field name="model_id" ref="model_job_description"/>
+	     <field name="domain_force">[('user_id', '=', user.id)]</field>
+	     <field name="groups" eval="[(4,ref('indimedi_crm.group_agreement_portal_user'))]"/>
+	 </record>
         
 </odoo>

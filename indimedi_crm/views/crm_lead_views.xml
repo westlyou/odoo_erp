@@ -755,6 +755,8 @@ if records:
                                     <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                                 </div> -->
                                 <group string="Job Description">
+                                	<field name="user_id" style="width:50%;" 
+                                	domain="[('is_client', '=', True)]" required="1"/>
                                     <field name="job_profile_id" style="width:50%;" required="1"/>
                                     <field name="experience_id" style="width:50%;"/>
                                     <field name="nature_experience_ids" widget="many2many_tags"/>
