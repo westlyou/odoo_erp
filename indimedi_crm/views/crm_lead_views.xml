@@ -337,7 +337,7 @@ if records:
                 <field name="lead_fax"/>
                 <field name="lead_website"/>
                 <field name="lead_twitter"/>
-                <field name="user_id" string="Lead Owner"/>
+                <field name="user_id" string="Lead Owner" required="1"/>
             </xpath>
             <xpath expr="//field[@name='team_id']" position="replace">
                 <field name="team_id" string="Lead Owner Team"/>

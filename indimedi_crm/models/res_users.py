@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
@@ -33,7 +32,7 @@ class Users(models.Model):
     _inherit = 'res.users'
     
     is_client = fields.Boolean(string="Client")
-    
-    
+    staff_confirm_tc = fields.Binary(string="Staff Confirmation T&C File", attachment=True)
+    filename = fields.Char(string="FIle Name")
     
 

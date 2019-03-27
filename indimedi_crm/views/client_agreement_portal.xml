@@ -19,7 +19,7 @@
 					</button>
 				</div>
 				<group string="Agree Or Not" col="4" invisible="1">
-					<field name="agree" string="Agree" invisible="1" />
+					
 					<!-- <field name="general_manager" attrs="{'invisible': [('agree', '=', 
 						False)], 'required': [('agree','=', True)]}"/> -->
 					<field name="agreement_general_manager" invisible="1" />
@@ -128,6 +128,16 @@
 					<field name="timezone_id" />
 					<field name="from_timezone_id" />
 					<field name="to_timezone_id" string="Time To" />
+				</group>
+				<group string="Terms and Conditions">
+					<group>
+						<label string="I Agree"/>
+						<div>
+							<field name="dummy_agree" string="I Agree" class="oe_inline"/>
+							<button name="download_signup_t_c" string="Click Here To Read T&amp;C" class="oe_link oe_inline" type="object"/>
+						</div>
+						<button name="confirm_agreement" string="Confirm" type="object" class="btn-primary" />
+					</group>
 				</group>
 				<!-- <group col="4"> <field name="time_from" style="margin-right:10%"/> 
 					<label for="time_to" style="margin-left:50%"/> <field name="time_to" nolabel="1" 

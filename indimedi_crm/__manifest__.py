@@ -69,6 +69,7 @@
             'security/security.xml',
             
             'views/client_agreement_portal.xml',
+            'views/res_company_view.xml',
         ],
     'qweb': [
         'static/lib/web_calendar/xml/*.xml',

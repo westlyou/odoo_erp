@@ -125,3 +125,4 @@ access_document_cloud_portal,document.cloud.portal,model_document_cloud,indimedi
 access_agreement_stage_portal,agreement.stage.portal,model_agreement_stage,indimedi_crm.group_agreement_portal_user,1,0,0,0
 access_credentials_agreement_portal,credentials.agreement.portal,model_credentials_agreement,indimedi_crm.group_agreement_portal_user,1,0,0,0
 access_crm_lead_portal,crm.lead.portal,model_crm_lead,indimedi_crm.group_agreement_portal_user,1,0,0,0
+access_ir_attachment_portal,ir.attachment.portal,model_ir_attachment,indimedi_crm.group_agreement_portal_user,1,0,0,0

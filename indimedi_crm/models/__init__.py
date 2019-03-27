@@ -15,3 +15,4 @@ from . import billing_history
 from . import project_leave
 from . import subsidiary_master
 from . import res_users
+from . import res_company_inherit

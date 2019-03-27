@@ -124,7 +124,7 @@ class JobDescription(models.Model):
     device_name = fields.Char(string="Device Name")
     signed_at = fields.Char(string="Signed At")
     user_id = fields.Many2one('res.users', string="Client Name")
-    
+    dummy_agree = fields.Boolean(string="I Agree")
     
     @api.multi
     def get_daily_hours(self):
@@ -132,13 +132,13 @@ class JobDescription(models.Model):
         if self.hiring_model in ['permanent', 'On Demand']:
             hours = self.permanent_hour_selection
             if self.jd_invoicing.name in ['Weekly', 'Weekly Advance']:
-                daily_hour = float(hours) / 8
+                daily_hour = float(hours) / 5
             if self.jd_invoicing.name == ['Monthly', 'Monthly Advance']:
                 daily_hour = (float(hours) / 4) / 5
         if self.hiring_model in ['temporary']:
             hours = self.temporary_hour_selection
             if self.jd_invoicing.name in ['Weekly', 'Weekly Advance']:
-                daily_hour = float(hours) / 8
+                daily_hour = float(hours) / 5
             if self.jd_invoicing.name == ['Monthly', 'Monthly Advance']:
                 daily_hour = (float(hours) / 4) / 5
         return daily_hour
@@ -150,6 +150,25 @@ class JobDescription(models.Model):
         base_url = base_url + '/staff_confirmation/%s/%s'%(self.id, self.token_staff_confirm)
         return base_url
     
+    @api.multi 
+    def download_signup_t_c(self):
+#         file = self.agreement_general_manager
+        return {
+                 'type' : 'ir.actions.act_url',
+                 'url': 'download-signup-t-c',
+                 'target': 'new',
+     }
+        
+    @api.multi 
+    def confirm_agreement(self):
+        if not self.dummy_agree:
+            raise UserError("Please accept terms and conditions!")
+        return {
+                 'type' : 'ir.actions.act_url',
+                 'url': '/agreement_done/%s/%s'%(self.id, self.random_token),
+                 'target': 'self',
+     }
+    
     @api.multi
     def action_send_staff_confirmation(self):
         if not self.token_staff_confirm:
@@ -158,11 +177,16 @@ class JobDescription(models.Model):
     
         template_id = self.env.ref('indimedi_crm.email_template_confirmation_of_staff')
         
+        t_and_c_pdf = self.env['ir.attachment'].search([('res_model', '=', 'res.users'),
+                                                        ('res_field', '=', 'staff_confirm_tc'),
+                                                        ('res_id', '=', self.agreement_general_manager.id)])
         
         ctx = dict(email_from= self.agreement_general_manager.email,
                         user_name= self.agreement_general_manager.name,
+                        
                         ) #20554 server
-             
+        if t_and_c_pdf:
+            ctx.update({'default_attachment_ids' : [(6,0, [t_and_c_pdf.id])]})
         ctx.update({
                 'default_model': 'job.description',
                 'default_res_id': self.ids[0],
@@ -202,6 +226,18 @@ class JobDescription(models.Model):
                     break
             if not vals:
                 vals = self.child_ids[0].name
+        return vals
+    
+    @api.multi
+    def get_contact_email(self):
+        vals = ''
+        if self.child_ids:
+            for contact in self.child_ids:
+                if contact.primary_contact:
+                    vals = contact.email
+                    break
+            if not vals:
+                vals = self.child_ids[0].email
         return vals
     
     @api.multi

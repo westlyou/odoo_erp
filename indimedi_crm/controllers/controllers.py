@@ -11,10 +11,14 @@ import json
 import httpagentparser
 from datetime import datetime
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from openerp.addons.web.controllers.main import serialize_exception,content_disposition
+import base64
 
 
 _logger = logging.getLogger(__name__)
     
+
+
 
 class AgreementConfirm(http.Controller):
 #     @http.route('/agreement_confirm/<agreement>/<token>', type='http', auth='public', website=True)
@@ -31,6 +35,33 @@ class AgreementConfirm(http.Controller):
 #         return request.render('indimedi_crm.i_agree_form', data)
     
     
+    
+    @http.route('/download-signup-t-c', type='http', auth="public")
+    @serialize_exception
+    def download_t_c(self, **kw):
+        
+        sighup_pdf = request.env['ir.attachment'].search([('res_model', '=', 'res.company'),
+                                                        ('res_field', '=', 'signup_tc'),
+                                                        ('res_id', '=', 1)])
+        
+        if not sighup_pdf:
+            return request.not_found()
+        filename = 'ENTIGRITY REMOTE STAFFING SIGN UP TERMS.pdf'
+        Model = request.registry['ir.attachment']
+        fields = ['datas']
+        res = Model.read(sighup_pdf, fields)[0]
+        
+        filecontent = base64.b64decode(res.get('datas') or '')
+        if not filecontent:
+            return request.not_found()
+        else:
+            if not filename:
+                filename = '%s_%s' % ('ir.attachment'.replace('.', '_'), id)
+        return request.make_response(filecontent,
+                       [('Content-Type', 'application/octet-stream'),
+                        ('Content-Disposition', content_disposition(filename))])
+                
+
     @http.route('/agreement_done/<agreement>/<token>', type='http', auth='public', website=True)
     def agreement_yes(self, agreement, token, **post):
         data = {}
@@ -81,7 +112,7 @@ class AgreementConfirm(http.Controller):
         
         email_vals['attachment_ids'] = [(6,0, [20554])] #20554 server | local 19561
         email_vals['email_from'] = superuser_id.email
-        email_vals['email_to'] = agreement_id.crm_id.email_from
+        email_vals['email_to'] = agreement_id.get_contact_email()
         
         mail_id = request.env['mail.mail'].sudo().create(email_vals)
         mail_id.send()
