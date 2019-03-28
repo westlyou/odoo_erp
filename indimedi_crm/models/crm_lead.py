@@ -429,8 +429,8 @@ class JobDescription(models.Model):
                 compose_form_id = False
 
             # self.resume_details = [(6, 0 , [y for y in (self.env['ir.attachment'].search([('res_model','=','resume.details')]).ids)])]
-            us_email_id = str(self.env.user.email)
-            user_name = str(self.env.user.name)
+            us_email_id = str(self.crm_id.user_id.email)
+            user_name = str(self.crm_id.user_id.name)
             ctx = dict(email_from= us_email_id,
                         user_name= user_name,
                         default_attachment_ids=[(6,0, [20554])]) #20554 server
@@ -447,7 +447,7 @@ class JobDescription(models.Model):
 #                     'default_composition_mode': 'comment',
                     'mark_so_as_sent': True,
                     'custom_layout': "email_template_agreement_crm",
-                    'email_to' : self.crm_id.email_from, #default set recepient as company email in template
+                    'email_to' : self.user_id.email, #default set recepient as company email in template
             })
 
             email_vals = template_id.with_context(ctx).sudo().generate_email(self.id)
@@ -527,8 +527,6 @@ class JobDescription(models.Model):
                     'target': 'new',
                     'context': ctx,
             }
-
-
 
     @api.multi
     def send_mail_templates(self):

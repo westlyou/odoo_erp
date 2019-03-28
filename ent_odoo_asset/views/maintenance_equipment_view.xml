@@ -1,0 +1,108 @@
+<odoo>
+	<data>
+		<record id="hr_equipment_view_form_inherit_ent_asset_mk" model="ir.ui.view">
+		    <field name="name">maintenance.equipment.view.form.inherit.ent_asset</field>
+		    <field name="model">maintenance.equipment</field>
+		    <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//field[@name='partner_ref']" position="attributes">
+		            <attribute name="string">Invoice No.</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='cost']" position="after">
+		        	<field name="cgst_tax"/>
+		        	<field name="sgst_tax"/>
+		        	<field name="total_cost"/>
+		        </xpath>
+		        <xpath expr="//field[@name='maintenance_team_id']" position="attributes">
+		        	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='technician_user_id']" position="attributes">
+		        	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//page[last()]" position="attributes">
+		        	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='scrap_date']" position="before">
+		        	<field name="is_scrap_system"/>
+		        </xpath>
+		        <xpath expr="//field[@name='partner_ref']" position="before">
+		        	<field name="invoice_date"/>
+		        	<field name="invoice_value"/>
+		        </xpath>
+		        <xpath expr="//field[@name='partner_id']" position="after">
+		        	<field name="system_ip"/>
+		        </xpath>
+		        
+		        <xpath expr="//field[@name='warranty']" position="after">
+	        		<field name="system_user_name"/>
+	        		<field name="system_password"/>
+	        		<field name="tight_vnc_password"/>
+		        </xpath>
+		        
+		        <xpath expr="//field[@name='location']" position="after">
+		        	<field name="system_location"/>
+		        </xpath>
+		        
+		        <xpath expr="//field[@name='location']" position="attributes">
+		        	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        
+		        <xpath expr="//notebook/page" position="attributes">
+		        	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        
+		        <xpath expr="//notebook/page/field[@name='note']" position="attributes">
+		        	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        
+		        <xpath expr="//notebook" postion="inside">
+		        	<page name="description" string="Description">
+		        		<field name="note"/>
+		        	</page>
+		        </xpath>
+		        
+		        <xpath expr="//button[@name='%(maintenance.hr_equipment_request_action_from_equipment)d']" position="attributes">
+		        	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        
+		    </field>
+		</record>
+		
+		<record id="hr_equipment_view_search_inherit_ent_mk" model='ir.ui.view'>
+			<field name="name">maintenance.equipment.view.search.inherit.hr</field>
+			<field name="model">maintenance.equipment</field>
+			<field name="inherit_id" ref="maintenance.hr_equipment_view_search"/>
+			<field name="arch" type="xml">
+				<xpath expr="//filter[@name='assigned']" position="before">
+					<filter string="Scrap Systems" name="scrap_systems" domain="[('is_scrap_system', '=', True)]"/>
+				</xpath>
+				<xpath expr="//field[@name='category_id']" position="after">
+					<field name="partner_ref" string="Invoice No."/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="hr_equipment_view_tree_inherit_ent_mk" model='ir.ui.view'>
+			<field name="name">maintenance.equipment.view.search.inherit.hr</field>
+			<field name="model">maintenance.equipment</field>
+			<field name="inherit_id" ref="maintenance.hr_equipment_view_tree"/>
+			<field name="arch" type="xml">
+				<xpath expr="//tree" position="replace">
+					<tree string="Assign To User" decoration-bf="message_needaction==True">
+				        <field name="message_needaction" invisible="1"/>
+				        <field name="name"/>
+				        <field name="owner_user_id" string="Owner"/>
+				        <field name="assign_date" groups="base.group_no_one"/>
+				        <field name="category_id"/>
+				        <field name="partner_id" invisible="1"/>
+				        <field name="cost"/>
+				        <field name="cgst_tax"/>
+				    	<field name="sgst_tax"/>
+				    	<field name="total_cost"/>
+				    </tree>
+				</xpath>
+			</field>
+		</record>
+		
+	</data>
+</odoo>

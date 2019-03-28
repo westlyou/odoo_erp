@@ -44,7 +44,6 @@
     <!-- staff confirmation -->
     <template id="staff_confirmation_form" name="Staff Confirmation">
        <t t-call="website.layout">
-        <div class="oe_structure">
           <div class="container">
           	<form t-att-action="'/staff_confirmed/%s/%s' % (agreement, token)" method="post">
           		<script type="text/javascript">
@@ -250,7 +249,6 @@
 	            </div>
           	</form>
           </div>
-        </div>
       </t>
     </template>
     
