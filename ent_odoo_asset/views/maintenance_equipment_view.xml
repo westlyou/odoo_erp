@@ -30,7 +30,12 @@
 		        	<field name="invoice_value"/>
 		        </xpath>
 		        <xpath expr="//field[@name='partner_id']" position="after">
+		        	<field name="active"/>
 		        	<field name="system_ip"/>
+		        	<field name="system_ram"/>
+		        	<field name="system_processor"/>
+		        	<field name="system_os"/>
+		        	<field name="system_total_disk"/>
 		        </xpath>
 		        
 		        <xpath expr="//field[@name='warranty']" position="after">
