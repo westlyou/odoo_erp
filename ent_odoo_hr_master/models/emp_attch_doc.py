@@ -5,11 +5,6 @@ class EmpAttachDoc(models.Model):
 	_name = "emp.attachment.doc"
 	_description = "Document"
 	
-	#doc_type_id = fields.Many2one(
-		#'emp.doc.type',
-		#string='Document',
-		#required=True,
-	#)
 	attachment_id = fields.Many2one(
 		'ir.attachment',
 		string='Attachement',
@@ -24,11 +19,3 @@ class EmpAttachDoc(models.Model):
 		string='Employee',
 	)
 
-
-#class EmpDoc(models.Model):
-#	_name = "emp.doc.type"
-#	
-#	name = fields.Char(
-#		string='Name',
-#		required=True,
-#	)
