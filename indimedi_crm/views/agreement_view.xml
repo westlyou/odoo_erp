@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <menuitem id="post_sales_menu" name="Post Sales"/>
+    <menuitem id="post_sales_menu" name="Post Sales" groups="indimedi_crm.group_show_post_sales_user"/>
 
     <record id="view_customer_agreement_kanban" model="ir.ui.view">
         <field name="name">job.description.kanban</field>
@@ -371,9 +371,9 @@
                                 <field name="temporary_hour_jd" attrs="{'invisible': [('hiring_model','=','permanent')]}"/>
                             </group>
                         </page>
-                        <page string="Payment Method" groups="indimedi_crm.group_payment_method" attrs="{'invisible': [('stage_hide', '=', False)]}">
-                        	<group>
-                        		<group>
+                        <!-- <page string="Payment Method" attrs="{'invisible': [('is_client_confim', '=', False)]}">
+                        	<group >
+                        		<group groups="indimedi_crm.group_payment_method">
                         			<field name="is_client_confim" readonly="1"/>
                         			<field name="payment_method" readonly="1"/>
                         			<field name="name_of_account" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1"/>
@@ -388,7 +388,54 @@
                         			<field name="cvv" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
                         			<field name="pin" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1"/>
                         		</group>
-                        	</group>
+                        		<group groups="!indimedi_crm.group_payment_method">
+                        			<field name="dummy_payment_method" readonly="1"/>
+                        			<field name="dummy_name_of_account" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_name_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_type_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_account_number" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_bank_routing" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_name_on_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_type_of_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_expiry_month" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_expiry_year" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_cvv" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_pin" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        		</group>
+                        	</group>	
+                        </page> -->
+                        <page string="Payment Method" >
+                        	<group >
+                        		<group groups="indimedi_crm.group_payment_method">
+                        			<field name="is_client_confim" />
+                        			<field name="payment_method" />
+                        			<field name="name_of_account" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" />
+                        			<field name="name_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" />
+                        			<field name="type_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" />
+                        			<field name="account_number" attrs="{'invisible': [('payment_method', '!=', 'bank')]}"/>
+                        			<field name="bank_routing" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" />
+                        			<field name="name_on_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" />
+                        			<field name="type_of_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" />
+                        			<field name="expiry_month" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" />
+                        			<field name="expiry_year" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" />
+                        			<field name="cvv" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" />
+                        			<field name="pin" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" />
+                        		</group>
+                        		<group groups="!indimedi_crm.group_payment_method">
+                        			<field name="dummy_payment_method" readonly="1"/>
+                        			<field name="dummy_name_of_account" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_name_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_type_of_bank" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_account_number" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_bank_routing" attrs="{'invisible': [('payment_method', '!=', 'bank')]}" readonly="1" password="True"/>
+                        			<field name="dummy_name_on_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_type_of_card" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_expiry_month" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_expiry_year" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_cvv" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        			<field name="dummy_pin" attrs="{'invisible': [('payment_method', '!=', 'credit_card')]}" readonly="1" password="True"/>
+                        		</group>
+                        	</group>	
                         </page>
                         <page name="feedback_call" string="Feedback Call" attrs="{'invisible': [('stage_hide', '=', False)]}">
                             <group>

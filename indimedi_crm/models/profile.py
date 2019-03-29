@@ -66,18 +66,19 @@ class ResUser(models.Model):
 
     @api.model
     def create(self, vals):
-        mail_ser_vals = {
-            'name': vals.get('name', None),
-            'smtp_host': vals.get('smtp_host', None) and vals.pop('smtp_host') or 'smtp',
-            'smtp_port': vals.get('smtp_port', None) and vals.pop('smtp_port') or 25,
-            'smtp_user': vals.get('smtp_user', None) and vals.pop('smtp_user') or '',
-            'smtp_pass': vals.get('smtp_pass', None) and vals.pop('smtp_pass') or '',
-            'smtp_encryption': vals.get('smtp_encryption', None) and vals.pop('smtp_encryption') or '',
-            'smtp_debug': vals.get('smtp_debug', None) and vals.pop('smtp_debug') or '',
-            'sequence': vals.get('sequence', None) and vals.pop('sequence') or '',
-        }
-        mail_server_id = self.env['ir.mail_server'].create(mail_ser_vals)
-        vals.update({'mail_server_id': mail_server_id.id})
+        if not self._context.get('no_smtp'):
+            mail_ser_vals = {
+                'name': vals.get('name', None),
+                'smtp_host': vals.get('smtp_host', None) and vals.pop('smtp_host') or 'smtp',
+                'smtp_port': vals.get('smtp_port', None) and vals.pop('smtp_port') or 25,
+                'smtp_user': vals.get('smtp_user', None) and vals.pop('smtp_user') or '',
+                'smtp_pass': vals.get('smtp_pass', None) and vals.pop('smtp_pass') or '',
+                'smtp_encryption': vals.get('smtp_encryption', None) and vals.pop('smtp_encryption') or 'none', 
+                'smtp_debug': vals.get('smtp_debug', None) and vals.pop('smtp_debug') or '',
+                'sequence': vals.get('sequence', None) and vals.pop('sequence') or '',
+            }
+            mail_server_id = self.env['ir.mail_server'].create(mail_ser_vals)
+            vals.update({'mail_server_id': mail_server_id.id})
         res = super(ResUser, self).create(vals)
         res.sudo().set_values()
         return res
