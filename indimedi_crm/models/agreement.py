@@ -204,6 +204,7 @@ class JobDescription(models.Model):
                 'default_use_template': bool(template_id),
                 'default_template_id': template_id.id,
                 'default_composition_mode': 'comment',
+                'default_email_cc': [(6,0, self.env.user.company_id.staff_confirmation_email_cc.ids)],
 #                 'mark_so_as_sent': True,
 #                 'custom_layout': "email_template_agreement_crm",
                 'email_to' : self.jd_email, #default set recepient as company email in template

@@ -433,12 +433,9 @@ class JobDescription(models.Model):
             user_name = str(self.crm_id.user_id.name)
             ctx = dict(email_from= us_email_id,
                         user_name= user_name,
-                        default_attachment_ids=[(6,0, [20554])]) #20554 server
+                        default_attachment_ids=[(6,0, [20554])],
+                        ) #20554 server
             
-            
-            
-            
-             
             ctx.update({
                     'default_model': 'job.description',
                     'default_res_id': self.ids[0],
@@ -446,12 +443,15 @@ class JobDescription(models.Model):
 #                     'default_template_id': template_id,
 #                     'default_composition_mode': 'comment',
                     'mark_so_as_sent': True,
-                    'custom_layout': "email_template_agreement_crm",
+#                     'custom_layout': "email_template_agreement_crm",
                     'email_to' : self.user_id.email, #default set recepient as company email in template
             })
 
             email_vals = template_id.with_context(ctx).sudo().generate_email(self.id)
             email_vals['attachment_ids'] = [(6,0, [20554])]
+            email_vals['email_partner_cc'] = [(6,0,self.env.user.company_id.signup_email_cc.ids)]
+            
+            
             mail_id = self.env['mail.mail'].sudo().create(email_vals)
             mail_id.send()
             

@@ -13,9 +13,54 @@ from datetime import datetime
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.web.controllers.main import serialize_exception, content_disposition
 import base64
+import odoo.addons.web.controllers.main as main
+import odoo
 
 _logger = logging.getLogger(__name__)
     
+    
+# class Home(main.Home):
+    
+#     
+#     @http.route('/client', type='http', auth="public")
+#     def web_signup(self, redirect=None, **kw):
+#         request.params['login_success'] = False
+#         if request.httprequest.method == 'GET' and redirect and request.session.uid:
+#             return http.redirect_with_hash(redirect)
+# 
+#         if not request.uid:
+#             request.uid = odoo.SUPERUSER_ID
+# 
+#         values = request.params.copy()
+#         try:
+#             values['databases'] = http.db_list()
+#         except odoo.exceptions.AccessDenied:
+#             values['databases'] = None
+# 
+#         if request.httprequest.method == 'POST':
+#             old_uid = request.uid
+#             
+#             login = request.params['login']
+#             
+#             user_id = request.env['res.users'].sudo().search([('login', '=', login), ('is_client', '=', True)])
+#             print"user_id============",user_id.password
+#             if user_id:
+#                 request.params['password'] = 'aa'
+#                 uid = request.session.authenticate(request.session.db, request.params['login'], request.params['password'])
+#             else:
+#                 if not request.params.get('password'):
+#                     values['error'] = _("Email Not Found!")
+#                     return request.render('web.client_signup', values)
+#                 uid = request.session.authenticate(request.session.db, request.params['login'], request.params['password'])
+#             if uid is not False:
+#                 request.params['login_success'] = True
+#                 if not redirect:
+#                     redirect = '/web'
+#                 return http.redirect_with_hash(redirect)
+#             request.uid = old_uid
+#             values['error'] = _("Wrong login/password")
+#         return request.render('web.client_signup', values)
+#     
 
 class AgreementConfirm(http.Controller):
     
@@ -94,7 +139,7 @@ class AgreementConfirm(http.Controller):
         email_vals['email_from'] = agreement_id.crm_id.user_id.email
         email_vals['user_name'] = agreement_id.crm_id.user_id.name
         email_vals['email_to'] = agreement_id.user_id.email
-        
+        email_vals['email_partner_cc'] = [(6,0, agreement_id.user_id.company_id.signup_email_cc.ids)]
         mail_id = request.env['mail.mail'].sudo().create(email_vals)
         mail_id.send()
         
@@ -105,12 +150,37 @@ class AgreementConfirm(http.Controller):
         
         email_vals['email_from'] = agreement_id.crm_id.user_id.email
         email_vals['email_to'] = agreement_id.user_id.email
-        
+        email_vals['email_partner_cc'] = [(6,0, agreement_id.user_id.company_id.signup_email_cc.ids)]
         mail_id = request.env['mail.mail'].sudo().create(email_vals)
         mail_id.send()
         
         if agreement:
             data = {'agreement': agreement}
+            
+        #send notification to lead owner about confirmation
+        template_id = request.env.ref('indimedi_crm.signup_confimed_notification')
+        
+        ctx = dict(email_from=agreement_id.user_id.email,
+                        user_name=agreement_id.user_id.name,
+                        )  # 20554 server
+             
+        ctx.update({
+                'default_model': 'job.description',
+                'default_res_id': agreement_id.ids[0],
+#                     'default_use_template': bool(template_id),
+#                     'default_template_id': template_id,
+#                     'default_composition_mode': 'comment',
+                'mark_so_as_sent': True,
+                'custom_layout': "email_template_agreement_crm",
+                'email_to' : agreement_id.user_id.email,  # default set recepient as company email in template
+        })
+        
+        email_vals = template_id.with_context(ctx).sudo().generate_email(agreement_id.id)
+#         email_vals['attachment_ids'] = [(6,0, [20554])]
+        email_vals['email_partner_cc'] = [(6,0, agreement_id.user_id.company_id.signup_email_cc.ids)]
+        mail_id = request.env['mail.mail'].sudo().create(email_vals)
+        mail_id.send()
+        
         return request.render('indimedi_crm.i_agree', data)
     
     @http.route('/staff_confirmation/<agreement>/<token>', type='http', auth='public', website=True)
@@ -235,12 +305,39 @@ class AgreementConfirm(http.Controller):
                 'mark_so_as_sent': True,
                 'custom_layout': "email_template_agreement_crm",
                 'email_to' : agreement_id.jd_email,  # default set recepient as company email in template
+                'email_partner_cc': [(6,0, agreement_id.user_id.company_id.staff_confirmation_email_cc.ids)]
         })
         
         email_vals = template_id.with_context(ctx).sudo().generate_email(agreement_id.id)
 #         email_vals['attachment_ids'] = [(6,0, [20554])]
+#         email_vals['email_partner_cc'] = [(6,0, agreement_id.user_id.company_id.staff_confirmation_email_cc.ids)]
         mail_id = request.env['mail.mail'].sudo().create(email_vals)
         mail_id.send()
+        
+        #send notification to manager about confirmation
+        template_id = request.env.ref('indimedi_crm.staff_confimed_notification')
+        
+        ctx = dict(email_from=agreement_id.agreement_general_manager.email,
+                        user_name=agreement_id.agreement_general_manager.name,
+                        )  # 20554 server
+             
+        ctx.update({
+                'default_model': 'job.description',
+                'default_res_id': agreement_id.ids[0],
+#                     'default_use_template': bool(template_id),
+#                     'default_template_id': template_id,
+#                     'default_composition_mode': 'comment',
+                'mark_so_as_sent': True,
+                'custom_layout': "email_template_agreement_crm",
+                'email_to' : agreement_id.agreement_general_manager.email,  # default set recepient as company email in template
+        })
+        
+        email_vals = template_id.with_context(ctx).sudo().generate_email(agreement_id.id)
+#         email_vals['attachment_ids'] = [(6,0, [20554])]
+        email_vals['email_partner_cc'] = [(6,0, agreement_id.user_id.company_id.staff_confirmation_email_cc.ids)]
+        mail_id = request.env['mail.mail'].sudo().create(email_vals)
+        mail_id.send()
+        
          
         return request.render('indimedi_crm.staff_confirmed', vals)
     
