@@ -6,7 +6,7 @@
 			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
 			<field name="subject">Signup Confirmation with Entigrity Remote Staffing</field>
 			<field name="email_to">${ctx['email_to']|safe}</field> 
-			<field name="email_cc"> ${object.email} </field>
+			<field name="email_cc">${ctx['email_cc']}</field>
 			<field name="model_id" ref="indimedi_crm.model_job_description"/>
 			<field name="auto_delete" eval="False"/>
 			<field name="user_signature" eval="False"/>
@@ -748,6 +748,28 @@
 			]]>
 			</field>
 		</record>
+		
+		
+		<record id="signup_confimed_notification" model="mail.template">
+			<field name="name">Signup Confirmation Notification</field>
+			<field name="email_from"><![CDATA["${ctx['user_name']|safe}" <${ctx['email_from']|safe}>]]></field>
+			<field name="subject">Signup Confirmation Notification</field>
+			<field name="email_to">${ctx['email_to']|safe}</field> 
+			<field name="email_cc">${ctx['email_cc']}</field>
+			<field name="model_id" ref="indimedi_crm.model_job_description"/>
+			<field name="auto_delete" eval="False"/>
+			<field name="user_signature" eval="False"/>
+			<field name="body_html"><![CDATA[
+					<p>
+				Hi ${object.crm_id.user_id.name}<br/>
+				
+				<p>Client ${object.get_contact_name()} confirmed agreement.</p><br/>
+                   														
+                Thank You.
+			]]>
+			</field>
+		</record>
+		
 		
 	</data>
 </odoo>

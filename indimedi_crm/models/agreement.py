@@ -16,6 +16,8 @@ import dateutil.relativedelta
 class JobDescription(models.Model):
     _inherit = 'job.description'
 
+        
+
     ''' New Lead gone to New stage by default in post sales.......... & set Stages at kanban in post state'''
     agreement_stage_id = fields.Many2one('agreement.stage', string="Agreement Stage", 
         track_visibility='onchange',
@@ -102,9 +104,38 @@ class JobDescription(models.Model):
     cvv = fields.Char(string="CVV")
     pin = fields.Char(string="PIN")
     
+    #Dummy payment detail field
+    dummy_payment_method = fields.Selection(related='payment_method', string="Payment Method")
+    dummy_name_of_account = fields.Char(related='name_of_account', string="Name of Account")
+    dummy_name_of_bank = fields.Char(related='name_of_bank',string="Name of Bank")
+    dummy_type_of_bank = fields.Char(related='type_of_bank', string="Type of Bank")
+    dummy_account_number = fields.Char(related='account_number', string="Account Number")
+    dummy_bank_routing = fields.Char(related='bank_routing', string="Bank Routing")
+    
+    dummy_name_on_card = fields.Char(related='name_on_card', string="Name On Card")
+    dummy_type_of_card = fields.Char(related='type_of_card', string="Type of Card")
+    
+    dummy_expiry_month = fields.Selection(related='expiry_month', string="Expiry Month")
+    
+    dummy_expiry_year = fields.Selection(related='expiry_year', string="Expiry Year")
+    dummy_cvv = fields.Char(related='cvv', string="CVV")
+    dummy_pin = fields.Char(related='pin', string="PIN")
+    
+    
     ip_add_of_user = fields.Char(string="User IP")
     device_name = fields.Char(string="Device Name")
     signed_at = fields.Char(string="Signed At")
+    user_id = fields.Many2one('res.users', string="Client Name")
+    dummy_agree = fields.Boolean(string="I Agree")
+    
+    @api.onchange('user_id')
+    def get_related_users(self):
+        partner_ids = self.crm_id.child_ids
+#         print"partner_ids============",partner_ids
+        users = self.env['res.users'].search([('partner_id', 'in', partner_ids.ids)])
+#         print"usersusers===============",users
+        return {'domain':{'user_id':[('id', 'in', users.ids)]}}
+
     
     @api.multi
     def get_daily_hours(self):
@@ -112,13 +143,13 @@ class JobDescription(models.Model):
         if self.hiring_model in ['permanent', 'On Demand']:
             hours = self.permanent_hour_selection
             if self.jd_invoicing.name in ['Weekly', 'Weekly Advance']:
-                daily_hour = float(hours) / 8
+                daily_hour = float(hours) / 5
             if self.jd_invoicing.name == ['Monthly', 'Monthly Advance']:
                 daily_hour = (float(hours) / 4) / 5
         if self.hiring_model in ['temporary']:
             hours = self.temporary_hour_selection
             if self.jd_invoicing.name in ['Weekly', 'Weekly Advance']:
-                daily_hour = float(hours) / 8
+                daily_hour = float(hours) / 5
             if self.jd_invoicing.name == ['Monthly', 'Monthly Advance']:
                 daily_hour = (float(hours) / 4) / 5
         return daily_hour
@@ -130,6 +161,25 @@ class JobDescription(models.Model):
         base_url = base_url + '/staff_confirmation/%s/%s'%(self.id, self.token_staff_confirm)
         return base_url
     
+    @api.multi 
+    def download_signup_t_c(self):
+#         file = self.agreement_general_manager
+        return {
+                 'type' : 'ir.actions.act_url',
+                 'url': 'download-signup-t-c',
+                 'target': 'new',
+     }
+        
+    @api.multi 
+    def confirm_agreement(self):
+        if not self.dummy_agree:
+            raise UserError("Please accept terms and conditions!")
+        return {
+                 'type' : 'ir.actions.act_url',
+                 'url': '/agreement_done/%s/%s'%(self.id, self.random_token),
+                 'target': 'self',
+     }
+    
     @api.multi
     def action_send_staff_confirmation(self):
         if not self.token_staff_confirm:
@@ -138,17 +188,23 @@ class JobDescription(models.Model):
     
         template_id = self.env.ref('indimedi_crm.email_template_confirmation_of_staff')
         
+        t_and_c_pdf = self.env['ir.attachment'].search([('res_model', '=', 'res.users'),
+                                                        ('res_field', '=', 'staff_confirm_tc'),
+                                                        ('res_id', '=', self.agreement_general_manager.id)])
         
         ctx = dict(email_from= self.agreement_general_manager.email,
                         user_name= self.agreement_general_manager.name,
+                        
                         ) #20554 server
-             
+        if t_and_c_pdf:
+            ctx.update({'default_attachment_ids' : [(6,0, [t_and_c_pdf.id])]})
         ctx.update({
                 'default_model': 'job.description',
                 'default_res_id': self.ids[0],
                 'default_use_template': bool(template_id),
                 'default_template_id': template_id.id,
                 'default_composition_mode': 'comment',
+                'default_email_cc': [(6,0, self.env.user.company_id.staff_confirmation_email_cc.ids)],
 #                 'mark_so_as_sent': True,
 #                 'custom_layout': "email_template_agreement_crm",
                 'email_to' : self.jd_email, #default set recepient as company email in template
@@ -185,6 +241,18 @@ class JobDescription(models.Model):
         return vals
     
     @api.multi
+    def get_contact_email(self):
+        vals = ''
+        if self.child_ids:
+            for contact in self.child_ids:
+                if contact.primary_contact:
+                    vals = contact.email
+                    break
+            if not vals:
+                vals = self.child_ids[0].email
+        return vals
+    
+    @api.multi
     def get_agreement_url(self):
         base_url = ''
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
@@ -192,7 +260,6 @@ class JobDescription(models.Model):
         return base_url
     
     
-        
     @api.multi
     def email_comm_medium_value(self):
         value = ''
