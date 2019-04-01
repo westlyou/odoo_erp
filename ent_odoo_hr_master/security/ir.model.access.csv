@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_emp_ent_qualification,emp_ent_qualification,ent_odoo_hr_master.model_emp_ent_qualification,base.group_user,1,0,0,0
+access_emp_ent_qualification_officer,emp_ent_qualification_officer,ent_odoo_hr_master.model_emp_ent_qualification,hr.group_hr_user,1,1,1,1
+
+access_emp_ent_prev_company,emp_ent_prev_company,ent_odoo_hr_master.model_emp_ent_prev_company,base.group_user,1,0,0,0
+access_emp_ent_prev_company_officer,emp_ent_prev_company_officer,ent_odoo_hr_master.model_emp_ent_prev_company,hr.group_hr_user,1,1,1,1
+
+access_emp_attachment_doc,emp_attachment_doc,ent_odoo_hr_master.model_emp_attachment_doc,base.group_user,1,0,0,0
+access_emp_attachment_doc_officer,emp_attachment_doc_officer,ent_odoo_hr_master.model_emp_ent_prev_company,hr.group_hr_user,1,1,1,1

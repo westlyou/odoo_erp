@@ -1,0 +1,69 @@
+<odoo>
+	<record id="view_employee_form_inherit_ent_hr_master_mk" model='ir.ui.view'>
+		<field name="name">hr.employee.view.form.inherit.hr.master.mk</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//h1" position="before">
+				<h1>
+					<field name="emp_number"/>
+				</h1>
+			</xpath>
+			<xpath expr="//page[@name='personal_information']/group" position="inside">
+				<group>
+					<field name="date_of_joining"/>
+					<field name="landline_no"/>
+					<field name="package"/>
+					<field name="available_till_to" widget="float_time"/>
+					<field name="emp_qualification_ids" widget="many2many_tags"/>
+				</group>
+			</xpath>
+			<xpath expr="//notebook/page[last()]" position="after">
+				<page name="documents" string="Documents">
+					<field name="emp_attachment_ids">
+						<tree editable="bottom">
+							<field name="attachment_id"/>
+							<field name="is_attached"/>
+						</tree>
+						<form>
+							<group>
+								<group>
+									<field name="is_attached"/>
+								</group>
+								<group>
+									<field name="attachment_id"/>
+								</group>
+							</group>
+						</form>
+					</field>				
+				</page>
+				<page name="emp_previous_cmpny" string="Previous Company Data">
+					<field name="emp_prev_company_ids">
+						<tree editable="bottom">
+							<field name="name"/>
+							<field name="designation"/>
+							<field name="joining_date"/>
+							<field name="resign_date"/>
+						</tree>
+						<form>
+							<group name="prev_cm_grp1">
+								<group name="prev_cmp_dt">
+									<field name="name"/>
+									<field name="joining_date"/>
+								</group>
+								
+								<group name="prev_cm_grp2">
+									<field name="designation"/>
+									<field name="resign_date"/>
+								</group>
+							</group>
+						</form>
+					</field>
+				</page>
+			</xpath>
+			<xpath expr="//field[@name='coach_id']" position="attributes">
+				<attribute name="invisible">1</attribute>			
+			</xpath>
+		</field>
+	</record>
+</odoo>

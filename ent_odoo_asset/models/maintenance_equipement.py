@@ -44,6 +44,18 @@ class Equipment(models.Model):
 		'res.partner',
 		string="Location",
 	)
+	system_ram = fields.Char(
+		string="RAM",
+	)
+	system_processor = fields.Char(
+		string="Processor",
+	)
+	system_total_disk = fields.Char(
+		string="Total Disk",
+	)
+	system_os = fields.Char(
+		string="OS",
+	)
 	
 	
 	@api.depends("cgst_tax", "sgst_tax", "cost")
