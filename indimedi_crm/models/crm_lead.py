@@ -444,7 +444,7 @@ class JobDescription(models.Model):
 #                     'default_composition_mode': 'comment',
                     'mark_so_as_sent': True,
 #                     'custom_layout': "email_template_agreement_crm",
-                    'email_to' : self.user_id.email, #default set recepient as company email in template
+                    'email_to' : self.get_contact_email(), #default set recepient as company email in template
             })
 
             email_vals = template_id.with_context(ctx).sudo().generate_email(self.id)

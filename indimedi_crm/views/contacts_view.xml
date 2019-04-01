@@ -14,8 +14,7 @@
             </xpath>
             <xpath expr="//button[@name='toggle_active']" position="before">
             <button name="post_sale" type="object" string="Post Sales" attrs="{'invisible':[('post_sale_contacts','=',True)]}" style="background-color: #1abc9c; padding: 10px; border-radius: 5px;"></button>
-            <button name="create_login" type="object" string="Create User" attrs="{'invisible':[('is_user_created','=',True)]}" style="padding: 10px; border-radius: 5px;"></button>
-            <field name="is_user_created" invisible="1"/>        
+              
             </xpath>
             <xpath expr="//field[@name='parent_id']" position="replace">
                 <field name="parent_id"
