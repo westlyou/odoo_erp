@@ -125,8 +125,8 @@ class JobDescription(models.Model):
     ip_add_of_user = fields.Char(string="User IP")
     device_name = fields.Char(string="Device Name")
     signed_at = fields.Char(string="Signed At")
-    user_id = fields.Many2one('res.users', string="Client Name")
-    dummy_agree = fields.Boolean(string="I Agree")
+#     user_id = fields.Many2one('res.users', string="Client Name")
+#     dummy_agree = fields.Boolean(string="I Agree")
     
     @api.onchange('user_id')
     def get_related_users(self):
