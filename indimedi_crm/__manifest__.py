@@ -9,7 +9,7 @@
     'complexity': 'easy',
     'depends': ['base', 'crm', 'project', 'calendar', 'sale_crm', 'mail', 'sale',
                 'hr_timesheet', 'web', 'indimedi_cc_bcc_mail',
-                'web_readonly_bypass'],
+                'web_readonly_bypass', 'website'],
     'summary': 'Leads, Opportunities, Activities',
     'description': '''
     This Module contains the custom crm and contact module functionalities

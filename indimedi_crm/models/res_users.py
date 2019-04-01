@@ -26,6 +26,7 @@ class Partner(models.Model):
                 }
         user_id = self.env['res.users'].sudo().with_context({'no_smtp': True}).create(vals)
         user_id.groups_id = [(6,0, [portal, portal_agreement])]
+#         user_id.action_reset_password()
         self.is_user_created = True
 
 class Users(models.Model):

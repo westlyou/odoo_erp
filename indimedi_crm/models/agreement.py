@@ -16,6 +16,8 @@ import dateutil.relativedelta
 class JobDescription(models.Model):
     _inherit = 'job.description'
 
+        
+
     ''' New Lead gone to New stage by default in post sales.......... & set Stages at kanban in post state'''
     agreement_stage_id = fields.Many2one('agreement.stage', string="Agreement Stage", 
         track_visibility='onchange',
@@ -126,6 +128,15 @@ class JobDescription(models.Model):
     user_id = fields.Many2one('res.users', string="Client Name")
     dummy_agree = fields.Boolean(string="I Agree")
     
+    @api.onchange('user_id')
+    def get_related_users(self):
+        partner_ids = self.crm_id.child_ids
+#         print"partner_ids============",partner_ids
+        users = self.env['res.users'].search([('partner_id', 'in', partner_ids.ids)])
+#         print"usersusers===============",users
+        return {'domain':{'user_id':[('id', 'in', users.ids)]}}
+
+    
     @api.multi
     def get_daily_hours(self):
         daily_hour = 0
@@ -193,6 +204,7 @@ class JobDescription(models.Model):
                 'default_use_template': bool(template_id),
                 'default_template_id': template_id.id,
                 'default_composition_mode': 'comment',
+                'default_email_cc': [(6,0, self.env.user.company_id.staff_confirmation_email_cc.ids)],
 #                 'mark_so_as_sent': True,
 #                 'custom_layout': "email_template_agreement_crm",
                 'email_to' : self.jd_email, #default set recepient as company email in template
