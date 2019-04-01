@@ -1,6 +1,6 @@
-<odoo>
+<!-- <odoo>
 
-	<!-- Client agreement form for portal user -->
+	Client agreement form for portal user
 	<record id="view_customer_agreement_form_portal"
 		model="ir.ui.view">
 		<field name="name">job.description.form</field>
@@ -20,49 +20,49 @@
 				</div>
 				<group string="Agree Or Not" col="4" invisible="1">
 					
-					<!-- <field name="general_manager" attrs="{'invisible': [('agree', '=', 
-						False)], 'required': [('agree','=', True)]}"/> -->
+					<field name="general_manager" attrs="{'invisible': [('agree', '=', 
+						False)], 'required': [('agree','=', True)]}"/>
 					<field name="agreement_general_manager" invisible="1" />
 				</group>
 				<group string="Agreement" col="4">
 					<field name="multi_agreement" invisible="1" />
 					<field name="generation_date" invisible="1" />
-					<!-- <field name="general_manager" attrs="{'invisible': [('is_gm', '=', 
-						False)],'required': [('is_gm', '=', True)]}"/> <field name="is_gm" invisible="1"/> -->
+					<field name="general_manager" attrs="{'invisible': [('is_gm', '=', 
+						False)],'required': [('is_gm', '=', True)]}"/> <field name="is_gm" invisible="1"/>
 					<field name="stage_id" invisible="1" />
-					<!-- <field name="agreement_rate" style="width:20%"/> <field name="hours_week" 
-						style="width:20%"/> -->
+					<field name="agreement_rate" style="width:20%"/> <field name="hours_week" 
+						style="width:20%"/>
 				</group>
-				<!-- <div class="o_address_format"> <field name="street" placeholder="Street..." 
+				<div class="o_address_format"> <field name="street" placeholder="Street..." 
 					class="o_address_street"/> <field name="street2" placeholder="Street 2..." 
 					class="o_address_street"/> <field name="city" placeholder="City" class="o_address_city"/> 
 					<field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: 
 					True}"/> <field name="zip" placeholder="ZIP" class="o_address_zip"/> <field 
 					name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: 
-					True, &quot;no_create&quot;: True}"/> </div> -->
+					True, &quot;no_create&quot;: True}"/> </div>
 				<group string="Job Description">
 					<field name="job_profile_id" style="width:50%;" required="1" />
 					<field name="experience_id" style="width:50%;" />
 					<field name="nature_experience_ids" widget="many2many_tags" />
 					<field name="task_tobe_done" />
-					<!-- <field name="software" style="width:50%;"/> -->
+					<field name="software" style="width:50%;"/>
 					<field name="s_accounting_ids" style="width:50%;"
 						widget="many2many_tags" />
 					<field name="s_tax_id_ids" style="width:50%;"
 						widget="many2many_tags" />
 					<field name="hiring_model" style="width:50%;" required="1" />
-					<!-- <field name="hiring_option" style="width:50%;"/> <field name="full_time_hr" 
+					<field name="hiring_option" style="width:50%;"/> <field name="full_time_hr" 
 						attrs="{'invisible': ['|',('hiring_option','in','part_time'),('hiring_option','in', 
 						False)]}" style="width:50%;"/> <field name="part_time_hr" attrs="{'invisible': 
 						['|',('hiring_option','in','full_time'),('hiring_option','in', False)]}" 
-						style="width:50%;"/> -->
+						style="width:50%;"/>
 					<field name="permanent_hour_selection" style="width:50%;"
 						attrs="{'invisible': ['|',('hiring_model', 'not in', ['permanent', 'On Demand']),('hiring_model', 'in', False)]}" />
 					<field name="temporary_hour_selection" style="width:50%;"
 						attrs="{'invisible': ['|',('hiring_model', 'in', ['permanent', 'On Demand']),('hiring_model', 'in', False)]}" />
 					<field name="hour_selection" style="width:50%;"
 						attrs="{'invisible': [('hiring_model', 'in', ('permanent', 'temporary','On Demand',False))]}" />
-					<!-- <field name="hour_selection" style="width:50%;"/> -->
+					<field name="hour_selection" style="width:50%;"/>
 				</group>
 				<group col="4">
 					<field name="time_from" style="margin-right:10%"
@@ -74,7 +74,7 @@
 				</group>
 				<group>
 					<field name="hiring_period" style="width:50%;" />
-					<!-- <field name="hiring_option" style="width:50%;"/> -->
+					<field name="hiring_option" style="width:50%;"/>
 					<field name="jd_invoicing" widget="selection"
 						style="width:50%;" />
 					<field name="rate_per_hour" style="width:10%;" readonly="1" />
@@ -139,14 +139,14 @@
 						<button name="confirm_agreement" string="Confirm" type="object" class="btn-primary" />
 					</group>
 				</group>
-				<!-- <group col="4"> <field name="time_from" style="margin-right:10%"/> 
+				<group col="4"> <field name="time_from" style="margin-right:10%"/> 
 					<label for="time_to" style="margin-left:50%"/> <field name="time_to" nolabel="1" 
-					style="width:95%;"/> </group> -->
+					style="width:95%;"/> </group>
 			</form>
 		</field>
 	</record>
 
-	<!-- Client agreement action for portal user -->
+	Client agreement action for portal user
 	<record id="customer_agreement_action_portal"
 		model="ir.actions.act_window">
 		<field name="name">Agreement</field>
@@ -164,7 +164,7 @@
 		<field name="domain">[('active','=',True)]</field>
 	</record>
 
-	<!-- Client agreement menu for portal user -->
+	Client agreement menu for portal user
 	<menuitem id="menu_customer_agreement_portal" name="Agreement"
 		groups="indimedi_crm.group_agreement_portal_user" />
 	<menuitem id="menu_customer_agreement_child_portal"
@@ -173,4 +173,4 @@
 		groups="indimedi_crm.group_agreement_portal_user" />
 
 
-</odoo>
+</odoo> -->

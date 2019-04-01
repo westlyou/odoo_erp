@@ -110,16 +110,16 @@ class AgreementConfirm(http.Controller):
             return request.render('indimedi_crm.already_agreed', data)
         
         # get IP Info
-        send_url = 'http://api.ipstack.com/check?access_key=53ef5675bc86a5f8ae76707f13060ae0&format=1'
-        r = requests.get(send_url)
-        j = json.loads(r.text)
-        
-        ip_info = ''
-        if j.get('ip'):
-            ip = j.get('ip')
-            ip_info = j 
-        else:
-            ip = request.httprequest.environ["REMOTE_ADDR"] 
+#         send_url = 'http://api.ipstack.com/check?access_key=53ef5675bc86a5f8ae76707f13060ae0&format=1'
+#         r = requests.get(send_url)
+#         j = json.loads(r.text)
+#         
+#         ip_info = ''
+#         if j.get('ip'):
+#             ip = j.get('ip')
+#             ip_info = j 
+#         else:
+        ip = request.httprequest.environ["REMOTE_ADDR"] 
         today = datetime.strftime(datetime.now(), DEFAULT_SERVER_DATETIME_FORMAT)
         
         vals = {'agree': True,
@@ -138,8 +138,8 @@ class AgreementConfirm(http.Controller):
         email_vals['attachment_ids'] = [(6, 0, [20554])]  # 20554 server | local 19561
         email_vals['email_from'] = agreement_id.crm_id.user_id.email
         email_vals['user_name'] = agreement_id.crm_id.user_id.name
-        email_vals['email_to'] = agreement_id.user_id.email
-        email_vals['email_partner_cc'] = [(6,0, agreement_id.user_id.company_id.signup_email_cc.ids)]
+        email_vals['email_to'] = agreement_id.get_contact_email()
+        email_vals['email_partner_cc'] = [(6,0, agreement_id.crm_id.user_id.company_id.signup_email_cc.ids)]
         mail_id = request.env['mail.mail'].sudo().create(email_vals)
         mail_id.send()
         
@@ -149,8 +149,8 @@ class AgreementConfirm(http.Controller):
          
         
         email_vals['email_from'] = agreement_id.crm_id.user_id.email
-        email_vals['email_to'] = agreement_id.user_id.email
-        email_vals['email_partner_cc'] = [(6,0, agreement_id.user_id.company_id.signup_email_cc.ids)]
+        email_vals['email_to'] = agreement_id.get_contact_email()
+        email_vals['email_partner_cc'] = [(6,0, agreement_id.crm_id.user_id.company_id.signup_email_cc.ids)]
         mail_id = request.env['mail.mail'].sudo().create(email_vals)
         mail_id.send()
         
@@ -160,8 +160,8 @@ class AgreementConfirm(http.Controller):
         #send notification to lead owner about confirmation
         template_id = request.env.ref('indimedi_crm.signup_confimed_notification')
         
-        ctx = dict(email_from=agreement_id.user_id.email,
-                        user_name=agreement_id.user_id.name,
+        ctx = dict(email_from=agreement_id.crm_id.user_id.email,
+                        user_name=agreement_id.crm_id.user_id.name,
                         )  # 20554 server
              
         ctx.update({
@@ -172,12 +172,12 @@ class AgreementConfirm(http.Controller):
 #                     'default_composition_mode': 'comment',
                 'mark_so_as_sent': True,
                 'custom_layout': "email_template_agreement_crm",
-                'email_to' : agreement_id.user_id.email,  # default set recepient as company email in template
+                'email_to' : agreement_id.crm_id.user_id.email,  # default set recepient as company email in template
         })
         
         email_vals = template_id.with_context(ctx).sudo().generate_email(agreement_id.id)
 #         email_vals['attachment_ids'] = [(6,0, [20554])]
-        email_vals['email_partner_cc'] = [(6,0, agreement_id.user_id.company_id.signup_email_cc.ids)]
+        email_vals['email_partner_cc'] = [(6,0, agreement_id.crm_id.user_id.company_id.signup_email_cc.ids)]
         mail_id = request.env['mail.mail'].sudo().create(email_vals)
         mail_id.send()
         
@@ -305,7 +305,7 @@ class AgreementConfirm(http.Controller):
                 'mark_so_as_sent': True,
                 'custom_layout': "email_template_agreement_crm",
                 'email_to' : agreement_id.jd_email,  # default set recepient as company email in template
-                'email_partner_cc': [(6,0, agreement_id.user_id.company_id.staff_confirmation_email_cc.ids)]
+                'email_partner_cc': [(6,0, agreement_id.crm_id.user_id.company_id.staff_confirmation_email_cc.ids)]
         })
         
         email_vals = template_id.with_context(ctx).sudo().generate_email(agreement_id.id)
@@ -334,7 +334,7 @@ class AgreementConfirm(http.Controller):
         
         email_vals = template_id.with_context(ctx).sudo().generate_email(agreement_id.id)
 #         email_vals['attachment_ids'] = [(6,0, [20554])]
-        email_vals['email_partner_cc'] = [(6,0, agreement_id.user_id.company_id.staff_confirmation_email_cc.ids)]
+        email_vals['email_partner_cc'] = [(6,0, agreement_id.crm_id.user_id.company_id.staff_confirmation_email_cc.ids)]
         mail_id = request.env['mail.mail'].sudo().create(email_vals)
         mail_id.send()
         
