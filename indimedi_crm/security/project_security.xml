@@ -59,8 +59,9 @@
             <field name="comment">The user will have access to all records of all the Project Task and Timesheet.</field>
         </record>
 
+		<!-- general manager can see his own assigment  -->
         <record model="ir.rule" id="project_project_general_manager_rule">
-            <field name="name">Project: project general manager: see all</field>
+            <field name="name">Project: project general manager: see his own project</field>
             <field name="model_id" ref="model_project_project"/>
             <!-- <field name="domain_force">[(1, '=', 1)]</field> -->
             <field name="domain_force">[('project_general_manager', '=', user.id)]</field>

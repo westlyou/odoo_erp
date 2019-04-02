@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
     	<record model="ir.module.category" id="module_category_timesheet_invoice">
             <field name="name">Timesheet Invoicing</field>
             <field name="description">Helps you handle your timesheet invoicing.</field>
@@ -20,6 +20,13 @@
             <field name="implied_ids" eval="[(4, ref('group_timesheet_invoice_manager'))]"/>
             <field name="comment">The user will have access to all records of all the Timesheet Invoice and delete invoice.</field>
         </record>
+        
+        <record model="ir.rule" id="timesheet_invoice_manager_rule">
+          <field name="name">General Manager: Manager can see his own Invoice</field>
+          <field name="model_id" ref="model_timesheet_invoice"/>
+          <field name="domain_force">[('general_manager_id', '=', user.id)]</field>
+          <field name="groups" eval="[(4,ref('indimedi_crm.group_timesheet_invoice_manager'))]"/>
+      </record>
         
     </data>
 </odoo>
