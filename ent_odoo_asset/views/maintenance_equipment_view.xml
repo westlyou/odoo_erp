@@ -9,8 +9,16 @@
 		            <attribute name="string">Invoice No.</attribute>
 		        </xpath>
 		        <xpath expr="//field[@name='cost']" position="after">
-		        	<field name="cgst_tax"/>
-		        	<field name="sgst_tax"/>
+		        	<label for="cgst_tax"/>
+			        <div>
+			        	<field name="cgst_tax" class="oe_inline"/>% 
+			        	<field name="cgst_tax_amnt" class="oe_inline"/>
+		        	</div>
+		        	<label for="sgst_tax"/>
+			        <div>
+			        	<field name="sgst_tax" class="oe_inline"/>% 
+			        	<field name="sgst_tax_amnt" class="oe_inline"/>
+		        	</div>
 		        	<field name="total_cost"/>
 		        </xpath>
 		        <xpath expr="//field[@name='maintenance_team_id']" position="attributes">
