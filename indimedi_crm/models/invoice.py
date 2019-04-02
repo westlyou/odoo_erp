@@ -54,6 +54,7 @@ class TimesheetInvoice(models.Model):
     is_paid = fields.Boolean(string="Paid")
     custom_work_hours_float = fields.Float(string="Working Hours Float")
     date_of_join = fields.Date(string="Date of Joining")
+    general_manager_id = fields.Many2one('res.users', string="General Manager")
     
     @api.onchange('custom_work_hours', 'rate_per_hour')
     def onchange_custom_working_hour(self):
@@ -343,6 +344,7 @@ class Project(models.Model):
                                     'leave_days': 0,
                                     'holidays_hours': holidays_hours,
                                     'date_of_join': proj.date_of_join,
+                                    'general_manager_id': proj.project_general_manager.id
                                 })
                         else:
                             work_idle = worked_hour + ideal_time 
@@ -369,6 +371,7 @@ class Project(models.Model):
                                     'leave_days': 0,
                                     'holidays_hours': holidays_hours,
                                     'date_of_join': proj.date_of_join,
+                                    'general_manager_id': proj.project_general_manager.id
                                 })
                         if is_last:
                             proj.last_invoice_id = invoice_lines.id
@@ -522,6 +525,7 @@ class Project(models.Model):
                                     'leave_days': 0,
                                     'leave_hours': leave_hours,
                                     'date_of_join': proj.date_of_join,
+                                    'general_manager_id': proj.project_general_manager.id
                                 })
                         else:
                             work_idle = worked_hour + ideal_time 
@@ -549,6 +553,7 @@ class Project(models.Model):
                                     'leave_days': 0,
                                     'leave_hours': leave_hours,
                                     'date_of_join': proj.date_of_join,
+                                    'general_manager_id': proj.project_general_manager.id
                                 })
                         if is_last:
                             proj.last_invoice_id = invoice_lines.id
@@ -724,6 +729,7 @@ class Project(models.Model):
                                 'leave_days': 0,
                                 'leave_hours': leave_hours,
                                 'date_of_join': proj.date_of_join,
+                                'general_manager_id': proj.project_general_manager.id
                             })
                         if is_last:
                             proj.last_invoice_id = invoice_lines.id
@@ -882,6 +888,7 @@ class Project(models.Model):
                                 'leave_days': 0,
                                 'leave_hours': leave_hours,
                                 'date_of_join': proj.date_of_join,
+                                'general_manager_id': proj.project_general_manager.id
                             })
                         if is_last:
                             proj.last_invoice_id = invoice_lines.id

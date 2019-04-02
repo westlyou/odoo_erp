@@ -10,6 +10,8 @@
          <field name="comment">User with this group can view Post Sales menu.</field>
      </record>
      
+     
+     
      <record model="ir.rule" id="agreement_job_portal_rule">
 	     <field name="name">Portal User: Agreement</field>
 	     <field name="model_id" ref="model_job_description"/>
