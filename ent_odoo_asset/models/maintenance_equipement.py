@@ -20,7 +20,8 @@ class Equipment(models.Model):
 		store=True,
 	)
 	system_ip = fields.Char(
-		string="IP",
+		#string="IP",
+		string="Computer Name",
 	)
 	system_user_name = fields.Char(
 		string="User Name",
@@ -61,7 +62,7 @@ class Equipment(models.Model):
 	@api.depends("cgst_tax", "sgst_tax", "cost")
 	def _compute_total_cost(self):
 		for rec in self:
-			rec.total_cost = (rec.cost * (rec.cgst_tax + rec.sgst_tax))/100.00
+			rec.total_cost = rec.cost + (rec.cost * (rec.cgst_tax + rec.sgst_tax))/100.00
 	
 	@api.onchange("is_scrap_system")
 	def _onchange_is_scrap_system(self):
