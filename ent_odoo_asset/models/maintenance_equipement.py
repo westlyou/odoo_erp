@@ -57,11 +57,21 @@ class Equipment(models.Model):
 	system_os = fields.Char(
 		string="OS",
 	)
+	cgst_tax_amnt = fields.Float(
+		string="CGST Amount",
+		compute="_compute_total_cost",
+	)
+	sgst_tax_amnt = fields.Float(
+		string="SGST Amount",
+		compute="_compute_total_cost",
+	)
 	
 	
 	@api.depends("cgst_tax", "sgst_tax", "cost")
 	def _compute_total_cost(self):
 		for rec in self:
+			rec.cgst_tax_amnt = (rec.cost * rec.cgst_tax)/100.00
+			rec.sgst_tax_amnt = (rec.cost * rec.sgst_tax)/100.00
 			rec.total_cost = rec.cost + (rec.cost * (rec.cgst_tax + rec.sgst_tax))/100.00
 	
 	@api.onchange("is_scrap_system")
