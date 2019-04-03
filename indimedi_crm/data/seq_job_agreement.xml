@@ -9,5 +9,13 @@
             <field eval="False" name="company_id"/>
             <field name="padding">0</field>
         </record>
+        
+        <record id="seq_tiesheet_invice" model="ir.sequence">
+            <field name="name">Timesheet Invoice Sequence</field>
+            <field name="code">timesheet.invoice</field>
+            <field name="prefix"></field>
+            <field name="padding">1</field>
+        </record>
+        
     </data>
 </odoo>

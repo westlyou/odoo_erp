@@ -56,6 +56,7 @@ class TimesheetInvoice(models.Model):
     date_of_join = fields.Date(string="Date of Joining")
     general_manager_id = fields.Many2one('res.users', string="General Manager")
     
+    
     @api.onchange('custom_work_hours', 'rate_per_hour')
     def onchange_custom_working_hour(self):
         custom_hour = float(self.custom_work_hours.split()[0])
