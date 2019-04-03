@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for timesheet.invoice 
+        <record id="seq_timesheet_invoice" model="ir.sequence">
+            <field name="name">Timesheet Invoice</field>
+            <field name="code">timesheet.invoice</field>
+            <field name="prefix">TM/INV/</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>-->
+
+    </data>
+</odoo>
