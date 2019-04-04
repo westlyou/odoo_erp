@@ -201,7 +201,7 @@
                                     <field name="multi_agreement" readonly="1"/>
                                     <field name="generation_date" readonly="1"/>
                                     <!-- <field name="general_manager" readonly="1"/> -->
-                                    <field name="agreement_general_manager" readonly="1"/>
+                                    <field name="agreement_general_manager"/>
                                     <field name="is_gm" invisible="1" />
                                     <field name="stage_id" invisible="1"/>
                                 </group>

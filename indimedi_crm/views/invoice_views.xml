@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="seq_tiesheet_invice" model="ir.sequence">
-            <field name="name">timesheet_invoice_seq</field>
-            <field name="code">timesheet.invoice</field>
-            <field name="prefix"></field>
-            <field name="padding">1</field>
-        </record>
+        
 
         <record id="view_timesheet_invoice_tree" model="ir.ui.view">
             <field name="name">timesheet.invoice.tree</field>
@@ -205,6 +200,19 @@ if records:
 
         <menuitem id="cancelled_timesheet_invoice_menu" action="view_cancelled_timesheet_action"
             parent="timesheet_invoice_child_menu" name="Cancelled" sequence="3"/>
+
+
+		<record id="action_timesheet_invoice_seq" model="ir.actions.act_window">
+	        <field name="name">Timesheet Invoice Sequence</field>
+	        <field name="res_model">ir.sequence</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="res_id" eval="ref('indimedi_crm.seq_tiesheet_invice')"/>
+	    </record>
+	    
+	    <menuitem id="timesheet_invoice_seq_menu" action="action_timesheet_invoice_seq"
+            parent="timesheet_invoice_child_menu" name="Timesheet Invoice Sequence" sequence="3"/>
+	    
 
     </data>
 </odoo>
