@@ -44,16 +44,21 @@ class PeriodicReportWizard(models.TransientModel):
                     ]
             
             bill = self.env['billing.history'].search(domain_bill, limit=1)
-#             if bill:
-#                 hour_selection = bill.hour_selection
-#             else:
-#                 hour_selection = task.project_id.hour_selection
-#             
-#             
-#             if task.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
-#                 min_hour = (float(hour_selection))
-#             else:
-#                 min_hour = float(hour_selection)
+            if bill:
+                hour_selection = bill.hour_selection
+            else:
+                hour_selection = task.project_id.hour_selection
+            
+            if hour_selection == '40_20':
+                hour_selection = 30
+            if hour_selection == '20_10':
+                hour_selection = 15
+             
+            if task.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
+                min_hour = (float(hour_selection))
+            else:
+                min_hour = float(hour_selection)
+            
             
 
             project_name = task.project_id.name
