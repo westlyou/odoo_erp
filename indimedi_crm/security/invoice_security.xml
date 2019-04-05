@@ -40,7 +40,7 @@
       </record>
       
       <record model="ir.rule" id="timesheet_invoice_manager_rule_see_all">
-          <field name="name">General Manager: Manager can see his own Invoice</field>
+          <field name="name">General Manager: Manager can see his all Invoice</field>
           <field name="model_id" ref="model_timesheet_invoice"/>
           <field name="domain_force">[(1, '=', 1)]</field>
           <field name="groups" eval="[(4,ref('indimedi_crm.group_timesheet_invoice_manager_see_all'))]"/>
