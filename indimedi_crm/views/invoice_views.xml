@@ -8,6 +8,7 @@
             <field name="model">timesheet.invoice</field>
             <field name="arch" type="xml">
                 <tree editable="top" string="Timesheet Invoice" create="false">
+                	<field name="sequence_id" readonly="1"/>
                     <field name="analytic_account_id" readonly="1" options='{"no_open": True, "no_create_edit": True, "no_create": True}' placeholder="timesheet@mail.com"/>
                     <field name="partner_id" invisible="1" readonly="1"/>
                     <field name="invoicing_type_id" widget="selection" readonly="1"/>
@@ -33,7 +34,6 @@
                     <field name="billed" invisible="1" attrs="{'readonly': [('cancelled', '=', True)]}"/>
                     <field name="is_paid"/>
                     <field name="cancelled" attrs="{'readonly': [('billed', '=', True)]}"/>
-                    <field name="sequence_id" invisible="1"/>
                     <field name="sent_mail" />
                     <field name="invoice_date" invisible="1"/>
                     <button name="send_timesheet_invoice" string="Send Invoice" type="object" 
