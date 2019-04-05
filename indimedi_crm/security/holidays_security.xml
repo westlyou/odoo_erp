@@ -22,5 +22,7 @@
             <field name="implied_ids" eval="[(4, ref('group_public_holidays_employee'))]"/>
             <field name="comment">The user will have full access to all records of the public holidays.</field>
         </record>
+        
+        
     </data>
 </odoo>
