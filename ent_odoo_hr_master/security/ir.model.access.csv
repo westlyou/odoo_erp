@@ -7,3 +7,7 @@ access_emp_ent_prev_company_officer,emp_ent_prev_company_officer,ent_odoo_hr_mas
 
 access_emp_attachment_doc,emp_attachment_doc,ent_odoo_hr_master.model_emp_attachment_doc,base.group_user,1,0,0,0
 access_emp_attachment_doc_officer,emp_attachment_doc_officer,ent_odoo_hr_master.model_emp_ent_prev_company,hr.group_hr_user,1,1,1,1
+
+access_emp_attachment_type,emp_attachment_type,ent_odoo_hr_master.model_emp_attachment_type,base.group_user,1,0,0,0
+access_emp_attachment_type_officer,emp_attachment_type_officer,ent_odoo_hr_master.model_emp_attachment_type,hr.group_hr_user,1,1,1,1
+

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from odoo import models, fields, api
 
 
@@ -26,8 +28,9 @@ class Employee(models.Model):
 	)
 	emp_number = fields.Char(
 		string="Emp Number",
-		default="New",
 		copy=False,
+		readonly=True,
+		default='New',
 	)
 	qualification = fields.Char(
 		string='Qualification',
@@ -44,8 +47,22 @@ class Employee(models.Model):
 		'employee_id',
 		string='Previous Company Data',
 	)
-	#REMAIN
-	#Employee Code SEQUENCE NUMBER, Qualification, Previous Company Data
+	
+	date_of_resign = fields.Date(
+		string="DOR",
+	)
+	esic_deduction = fields.Boolean(
+		string="ESIC Deduction",
+	)
+	pf_deduction = fields.Boolean(
+		string="PF Deduction",
+	)
+	blood_group = fields.Char(
+		string="Blood Group",
+	)
+	emp_zip = fields.Char(
+		size=6,
+	)
 	
 	
 	@api.model
