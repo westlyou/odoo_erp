@@ -76,6 +76,10 @@ class TimesheetReportWizard(models.TransientModel):
                 hour_selection = bill.hour_selection
             else:
                 hour_selection = task.project_id.hour_selection
+            if hour_selection == '40_20':
+                hour_selection = 30
+            if hour_selection == '20_10':
+                hour_selection = 15
             
             if task.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
                 min_hour = (float(hour_selection) / 4)
