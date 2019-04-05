@@ -1,0 +1,34 @@
+<odoo>
+	<record id="crm_case_form_view_job_inherit_ent_rec_mk" model='ir.ui.view'>
+		<field name="name">hr.applicant.view.form.inherit.ent.rec.mk</field>
+		<field name="model">hr.applicant</field>
+		<field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_mobile']" position="after">
+				<field name="known_language_ids" widget="many2many_tags"/>
+				<field name="marital_status"/>
+			</xpath>
+			<xpath expr="//form/sheet/group/group[2]" position="after">
+				<group string="Present Address">
+					<field name="present_f_add"/>
+					<field name="present_s_add"/>
+					<field name="present_area"/>
+					<field name="present_city"/>
+					<field name="present_state_id"/>
+					<field name="present_country_id"/>
+					<field name="present_zip"/>
+				</group>
+				<group string="Permanent Address">
+					<field name="same_as_above"/>
+					<field name="perma_f_add"/>
+					<field name="perma_s_add"/>
+					<field name="perma_area"/>
+					<field name="perma_city"/>
+					<field name="perma_state_id"/>
+					<field name="perma_country_id"/>
+					<field name="perma_zip"/>
+				</group>
+			</xpath>
+		</field>
+	</record>
+</odoo>
