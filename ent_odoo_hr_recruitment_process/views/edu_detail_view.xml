@@ -1,0 +1,38 @@
+<odoo>
+	<record id="hr_applicant_edu_detail_form" model='ir.ui.view'>
+		<field name="name">hr.applicant.edu.detail.view.form</field>
+		<field name="model">hr.applicant.edu.detail</field>
+		<field name="arch" type="xml">
+			<form name="hr_aaplicant_detail_form">
+				<sheet>
+					<group name="applicant_detal_grp">
+						<group name="applicant_detail_grp1">
+							<field name="qualification_id"/>
+							<field name="board_uni"/>
+						</group>
+						
+						<group name="applicant_detail_grp2">
+							<field name="location"/>
+							<field name="marks_obtain"/>
+							<field name="percent_obtain"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	
+	<record id="hr_applicant_edu_detail_tree" model='ir.ui.view'>
+		<field name="name">hr.applicant.edu.detail.view.form</field>
+		<field name="model">hr.applicant.edu.detail</field>
+		<field name="arch" type="xml">
+			<tree name="hr_aaplicant_detail_tree">
+				<field name="qualification_id"/>
+				<field name="board_uni"/>
+				<field name="location"/>
+				<field name="marks_obtain"/>
+				<field name="percent_obtain"/>
+			</tree>
+		</field>
+	</record>
+</odoo>

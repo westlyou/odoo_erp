@@ -45,7 +45,7 @@ class HrApplicant(models.Model):
 		string='Pin Code',
 	)
 	same_as_above = fields.Boolean(
-		string='Same As Above',
+		string='Same As Present Address',
 	)
 	
 	perma_f_add = fields.Char(
@@ -70,6 +70,16 @@ class HrApplicant(models.Model):
 	)
 	perma_zip = fields.Char(
 		string='Pin Code',
+	)
+	edu_applicant_detail_ids = fields.One2many(
+		'hr.applicant.edu.detail',
+		'applicant_id',
+		string='Education Details',
+	)
+	employeement_history_ids = fields.One2many(
+		'employeement.history',
+		'applicant_id',
+		string='Employee Ment History',
 	)
 
 	@api.onchange('same_as_above')

@@ -15,6 +15,7 @@
 	],
     'data': [
     	'views/hr_applicant_view.xml',
+    	'views/edu_detail_view.xml',
     ],
     'installable': True,
     'application': True,
