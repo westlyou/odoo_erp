@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>hr.applicant</value>
+            <value eval="[
+                'first_name',
+                'applicant_title',
+                'middle_name',
+                'last_name',
+                'date_of_birth',
+                'nationality',
+                'applicant_age',
+                'phone_std',
+                'known_language_ids',
+                'marital_status',
+                'blood_group',
+                'present_f_add',
+                'present_s_add',
+                'present_area',
+                'present_city',
+                'present_state_id',
+                'present_country_id',
+                'present_zip',
+                'same_as_above',
+                'perma_f_add',
+                'perma_s_add',
+                'perma_area',
+                'perma_city',
+                'perma_state_id',
+                'perma_country_id',
+                'perma_zip',
+                '',
+                '',
+                '',
+                '',
+                '',
+            ]"/>
+        </function>
+    </data>
+</odoo>

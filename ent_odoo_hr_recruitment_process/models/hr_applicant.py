@@ -4,7 +4,36 @@ from odoo import models, fields, api
 class HrApplicant(models.Model):
 	_inherit = "hr.applicant"
 	
-	Phone_std = fields.Integer(
+	applicant_title = fields.Selection(
+		selection=[
+			('mr','Mr.'),
+			('mrs','Mrs.'),
+			('ms','Ms'),
+		],
+		string='Title',
+	)
+	first_name = fields.Char(
+		string='First Name',
+		website_form_blacklisted=False,
+	)
+	middle_name = fields.Char(
+		string='Middle Name',
+	)
+	last_name = fields.Char(
+		string='Last Name',
+	)
+	date_of_birth = fields.Date(
+		string='Date of Birth',
+	)
+	nationality = fields.Char(
+		string='Nationality',
+	)
+	applicant_age = fields.Char(
+		string='Age',
+		compute='_compute_applicant_age',
+		store=True,
+	)
+	phone_std = fields.Integer(
 		string="STD",
 	)
 	known_language_ids = fields.Many2many(
@@ -82,6 +111,13 @@ class HrApplicant(models.Model):
 		string='Employee Ment History',
 	)
 
+
+	@api.depends('date_of_birth')
+	def _compute_applicant_age(self):
+		for rec in self:
+			if rec.date_of_birth:
+				rec.applicant_age = fields.Date.today() - rec.date_of_birth
+			
 	@api.onchange('same_as_above')
 	def _onchange_same_as_above(self):
 		if self.same_as_above:

@@ -14,8 +14,10 @@
 		'hr_recruitment',
 	],
     'data': [
+    	'data/hr_applicant_data.xml',
     	'views/hr_applicant_view.xml',
     	'views/edu_detail_view.xml',
+    	'views/web_hr_applicant_template_view.xml',
     ],
     'installable': True,
     'application': True,
