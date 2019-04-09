@@ -70,6 +70,10 @@
             
             #'views/client_agreement_portal.xml',
             'views/res_company_view.xml',
+            
+            'views/timesheet_bill_view.xml',
+            'wizard/timesheet_invoice_payment.xml',
+            
         ],
     'qweb': [
         'static/lib/web_calendar/xml/*.xml',

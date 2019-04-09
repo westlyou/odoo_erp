@@ -171,8 +171,7 @@ if records:
             <field name="model_id" ref="indimedi_crm.model_timesheet_invoice"/>
             <field name="code">
 if records:
-    for i in records:
-        action = i.mark_as_paid()
+	action = records.mark_as_paid()
 
             </field>
         </record>
@@ -211,7 +210,7 @@ if records:
 	    </record>
 	    
 	    <menuitem id="timesheet_invoice_seq_menu" action="action_timesheet_invoice_seq"
-            parent="timesheet_invoice_child_menu" name="Timesheet Invoice Sequence" sequence="3"/>
+            parent="timesheet_invoice_child_menu" name="Timesheet Invoice Sequence" sequence="10"/>
 	    
 
     </data>
