@@ -110,13 +110,24 @@ class HrApplicant(models.Model):
 		'applicant_id',
 		string='Employee Ment History',
 	)
+	applicant_gender = fields.Selection(
+		selection=[
+			('male','Male'),
+			('female','Female'),
+			('other','Other')],
+		string='Gender',
+	)
+	applicant_image = fields.Binary(
+		string='Image',
+	)
+			
 
 
 	@api.depends('date_of_birth')
 	def _compute_applicant_age(self):
 		for rec in self:
 			if rec.date_of_birth:
-				rec.applicant_age = fields.Date.today() - rec.date_of_birth
+				rec.applicant_age = int((fields.Date.from_string(fields.Date.today()) - fields.Date.from_string(rec.date_of_birth)).days / 365.25)
 			
 	@api.onchange('same_as_above')
 	def _onchange_same_as_above(self):
