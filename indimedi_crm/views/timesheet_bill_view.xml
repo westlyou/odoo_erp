@@ -1,0 +1,53 @@
+<odoo>
+	<record id="t_timesheet_invoice_payment" model="ir.ui.view">
+        <field name="name">timesheet.invoice.payment.form</field>
+        <field name="model">timesheet.invoice.payment</field>
+        <field name="arch" type="xml">
+        	<form string="Invoice Payment" create="false" edit="false" delete="false">
+        		<sheet>
+        			<label string="Payment Amount"/>
+	        		<h1>
+	        			<field name="amount"/>
+	        		</h1>
+					<group>
+						<group>
+							<field name="date_payment"/>
+							<field name="responsible_id"/>
+							<field name="remark"/>
+						</group>
+					</group>
+					<notebook>
+						<page string="Invoices">
+							<field name="timesheet_invoice_ids" readonly="1"/>
+						</page>
+					</notebook>
+				</sheet>
+        	</form>
+        </field>
+	</record>
+		
+	<record id="t_timesheet_invoice_payment_tree" model="ir.ui.view">
+        <field name="name">timesheet.invoice.payment.tree</field>
+        <field name="model">timesheet.invoice.payment</field>
+        <field name="arch" type="xml">
+        	<tree string="Invoice Payment" create="false" edit="false" delete="false">
+	      		<field name="date_payment"/>
+	      		<field name="amount"/>
+				<field name="remark"/>
+        	</tree>
+        </field>
+	</record>
+	
+	 <record id="t_timesheet_invoice_payment_action" model="ir.actions.act_window">
+         <field name="name">Invoice Payment</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="res_model">timesheet.invoice.payment</field>
+         <field name="view_mode">tree,form</field>
+     </record>
+     
+     <menuitem id="menu_invoice_payment_view" 
+     			name="Invoice Payment"
+			 	action="t_timesheet_invoice_payment_action" 
+			 	parent="indimedi_crm.timesheet_invoice_child_menu" sequence="3"/>        
+        
+</odoo>

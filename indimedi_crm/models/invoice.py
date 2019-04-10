@@ -172,9 +172,23 @@ class TimesheetInvoice(models.Model):
 
     @api.multi
     def mark_as_paid(self):
-        if not self.billed:
-            raise UserError("Only billed invoice can be paid!")
-        self.is_paid = True
+        for rec in self:
+            if not rec.billed:
+                raise UserError("Only billed invoice can be paid!")
+        
+        active_ids = self.env.context.get('active_ids')
+        return {
+                'name': "Invoice Payment",
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'invoice.payment',
+                'target': 'new',
+                'context': {'default_invoice_ids': active_ids},
+                
+            }
+        
+#         self.is_paid = True
     
     @api.model
     def create(self, vals):

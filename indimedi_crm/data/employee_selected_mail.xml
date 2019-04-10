@@ -24,8 +24,10 @@
 				
 				<p>
 					We are excited to confirm that ${object.jd_us_name_id.name or '  '} has accepted the offer. He will begin working with you on ${object.start_date_billing or ''} as your ${object.job_profile_id.name}. Kindly execute and confirm the same.
-				</p>
-				
+				</p><br/>
+			        <a href="${object.get_staff_confirm_token()}" style="background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;" class="o_default_snippet_text">Click Here Confirm Staff</a>
+			        <br/><br/><br/>
+			        
 				<h2><b><u>Introductory Call</u></b></h2>
 				<p>I request to set up an introductory call before he joins, so you can walk him through your process. Please let me know a day and time and we can connect accordingly.<p>
 				
@@ -97,10 +99,7 @@
 				
 				<p>If you have any questions, please let me know.<p/>
 				
-				<center>
-			        <a href="${object.get_staff_confirm_token()}" style="background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;" class="o_default_snippet_text">Confirm Staff</a>
-			        <br/><br/><br/>
-			    </center>				
+								
                    														
 			]]>
 			</field>

@@ -8,7 +8,6 @@ from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 
-
 class TimesheetCustomReport(models.TransientModel):
     _name = 'timesheet.custom.report'
     
