@@ -176,7 +176,6 @@ class TimesheetInvoice(models.Model):
             if not rec.billed:
                 raise UserError("Only billed invoice can be paid!")
         
-        
         active_ids = self.env.context.get('active_ids')
         return {
                 'name': "Invoice Payment",

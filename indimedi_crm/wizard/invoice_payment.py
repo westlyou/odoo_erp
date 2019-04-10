@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class InvoicePayment(models.TransientModel):
@@ -12,7 +13,8 @@ class InvoicePayment(models.TransientModel):
     @api.multi
     def action_mark_as_paid(self):
         payment = self.env['timesheet.invoice.payment']
-        
+        if self.amount <= 0:
+            raise UserError("Amount should be positive!")
         payment_id = payment.create({
                         'date_payment': self.date_payment,
                         'amount': self.amount,

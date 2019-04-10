@@ -128,6 +128,7 @@ class ProjectLeave(models.Model):
             'default_model': 'project.leave',
             'default_res_id': self.ids[0],
             'default_partner_ids':[(6,0,self.name.partner_ids.ids)],
+            'default_email_cc':[(6,0,self.name.cc_partner_ids.ids)],
             'default_use_template': bool(template_id),
             'default_template_id': template_id,
             'default_composition_mode': 'comment',
@@ -144,6 +145,27 @@ class ProjectLeave(models.Model):
             'target': 'new',
             'context': ctx,
         }
+        
+#         ctx.update({
+#             'default_model': 'project.leave',
+#             'default_res_id': self.ids[0],
+#             'default_partner_ids':[(6,0,self.name.partner_ids.ids)],
+#             'default_use_template': bool(template_id),
+#             'default_template_id': template_id,
+#             'default_composition_mode': 'comment',
+#             'default_mail_server_id': server_id,
+#         })
+#         return {
+#             'name': _('Project Leave Email'),
+#             'type': 'ir.actions.act_window',
+#             'view_type': 'form',
+#             'view_mode': 'form',
+#             'res_model': 'mail.compose.message',
+#             'views': [(compose_form_id, 'form')],
+#             'view_id': compose_form_id,
+#             'target': 'new',
+#             'context': ctx,
+#         }
         
      
         
