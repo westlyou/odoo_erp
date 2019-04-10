@@ -18,7 +18,7 @@ class BillingHisory(models.Model):
                                        ('180','180 Hours'),('200','200 Hours')],
                                        string="Working Hours", track_visibility='onchange')
     user_id = fields.Many2one('res.users', string="Responsible")
-
+    is_recent = fields.Boolean(string="Is Recent")
 
 
     @api.constrains('invoice_start_date', 'invoice_end_date')
@@ -34,3 +34,17 @@ class BillingHisory(models.Model):
             if nhistory:
                 raise ValidationError(_('You can not have 2 billing that overlaps on the same day.'))
              
+    @api.multi
+    def open_update_billing_wizard(self):
+        view_id = self.env.ref('indimedi_crm.change_billing_info_form')
+        
+        return {
+                'name': "Update Billing Information",
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'update.billing.line',
+                'view_id': view_id.id,
+                'target': 'new',
+                'context': {'default_project_id': self.id},
+        }
