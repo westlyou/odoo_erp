@@ -120,6 +120,16 @@ class HrApplicant(models.Model):
 	applicant_image = fields.Binary(
 		string='Image',
 	)
+	is_need_skype = fields.Boolean(
+		string="Need Skype",
+		help="Check if Position is out of Ahmedabad",
+	)
+	skype_id = fields.Char(
+		string="Skype Id",
+	)
+	skype_availability = fields.Datetime(
+		string="Skype Availablity",
+	)
 			
 
 

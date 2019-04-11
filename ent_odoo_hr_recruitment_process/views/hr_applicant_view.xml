@@ -71,6 +71,11 @@
 					</page>
 				</notebook>
 			</xpath>
+			<xpath expr="//field[@name='availability']" position="after">
+				<field name="is_need_skype"/>
+				<field name="skype_id" attrs="{'invisible': [('is_need_skype', '=', False)], 'required': [('is_need_skype', '=', True)]}"/>
+				<field name="skype_availability" attrs="{'invisible': [('is_need_skype', '=', False)], 'required': [('is_need_skype', '=', True)]}"/>
+			</xpath>
 		</field>
 	</record>
 </odoo>
