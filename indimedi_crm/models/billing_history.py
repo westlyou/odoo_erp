@@ -37,7 +37,6 @@ class BillingHisory(models.Model):
     @api.multi
     def open_update_billing_wizard(self):
         view_id = self.env.ref('indimedi_crm.update_billing_info_form')
-        print"self.id===========",self.id
         return {
                 'name': "Update Billing Information",
                 'type': 'ir.actions.act_window',

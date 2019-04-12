@@ -21,27 +21,31 @@ class UpdateBillingLine(models.TransientModel):
     total_rate = fields.Float(compute='_get_total_rate', string="Total Rate")
     line = fields.Integer(string="Line")
     
-#     @api.multi
-#     def _validate_new_data(self):
-#         if self.rate_per_hour <= 0:
-#             raise UserError("Negative or zero rate is not allowed")
-#         if self.project_id.billing_history_ids:
-#             find_old_line = self.project_id.billing_history_ids[0]
-#             if find_old_line.invoice_start_date:
-#                 if self.invoice_start_date <= find_old_line.invoice_start_date:
-#                     raise UserError("Invoice start date should greater then last start date")
-#         if not self.project_id.billing_history_ids:
-#             if self.invoice_start_date <= self.project_id.invoice_start_date:
-#                     raise UserError("Invoice start date should greater then last start date")
-#                 
-#         if self.project_id.invoicing_type_id.name in ['Weekly', 'Weekly Advance']:
-#             date = fields.Datetime.from_string(self.invoice_start_date)
-#             if date.weekday() != 6:
-#                 raise UserError("Start date should be on Sunday. for weekly invoice")
-#         if self.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
-#             date = fields.Datetime.from_string(self.invoice_start_date)
-#             if date.day != 1:
-#                 raise UserError("Start date should be first date of month. for monthly invoice")
+    @api.multi
+    def _validate_new_data(self):
+        if self.rate_per_hour <= 0:
+            raise UserError("Negative or zero rate is not allowed")
+        if self.project_id.billing_history_ids:
+            active_id = self._context.get('active_id')
+            find_old_line = find_old_line = self.env['billing.history'].search([
+                                                            ('project_id', '=', self.project_id.id),
+                                                            ('id', '<', active_id)], limit=1)
+            
+            if find_old_line.invoice_start_date:
+                if self.invoice_start_date <= find_old_line.invoice_start_date:
+                    raise UserError("Invoice start date should greater then last start date %s"%(find_old_line.invoice_start_date))
+        if not self.project_id.billing_history_ids:
+            if self.invoice_start_date <= self.project_id.invoice_start_date:
+                    raise UserError("Invoice start date should greater then last start date.")
+                 
+        if self.project_id.invoicing_type_id.name in ['Weekly', 'Weekly Advance']:
+            date = fields.Datetime.from_string(self.invoice_start_date)
+            if date.weekday() != 6:
+                raise UserError("Start date should be on Sunday. for weekly invoice")
+        if self.project_id.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
+            date = fields.Datetime.from_string(self.invoice_start_date)
+            if date.day != 1:
+                raise UserError("Start date should be first date of month. for monthly invoice")
         
     @api.depends('hour_selection','rate_per_hour')
     def _get_total_rate(self):
@@ -58,7 +62,7 @@ class UpdateBillingLine(models.TransientModel):
     
     @api.multi
     def action_update_billing_detail(self):
-#         self._validate_new_data()
+        self._validate_new_data()
         active_id = self._context.get('active_id')
         
         bill_id = self.env['billing.history'].browse(active_id)
@@ -67,7 +71,7 @@ class UpdateBillingLine(models.TransientModel):
         
         if self.invoice_start_date:
             vals.update({
-                        'invoice_start_date': bill_id.invoice_start_date
+                        'invoice_start_date': self.invoice_start_date
                         })
         if self.rate_per_hour:
             vals.update({
@@ -103,10 +107,11 @@ class UpdateBillingLine(models.TransientModel):
         yesterday = datetime.strftime(fields.Datetime.from_string(self.invoice_start_date) - timedelta(1), DEFAULT_SERVER_DATE_FORMAT)
 #         
 #         find_old_line.invoice_end_date = yesterday
-         
+#          
         vals2 = {
                 'project_id': self.project_id.id,
                 'invoice_start_date': self.invoice_start_date,
+                'invoice_end_date': False,
                 'rate_per_hour': self.rate_per_hour,
                 'total_rate': self.total_rate,
                 'invoicing_type_id': self.invoicing_type_id.id or self.project_id.invoicing_type_id.id,
@@ -114,9 +119,12 @@ class UpdateBillingLine(models.TransientModel):
                 'user_id': self.env.user.id,
                 } 
          
-#         self.project_id.write(vals2)
-#         self.env['billing.history'].create(vals)
-        
+        self.project_id.write(vals)
+        bill_id.write(vals2)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
         
         
         

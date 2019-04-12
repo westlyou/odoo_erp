@@ -7,7 +7,6 @@
 			<form string="Update Billing Info">
 				<group>
 					<group>
-						<field name="line"/>
 						<field name="invoice_start_date" required="1"/>
 						<field name="rate_per_hour" required="1"/>
 						
