@@ -9,8 +9,32 @@
 					<field name="emp_number"/>
 				</h1>
 			</xpath>
+			<xpath expr="//div[@class='oe_title']" position="inside">
+				<field name="emp_full_name" placeholder="Full Name"/>
+				<field name="father_name" placeholder="Father's Name"/>
+			</xpath>
+			<xpath expr="//field[@name='birthday']" position="after">
+				<field name="age"/>
+			</xpath>
+			<xpath expr="//page[@name='personal_information']/group/group" position="after">
+				<group name="other_detail">
+				</group>
+				<group name="permanent_add" string="Permanent Address">
+					<field name="emp_perm_street"/>
+					<field name="emp_perm_street2"/>
+					<field name="emp_perm_street3"/>
+					<field name="emp_perm_zip"/>
+					<field name="emp_perm_city"/>
+					<field name="emp_perm_state_id"/>
+					<field name="emp_perm_country_id"/>
+				</group>
+			</xpath>
 			<xpath expr="//page[@name='personal_information']/group" position="inside">
 				<group name="emp_joine_grp">
+					<field name="date_of_offer"/>
+					<field name="experience"/>
+					<field name="appleft"/>
+					<field name="joining_sheet"/>
 					<field name="date_of_joining"/>
 					<field name="landline_no"/>
 					<field name="package"/>
