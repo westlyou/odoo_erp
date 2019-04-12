@@ -4,6 +4,9 @@
 		<field name="model">hr.applicant</field>
 		<field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
 		<field name="arch" type="xml">
+			<xpath expr="//header" position="inside">
+				<button type="object" string="Send Email COnfirmation" name="send_applicant_email_confirmation"/>
+			</xpath>
 			<xpath expr="//div[@class='oe_title']" position="before">
 				<field name="applicant_image" widget="image" class="oe_avatar"/>
 			</xpath>
@@ -69,9 +72,28 @@
 							</tree>
 						</field>
 					</page>
+					<page name="candidate_evaluation" string="Candidate Evaluation">
+						<group>
+							<field name="presentation_skill" widget="priority"/>
+							<field name="understanding_position" widget="priority"/>
+							<field name="background_skill_set" widget="priority"/>
+							<field name="professionla_impression" widget="priority"/>
+							<field name="motivation_initiative" widget="priority"/>
+							<field name="interpersonal_skill" widget="priority"/>
+							<field name="applicant_flexibility" widget="priority"/>
+							<field name="organizational_fit" widget="priority"/>
+							<field name="overall_evaluation" widget="priority"/>
+							<field name="test_marks" widget="priority"/>
+							<field name="email_communication" widget="priority"/>
+							<field name="quickbook_tax_evaluation" widget="priority"/>
+						</group>
+					</page>
 				</notebook>
 			</xpath>
 			<xpath expr="//field[@name='availability']" position="after">
+				<field name="availability_to"/>
+				<field name="availability_time_from" widget="float_time"/>
+				<field name="availability_time_to" widget="float_time"/>
 				<field name="is_need_skype"/>
 				<field name="skype_id" attrs="{'invisible': [('is_need_skype', '=', False)], 'required': [('is_need_skype', '=', True)]}"/>
 				<field name="skype_availability" attrs="{'invisible': [('is_need_skype', '=', False)], 'required': [('is_need_skype', '=', True)]}"/>
