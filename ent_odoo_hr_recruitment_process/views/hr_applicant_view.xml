@@ -1,0 +1,81 @@
+<odoo>
+	<record id="crm_case_form_view_job_inherit_ent_rec_mk" model='ir.ui.view'>
+		<field name="name">hr.applicant.view.form.inherit.ent.rec.mk</field>
+		<field name="model">hr.applicant</field>
+		<field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
+		<field name="arch" type="xml">
+			<xpath expr="//div[@class='oe_title']" position="before">
+				<field name="applicant_image" widget="image" class="oe_avatar"/>
+			</xpath>
+			<xpath expr="//field[@name='partner_mobile']" position="after">
+				<field name="known_language_ids" widget="many2many_tags"/>
+				<field name="marital_status"/>
+			</xpath>
+			<xpath expr="//div[@class='oe_title']/h2" position="after">
+				<h2 class="o_row">
+					<field name="applicant_title"/>
+					<field name="first_name"/>
+					<field name="middle_name"/>
+					<field name="last_name"/>
+				</h2>
+			</xpath>
+			<xpath expr="//field[@name='email_from']" position="before">
+				<field name="date_of_birth"/>
+				<field name="applicant_age"/>
+				<field name="nationality"/>
+			</xpath>
+			<xpath expr="//form/sheet/group/group[2]" position="after">
+				<group string="Present Address">
+					<field name="present_f_add"/>
+					<field name="present_s_add"/>
+					<field name="present_area"/>
+					<field name="present_city"/>
+					<field name="present_state_id"/>
+					<field name="present_country_id"/>
+					<field name="present_zip"/>
+				</group>
+				<group string="Permanent Address">
+					<field name="same_as_above"/>
+					<field name="perma_f_add"/>
+					<field name="perma_s_add"/>
+					<field name="perma_area"/>
+					<field name="perma_city"/>
+					<field name="perma_state_id"/>
+					<field name="perma_country_id"/>
+					<field name="perma_zip"/>
+				</group>
+			</xpath>
+			<xpath expr="//form/sheet/group" position="after">
+				<notebook>
+					<page name="edu_details_page" string="Education Details">
+						<field name="edu_applicant_detail_ids">
+							<tree editable="bottom">
+								<field name="qualification_id"/>
+								<field name="board_uni"/>
+								<field name="location"/>
+								<field name="marks_obtain"/>
+								<field name="percent_obtain"/>
+							</tree>
+						</field>
+					</page>
+					<page name="empl_history_page" string="Employeement History Details">
+						<field name="employeement_history_ids">
+							<tree editable="bottom">
+								<field name="name"/>
+								<field name="job_title_id"/>
+								<field name="start_date"/>
+								<field name="work_location"/>
+								<field name="job_responsability"/>
+							</tree>
+						</field>
+					</page>
+				</notebook>
+			</xpath>
+			<xpath expr="//field[@name='availability']" position="after">
+				<field name="is_need_skype"/>
+				<field name="skype_id" attrs="{'invisible': [('is_need_skype', '=', False)], 'required': [('is_need_skype', '=', True)]}"/>
+				<field name="skype_availability" attrs="{'invisible': [('is_need_skype', '=', False)], 'required': [('is_need_skype', '=', True)]}"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>

@@ -27,7 +27,7 @@ class Employee(models.Model):
 		string='Attachements',
 	)
 	emp_number = fields.Char(
-		string="Emp Number",
+		string='Emp Number',
 		copy=False,
 		readonly=True,
 		default='New',
@@ -36,11 +36,11 @@ class Employee(models.Model):
 		string='Qualification',
 	)
 	previous_company_data = fields.Char(
-		string="Previous Company Data",
+		string='Previous Company Data',
 	)
 	emp_qualification_ids = fields.Many2many(
 		'emp.ent.qualification',
-		string="Qualifications",
+		string='Qualifications',
 	)
 	emp_prev_company_ids = fields.One2many(
 		'emp.ent.prev.company',
@@ -49,19 +49,63 @@ class Employee(models.Model):
 	)
 	
 	date_of_resign = fields.Date(
-		string="DOR",
+		string='DOR',
 	)
 	esic_deduction = fields.Boolean(
-		string="ESIC Deduction",
+		string='ESIC Deduction',
 	)
 	pf_deduction = fields.Boolean(
-		string="PF Deduction",
+		string='PF Deduction',
 	)
 	blood_group = fields.Char(
-		string="Blood Group",
+		string='Blood Group',
 	)
 	emp_zip = fields.Char(
 		size=6,
+	)
+	
+	emp_full_name = fields.Char(
+		string='Full Name',
+	)
+	father_name = fields.Char(
+		string='Father Name',
+	)
+	date_of_offer = fields.Date(
+		string='DOO',
+	)
+	age = fields.Integer(
+		string='Age',
+	)
+	experience = fields.Char(
+		string='Experience',
+	)
+	appleft = fields.Char(
+		string='App Left',
+	)
+	joining_sheet = fields.Binary(
+		string='Joining Sheet',
+	)
+	
+	emp_perm_street = fields.Char(
+		string="Permanent Address 1",
+	)
+	emp_perm_street2 = fields.Char(
+		string="Permanent Address 2",
+	)
+	emp_perm_street3 = fields.Char(
+		string="Permanent Address 3",
+	)
+	emp_perm_zip = fields.Char(
+		string="Permanent Zip",
+	)
+	emp_perm_city = fields.Char(
+		string="Permanent City",
+	)
+	emp_perm_state_id = fields.Char(
+		string="Permanent State",
+	)
+	emp_perm_country_id = fields.Char(
+		string="Permanent Country",
 	)
 	
 	
