@@ -73,6 +73,7 @@
             
             'views/timesheet_bill_view.xml',
             'wizard/timesheet_invoice_payment.xml',
+            'wizard/update_bill_line.xml',
             
         ],
     'qweb': [

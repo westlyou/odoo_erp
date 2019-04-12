@@ -1,0 +1,26 @@
+<odoo>
+
+	<record id="update_billing_info_form" model="ir.ui.view">
+		<field name="name">update.billing.line.form</field>
+		<field name="model">update.billing.line</field>
+		<field name="arch" type="xml">
+			<form string="Update Billing Info">
+				<group>
+					<group>
+						<field name="invoice_start_date" required="1"/>
+						<field name="rate_per_hour" required="1"/>
+						
+						<field name="hour_selection" required="1"/>
+						<field name="total_rate" />
+					</group>
+				</group>
+			<footer>
+	           <button name="action_update_billing_detail" type="object" string="Apply" class="oe_highlight"/>
+	           or
+	           <button name="cancel" special="cancel" string="Close" class="oe_link"/>
+	       </footer>
+			</form>
+		</field>
+	</record>
+	
+</odoo>

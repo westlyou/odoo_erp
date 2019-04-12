@@ -336,6 +336,7 @@
 								<field name="hour_selection"/>
 								<field name="user_id"/>
 								<field name="create_date"/>
+								<button name="open_update_billing_wizard" string="Update" type="object" class="btn-primary"/>
                         	</tree>
                         </field>
                     </page>
