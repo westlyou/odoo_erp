@@ -35,11 +35,11 @@
 						<div class="form-group form-field o_website_form_required_custom col-md-8">
 							<div class="col-md-6 col-sm-4">
 				                <label for="name" string="Lead Name"/>
-				                <input type="text" class="form-control o_website_form_input" name="name" required="" placeholder="Name"/>
+				                <input type="text" class="form-control o_website_form_input" name="name" t-att-value="lead_primary_contact.name" required="" placeholder="Name"/>
 				            </div>
 				            <div class="col-md-6 col-sm-8">
 				            	<label for="s_name" string="Lead S Name"/>
-				                <input type="text" class="form-control o_website_form_input" name="s_name" required="" placeholder="Title"/>
+				                <input type="text" class="form-control o_website_form_input" name="title" t-att-value="lead_primary_contact.title.name" required="" placeholder="Title"/>
 				            </div>
 				            
 				            <div class="col-md-12 col-sm-4">
@@ -75,16 +75,16 @@
 				            </div>
 				            <div class="col-md-4 col-sm-8">
 				            	<label for="email_from" string="Email"/>
-				                <input type="text" class="form-control o_website_form_input" name="c_state_id" required="" placeholder="Ext"/>
+				                <input type="text" class="form-control o_website_form_input" name="ext" required="" placeholder="Ext"/><!--Which Ext should be here-->
 				            </div>
 				            <div class="col-md-4 col-sm-8">
 				            	<label for="email_from" string="Email"/>
-				                <input type="text" class="form-control o_website_form_input" name="c_state_id" required="" placeholder="Mobile"/>
+				                <input type="text" class="form-control o_website_form_input" name="mobile" required="" t-att-value="lead_primary_contact.mobile" placeholder="Mobile"/>
 				            </div>
 				            
 				            <div class="col-md-5 col-sm-4">
 				            	<label for="lead_website" string="Website"/>
-				                <input type="text" class="form-control o_website_form_input" name="c_street" required="" placeholder="Direct Phone"/>
+				                <input type="text" class="form-control o_website_form_input" name="direct_phone" required="" placeholder="Direct Phone" t-att-value="lead_primary_contact.phone"/>
 				            </div>
 				            <div class="col-md-7 col-sm-8">
 				            	<label for="email_from" string="Email"/>
@@ -107,28 +107,28 @@
 						        	<tbody>
 						        		<tr>
 						        			<td rowspan="5">
-						        				<input type="checkbox" t-attf-checked="job_desc.hiring_model == 'permanent'"/>
+						        				<input type="checkbox" t-att-checked="job_desc.hiring_model == 'permanent'"/>
 						        				PERMANENT	
 					        				</td>
 						        			<td><input type="text" name="" t-att-value="job_desc.permanent_hour_selection"/></td>
 						        			<td><input type="text" name="" t-att-value="job_desc.rate_per_hour"/></td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="Season Non season"/></td>
-					        				<td rowspan="4"><input type="text" name="" placeholder="Season Non Season Rate"/></td>
+					        				<td><input type="text" name="" placeholder="Season Non season"/></td><!--Which field value should be here-->
+					        				<td rowspan="4"><input type="text" name="" placeholder="Season Non Season Rate"/></td><!--Which rate should be here-->
 					        			</tr>
 					        			<tr>
 					        				<td>SEASON PERIOD</td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="PERMANENT Season from"/></td>
+					        				<td><input type="text" name="" placeholder="PERMANENT Season from"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="PERMANENT Season to"/></td>
+					        				<td><input type="text" name="" placeholder="PERMANENT Season to"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
 						        			<td>
-						        				<input type="checkbox" t-attf-checked="job_desc.hiring_model == 'temporary'"/>
+						        				<input type="checkbox" t-att-checked="job_desc.hiring_model == 'temporary'"/>
 						        				TEMPORARY	
 					        				</td>
 						        			<td><input type="text" name="" t-att-value="job_desc.temporary_hour_selection"/></td>
@@ -136,11 +136,11 @@
 					        			</tr>
 					        			<tr>
 						        			<td>
-						        				<input type="checkbox" t-attf-checked="job_desc.hiring_model == 'On Demand'"/>
+						        				<input type="checkbox" t-att-checked="job_desc.hiring_model == 'On Demand'"/>
 						        				ONDEMAND	
 					        				</td>
-						        			<td><input type="text" name="" placeholder="NUMBER OF HOUR/MONTH"/></td>
-						        			<td><input type="text" name="" placeholder="$10"/></td>
+						        			<td><input type="text" name="" placeholder="NUMBER OF HOUR/MONTH"/></td><!--Which field value should be here-->
+						        			<td><input type="text" name="" placeholder="$10"/></td><!--Which field should be here-->
 					        			</tr>
 						        	</tbody>
 						        </table>
@@ -169,17 +169,17 @@
 					        	
 					        	<div class="col-sm-12">
 					        		<label class="placeholdercontrol-label" for="task_tobe_done2">Task to be Done2</label>
-					        		<input type="text" class="form-control" name="task_tobe_done2" placeholder="Task Tobe Done2"/>
+					        		<input type="text" class="form-control" name="task_tobe_done2" placeholder="Task Tobe Done2"/><!--Which field value would be here-->
 					        	</div>
 					        	
 					        	<div class="col-sm-12">
 					        		<label class="placeholdercontrol-label" for="task_tobe_done3">Task to be Done3</label>
-					        		<input type="text" class="form-control" name="task_tobe_done3" placeholder="Task Tobe Done3"/>
+					        		<input type="text" class="form-control" name="task_tobe_done3" placeholder="Task Tobe Done3"/><!--Which field value would be here-->
 					        	</div>
 					        	
 					        	<div class="col-sm-12">
 					        		<label class="placeholdercontrol-label" for="task_tobe_done4">Task to be Done4</label>
-					        		<input type="text" class="form-control" name="task_tobe_done4" placeholder="Task Tobe Done4"/>
+					        		<input type="text" class="form-control" name="task_tobe_done4" placeholder="Task Tobe Done4"/><!--Which field value would be here-->
 					        	</div>
 					        	
 					        	<div class="col-sm-12">
