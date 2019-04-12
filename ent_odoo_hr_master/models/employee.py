@@ -29,7 +29,7 @@ class Employee(models.Model):
 	emp_number = fields.Char(
 		string='Emp Number',
 		copy=False,
-		readonly=True,
+		#readonly=True,
 		default='New',
 	)
 	qualification = fields.Char(
@@ -109,11 +109,11 @@ class Employee(models.Model):
 	)
 	
 	
-	@api.model
-	def create(self, vals):
-		emp_number = self.env['ir.sequence'].next_by_code('hr.employee.ent.code')	
-		if emp_number:
-			vals.update({
-				'emp_number': emp_number,
-			})
-		return super(Employee, self).create(vals)
+	#@api.model
+	#def create(self, vals):
+	#	emp_number = self.env['ir.sequence'].next_by_code('hr.employee.ent.code')	
+	#	if emp_number:
+	#		vals.update({
+	#			'emp_number': emp_number,
+	#		})
+	#	return super(Employee, self).create(vals)
