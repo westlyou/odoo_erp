@@ -287,7 +287,26 @@ class HrApplicant(models.Model):
 			('average', 'Average'),
 			('good', 'Good'),
 			('excellent', 'Excellent'),
-		]
+		],
+	)
+	notice_period = fields.Integer(
+		string='Notice Period',
+	)
+	expexted_joining_date = fields.Date(
+		string='Expected Joining Date',
+	)
+	three_month_training = fields.Char(
+		string='3 Months Training',
+	)
+	reason_for_change = fields.Text(
+		string='Reason For Change',
+	)
+	family_background = fields.Text(
+		string='Family Background',
+	)
+	special_comment = fields.Text(
+		string='Comments',
+	)
 
 
 	@api.depends('date_of_birth')

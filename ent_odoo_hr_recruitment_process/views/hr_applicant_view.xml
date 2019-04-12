@@ -87,6 +87,24 @@
 							<field name="email_communication" widget="priority"/>
 							<field name="quickbook_tax_evaluation" widget="priority"/>
 						</group>
+						<group>
+							<group>
+								<field name="agreement_sign_ask"/>
+								<field name="notice_period"/>
+								<field name="three_month_training"/>
+							</group>
+							<group>
+								<field name="applicant_communication"/>
+								<field name="expexted_joining_date"/>
+								<field name="reason_for_change"/>
+							</group>
+						</group>
+						<group string="Family Background">
+							<field name="family_background" nolabel="1" />
+						</group>
+						<group string="Comments">
+							<field name="special_comment" nolabel="1" />
+						</group>
 					</page>
 				</notebook>
 			</xpath>
