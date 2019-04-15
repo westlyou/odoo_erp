@@ -39,12 +39,24 @@ class Project(models.Model):
                                     ('normal', 'Normal Firm'),
                                     ('small', 'Small Firm')], string="Client Firm")
     subsidiary_id = fields.Many2one('subsidiary.master', string="Billing Company")
-    is_expired = fields.Boolean(compute='_check_project_expiry', string="Expired")
-    on_notice = fields.Boolean(compute='_check_on_notice', string="On Notice")
+    is_expired = fields.Boolean(compute='_check_project_expiry', string="Expired", search='_value_search_expired')
+    on_notice = fields.Boolean(compute='_check_on_notice', string="On Notice", search='_value_search_notice')
     dummy_start_date = fields.Date(string="Dummy Start Date")
     last_invoice_id = fields.Many2one('timesheet.invoice', string="Last Invoice")
     
-    
+    @api.multi
+    def _value_search_expired(self, operator, value):
+        recs = self.search([]).filtered(lambda x : x.is_expired is True )
+        if recs:
+            return [('id', 'in', [x.id for x in recs])]
+           
+    @api.multi
+    def _value_search_notice(self, operator, value):
+        recs = self.search([]).filtered(lambda x : x.on_notice is True )
+        if recs:
+            return [('id', 'in', [x.id for x in recs])]
+           
+           
     @api.multi
     def _check_on_notice(self):
         for rec in self:
