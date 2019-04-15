@@ -70,7 +70,7 @@
             
             #'views/client_agreement_portal.xml',
             'views/res_company_view.xml',
-            
+            'views/ann_email_view.xml',
             'views/timesheet_bill_view.xml',
             'wizard/timesheet_invoice_payment.xml',
             'wizard/update_bill_line.xml',
