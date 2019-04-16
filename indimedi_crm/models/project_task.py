@@ -17,7 +17,7 @@ class Project(models.Model):
     timesheet_phone = fields.Char('Employee Phone', track_visibility='onchange')
     invoicing_type_id = fields.Many2one('job.invoicing', string="Invoicing Type", track_visibility='onchange')
     invoice_start_date = fields.Date(string="Billing Start Date", track_visibility='onchange')
-    hour_selection = fields.Selection([('10','10 Hours'),('15', '15 Hours'),('20','20 Hours'),('25', '25 Hours'),('30','30 Hours'),
+    hour_selection = fields.Selection([('5','5 Hours'),('10','10 Hours'),('15', '15 Hours'),('20','20 Hours'),('25', '25 Hours'),('30','30 Hours'),
                                        ('40','40 Hours'),('80','80 Hours'),('90','90 Hours'),
                                        ('100','100 Hours'),('40_20','40-20 Hours'),
                                        ('20_10','20-10 Hours'),('160','160 Hours'),
@@ -43,6 +43,9 @@ class Project(models.Model):
     on_notice = fields.Boolean(compute='_check_on_notice', string="On Notice", search='_value_search_notice')
     dummy_start_date = fields.Date(string="Dummy Start Date")
     last_invoice_id = fields.Many2one('timesheet.invoice', string="Last Invoice")
+    permenant_or_not = fields.Selection([('temporary', 'Temporary'),
+                                         ('permanent', 'Permanent')], compute='_check_on_notice', string="Temporary/Permanent")
+    
     
     @api.multi
     def _value_search_expired(self, operator, value):
@@ -62,6 +65,9 @@ class Project(models.Model):
         for rec in self:
             if rec.invoice_end_date:
                 rec.on_notice = True
+                rec.permenant_or_not = 'temporary'
+            else:
+                rec.permenant_or_not = 'permanent'
     
     @api.multi
     def _check_project_expiry(self):

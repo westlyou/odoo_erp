@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
 				<field name="partner_id"/>
 				<field name="subsidiary_id"/>
-				<!-- <field name="partner_id"/> Temporary / Permanent-->
+				<field name="permenant_or_not"/>
 				<field name="client_firm"/>
 				<field name="date_of_joining"/>
 				<field name="invoice_end_date"/>
