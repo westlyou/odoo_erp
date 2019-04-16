@@ -12,7 +12,7 @@ class ChangeBillingInfo(models.TransientModel):
     
     rate_per_hour = fields.Float(string="Rate Per Hour", track_visibility='onchange')
     invoicing_type_id = fields.Many2one('job.invoicing', string="Invoicing Type", track_visibility='onchange')
-    hour_selection = fields.Selection([('10','10 Hours'),('15', '15 Hours'),('20','20 Hours'),('25', '25 Hours'),('30','30 Hours'),
+    hour_selection = fields.Selection([('5','5 Hours'),('10','10 Hours'),('15', '15 Hours'),('20','20 Hours'),('25', '25 Hours'),('30','30 Hours'),
                                        ('40','40 Hours'),('80','80 Hours'),('90','90 Hours'),
                                        ('100','100 Hours'),('40_20','40-20 Hours'),
                                        ('20_10','20-10 Hours'),('160','160 Hours'),
