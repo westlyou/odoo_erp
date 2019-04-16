@@ -18,3 +18,4 @@ from . import res_users
 from . import res_company_inherit
 from . import timesheet_bill
 from . import ann_email
+from . import payment_method
