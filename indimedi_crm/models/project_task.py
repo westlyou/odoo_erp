@@ -17,7 +17,7 @@ class Project(models.Model):
     timesheet_phone = fields.Char('Employee Phone', track_visibility='onchange')
     invoicing_type_id = fields.Many2one('job.invoicing', string="Invoicing Type", track_visibility='onchange')
     invoice_start_date = fields.Date(string="Billing Start Date", track_visibility='onchange')
-    hour_selection = fields.Selection([('10','10 Hours'),('20','20 Hours'),('30','30 Hours'),
+    hour_selection = fields.Selection([('10','10 Hours'),('15', '15 Hours'),('20','20 Hours'),('25', '25 Hours'),('30','30 Hours'),
                                        ('40','40 Hours'),('80','80 Hours'),('90','90 Hours'),
                                        ('100','100 Hours'),('40_20','40-20 Hours'),
                                        ('20_10','20-10 Hours'),('160','160 Hours'),
@@ -39,12 +39,24 @@ class Project(models.Model):
                                     ('normal', 'Normal Firm'),
                                     ('small', 'Small Firm')], string="Client Firm")
     subsidiary_id = fields.Many2one('subsidiary.master', string="Billing Company")
-    is_expired = fields.Boolean(compute='_check_project_expiry', string="Expired")
-    on_notice = fields.Boolean(compute='_check_on_notice', string="On Notice")
+    is_expired = fields.Boolean(compute='_check_project_expiry', string="Expired", search='_value_search_expired')
+    on_notice = fields.Boolean(compute='_check_on_notice', string="On Notice", search='_value_search_notice')
     dummy_start_date = fields.Date(string="Dummy Start Date")
     last_invoice_id = fields.Many2one('timesheet.invoice', string="Last Invoice")
     
-    
+    @api.multi
+    def _value_search_expired(self, operator, value):
+        recs = self.search([]).filtered(lambda x : x.is_expired is True )
+        if recs:
+            return [('id', 'in', [x.id for x in recs])]
+           
+    @api.multi
+    def _value_search_notice(self, operator, value):
+        recs = self.search([]).filtered(lambda x : x.on_notice is True )
+        if recs:
+            return [('id', 'in', [x.id for x in recs])]
+           
+           
     @api.multi
     def _check_on_notice(self):
         for rec in self:

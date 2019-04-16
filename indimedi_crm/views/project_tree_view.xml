@@ -1,0 +1,28 @@
+<odoo>
+	<record id="project_tree_view2" model="ir.ui.view">
+            <field name="name">project.project.tree</field>
+            <field name="model">project.project</field>
+            <field name="priority">50</field>
+            <field name="groups_id" eval="[(6, 0, [ref('indimedi_crm.group_project_general_manager'), ref('project.group_project_manager')])]"/>
+            <field name="arch" type="xml">
+				<field name="partner_id"/>
+				<field name="subsidiary_id"/>
+				<!-- <field name="partner_id"/> Temporary / Permanent-->
+				<field name="client_firm"/>
+				<field name="date_of_joining"/>
+				<field name="invoice_end_date"/>
+				<!-- <field name="partner_id"/> Name of the Person-->
+				<!-- <field name="partner_id"/>Person Actually Working Currently-->
+				<field name="user_id"/>
+				<field name="project_general_manager"/>
+				<field name="jd_us_name_id"/>
+				<!-- <field name="partner_id"/> Feedback-->
+				<!-- <field name="partner_id"/> Employee Shift Timing (US & India)-->
+				<!-- <field name="partner_id" /> Nature-->
+				<field name="invoicing_type_id"/>
+				<!-- <field name="partner_id"/> E - Code-->
+				<!-- <field name="partner_id"/> Attention-->
+							
+            </field>
+        </record>
+</odoo>
