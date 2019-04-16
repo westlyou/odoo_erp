@@ -7,6 +7,7 @@ class InvoicePayment(models.TransientModel):
     
     invoice_ids = fields.Many2many('timesheet.invoice', string="Invoices")
     date_payment = fields.Date(string="Payment Date")
+    payment_method_id = fields.Many2one('payment.method.custom', string="Payment Method", required=True)
     amount = fields.Float(string="Payment Amount")
     remark = fields.Text(string="Note")
     
@@ -18,6 +19,7 @@ class InvoicePayment(models.TransientModel):
         payment_id = payment.create({
                         'date_payment': self.date_payment,
                         'amount': self.amount,
+                        'payment_method_id': self.payment_method_id.id,
                         'remark': self.remark
                             })
         self.invoice_ids.write({'is_paid': True, 'payment_id': payment_id.id})

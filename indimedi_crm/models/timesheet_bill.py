@@ -17,6 +17,7 @@ class TimesheetInvoicePayment(models.Model):
     
     name = fields.Char(string="Name", default='Payment')
     amount = fields.Float(string="Payment Amount")
+    payment_method_id = fields.Many2one('payment.method.custom', string="Payment Method", required=True)
     date_payment = fields.Date(string="Payment Date")
     remark = fields.Text(string="Note")
     timesheet_invoice_ids = fields.One2many('timesheet.invoice', 'payment_id', string="Invoices")
