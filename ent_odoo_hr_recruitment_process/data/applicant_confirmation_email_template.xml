@@ -12,7 +12,7 @@
             <field name="lang">${object.user_id.lang}</field>
             <field name="body_html"><![CDATA[
 				<p>Dear ${object.partner_name},
-				<p>We acknowledge to have received your profile. you can come for an interview on  ${object.availability} or ${object.availability_to} between ${object.availability_time_from} to ${object.availability_time_to} (Kindly confirm the date and time).
+				<p>We acknowledge to have received your profile. you can come for an interview on  _________ or _______ between __________ to _________ (Kindly confirm the date and time).
 				</p>
 
 				<br/>
@@ -24,13 +24,27 @@
 					Our address is as mentioned below:
 				</p>
 				<p>
-					${object.company_id.street},${object.company_id.street2},${object.company_id.city} - ${object.company_id.zip}
+					% if object.company_id.street:
+						${object.company_id.street},
+					% endif
+					
+					% if object.company_id.street2:
+						${object.company_id.street2},
+					% endif
+					
+					% if object.company_id.city:
+						${object.company_id.city}
+					% endif
+					
+					%if object.company_id.zip:
+						 - ${object.company_id.zip}
+					% endif
 				</p>
 				<p>
 					Do let us know if you find any query.
 				</p>
 				% if object.user_id and object.user_id.signature:
-					${object.user_id.signature | safe}
+					<p>${object.user_id.signature | safe}</p>
 				% endif
 				]]></field>
 			</record>

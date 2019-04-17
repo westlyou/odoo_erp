@@ -307,6 +307,12 @@ class HrApplicant(models.Model):
 	special_comment = fields.Text(
 		string='Comments',
 	)
+	is_mail_sent = fields.Boolean(
+		string='Is Mail Sent',
+	)
+	is_hr_round_interview = fields.Boolean(
+		string='Hr Round Interview',
+	)
 
 
 	@api.depends('date_of_birth')
@@ -328,7 +334,53 @@ class HrApplicant(models.Model):
 	
 	@api.multi
 	def send_applicant_email_confirmation(self):
-		print ("self:::::::::::::::::::::::::::::::::",self)
-		template_id = self.env.ref("ent_odoo_hr_recruitment_process.email_template_application_confirmation")
-		print ("&&&&&&&&&&&&&&&&&&&",template_id)
-		template_id.send_mail(self.id)
+		#template_id = self.env.ref("ent_odoo_hr_recruitment_process.email_template_application_confirmation")
+		self.ensure_one()
+		ir_model_data = self.env['ir.model.data']
+		try:
+			template_id = ir_model_data.get_object_reference('ent_odoo_hr_recruitment_process', 'email_template_application_confirmation')[1]
+		except ValueError:
+			template_id = False
+		try:
+			compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+		except ValueError:
+			compose_form_id = False
+		ctx = dict()
+		ctx.update({
+			'default_model': 'hr.applicant',
+			'default_applicant_id': self.ids[0],
+			'default_use_template': bool(template_id),
+			'default_template_id': template_id,
+			'default_composition_mode': 'comment',
+			'mark_application_as_sent': True,
+		})
+		return {
+			'type': 'ir.actions.act_window',
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_model': 'mail.compose.message',
+			'views': [(compose_form_id, 'form')],
+			'view_id': compose_form_id,
+			'target': 'new',
+			'context': ctx,
+		}
+		#print ("&&&&&&&&&&&&&&&&&&&",template_id)
+		#send_email = template_id.send_mail(self.id)
+		#if send_email:
+		#	stage_id = self.env['hr.recruitment.stage'].search([('name', '=', 'Mail Confirmation Sent')])
+		#	self.write({
+		#		'stage_id': stage_id.id,
+		#		'is_mail_sent': True,
+		#	})
+
+	@api.multi
+	def write(self, vals):
+		if 'stage_id' in vals and vals.get('stage_id'):
+			stage_id = self.env['hr.recruitment.stage'].search([('name', '=', 'HR Round of Interview')])
+			for rec in self:
+				if stage_id.id == vals.get('stage_id'):
+					vals.update({
+						'is_hr_round_interview' : True,					
+					})
+		return super(HrApplicant, self).write(vals)
+			
