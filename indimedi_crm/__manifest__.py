@@ -72,6 +72,7 @@
             'views/res_company_view.xml',
             'views/ann_email_view.xml',
             'views/timesheet_bill_view.xml',
+            'views/project_tree_view.xml',
             'wizard/timesheet_invoice_payment.xml',
             'wizard/update_bill_line.xml',
             

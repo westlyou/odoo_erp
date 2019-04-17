@@ -45,7 +45,34 @@ class Project(models.Model):
     last_invoice_id = fields.Many2one('timesheet.invoice', string="Last Invoice")
     permenant_or_not = fields.Selection([('temporary', 'Temporary'),
                                          ('permanent', 'Permanent')], compute='_check_on_notice', string="Temporary/Permanent")
+    name_of_contact_id = fields.Char(compute='_get_name_of_person', string="Name of the Person")
+    nature = fields.Selection([('expired', 'Expired'),
+                               ('notice', 'On Notice'),
+                               ('active', 'Active')], compute='_get_nature',  string="Nature")
     
+    @api.multi
+    def _get_nature(self):
+        for rec in self:
+            if not rec.on_notice or rec.is_expired:
+                rec.nature = 'active'
+            if rec.on_notice:
+                rec.nature = 'notice'
+            if rec.is_expired:
+                rec.nature = 'expired'
+            
+    
+    @api.multi
+    def _get_name_of_person(self):
+        """get (Primary Contact By Default) Otherwise Reporting Manager"""
+        for rec in self:
+            if rec.partner_id:
+                if rec.partner_id.child_ids:
+                    for contact in rec.partner_id.child_ids:
+                        if contact.primary_contact:
+                            rec.name_of_contact_id = contact.name
+                            break
+                    if not rec.name_of_contact_id:
+                        rec.name_of_contact_id = rec.user_id.name
     
     @api.multi
     def _value_search_expired(self, operator, value):
