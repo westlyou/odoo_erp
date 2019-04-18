@@ -130,7 +130,189 @@ class HrApplicant(models.Model):
 	skype_availability = fields.Datetime(
 		string="Skype Availablity",
 	)
-			
+	availability_to = fields.Date(
+		string="Availability TO",
+	)
+	availability_time_from = fields.Float(
+		string='Availability Time From',
+	)
+	availability_time_to = fields.Float(
+		string='Availability Time To',
+	)
+
+	presentation_skill = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string='Presentation Skill',
+	)
+	understanding_position = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Candidate's Understanding of the position",
+	)
+	background_skill_set = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Relevant Background/Special Skill set",
+	)
+	professionla_impression = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Professionla Impression",
+	)
+	motivation_initiative = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Motivation/Initiative",
+	)
+	interpersonal_skill = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Interpersonal/Communication Skills",
+	)
+	applicant_flexibility = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Flexibility",
+	)
+	organizational_fit = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Organizational Fit",
+	)
+	overall_evaluation = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Overall Evaluation",
+	)
+	test_marks = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Test Marks",
+	)
+	email_communication = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Email Communication",
+	)
+	quickbook_tax_evaluation = fields.Selection(
+		selection=[
+			('',''),
+			('1','Unable to determine or not applicable to this candidate'),
+			('2','Below Average - Does not meet requirement'),
+			('3','Competent - Acceptable proficiency'),
+			('4','Excellent - esceeds requirement'),
+			('5','Outstanding'),
+		],
+		string="Quick Book/Tax software evaluation",
+	)
+	
+	agreement_sign_ask = fields.Selection(
+		selection=[
+			('ready', 'Ready'),
+			('not_ready', 'Not Ready'),
+			('not_decided','Not Decided'),
+		],
+		string='Agreement',
+	)
+	applicant_communication = fields.Selection(
+		selection=[
+			('below_average', 'Below Average'),
+			('average', 'Average'),
+			('good', 'Good'),
+			('excellent', 'Excellent'),
+		],
+	)
+	notice_period = fields.Integer(
+		string='Notice Period',
+	)
+	expexted_joining_date = fields.Date(
+		string='Expected Joining Date',
+	)
+	three_month_training = fields.Char(
+		string='3 Months Training',
+	)
+	reason_for_change = fields.Text(
+		string='Reason For Change',
+	)
+	family_background = fields.Text(
+		string='Family Background',
+	)
+	special_comment = fields.Text(
+		string='Comments',
+	)
+	is_mail_sent = fields.Boolean(
+		string='Is Mail Sent',
+	)
+	is_hr_round_interview = fields.Boolean(
+		string='Hr Round Interview',
+	)
 
 
 	@api.depends('date_of_birth')
@@ -149,3 +331,56 @@ class HrApplicant(models.Model):
 			self.perma_state_id = self.present_state_id.id
 			self.perma_country_id = self.present_country_id.id
 			self.perma_zip = self.present_zip
+	
+	@api.multi
+	def send_applicant_email_confirmation(self):
+		#template_id = self.env.ref("ent_odoo_hr_recruitment_process.email_template_application_confirmation")
+		self.ensure_one()
+		ir_model_data = self.env['ir.model.data']
+		try:
+			template_id = ir_model_data.get_object_reference('ent_odoo_hr_recruitment_process', 'email_template_application_confirmation')[1]
+		except ValueError:
+			template_id = False
+		try:
+			compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+		except ValueError:
+			compose_form_id = False
+		ctx = dict()
+		ctx.update({
+			'default_model': 'hr.applicant',
+			'default_applicant_id': self.ids[0],
+			'default_use_template': bool(template_id),
+			'default_template_id': template_id,
+			'default_composition_mode': 'comment',
+			'mark_application_as_sent': True,
+		})
+		return {
+			'type': 'ir.actions.act_window',
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_model': 'mail.compose.message',
+			'views': [(compose_form_id, 'form')],
+			'view_id': compose_form_id,
+			'target': 'new',
+			'context': ctx,
+		}
+		#print ("&&&&&&&&&&&&&&&&&&&",template_id)
+		#send_email = template_id.send_mail(self.id)
+		#if send_email:
+		#	stage_id = self.env['hr.recruitment.stage'].search([('name', '=', 'Mail Confirmation Sent')])
+		#	self.write({
+		#		'stage_id': stage_id.id,
+		#		'is_mail_sent': True,
+		#	})
+
+	@api.multi
+	def write(self, vals):
+		if 'stage_id' in vals and vals.get('stage_id'):
+			stage_id = self.env['hr.recruitment.stage'].search([('name', '=', 'HR Round of Interview')])
+			for rec in self:
+				if stage_id.id == vals.get('stage_id'):
+					vals.update({
+						'is_hr_round_interview' : True,					
+					})
+		return super(HrApplicant, self).write(vals)
+			
