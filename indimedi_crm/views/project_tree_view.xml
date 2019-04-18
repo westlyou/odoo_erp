@@ -5,8 +5,8 @@
             <field name="model">project.project</field>
             <field name="priority">50</field>
             <field name="groups_id" eval="[(6, 0, [ref('indimedi_crm.group_project_general_manager'), ref('project.group_project_manager')])]"/>
-            <field name="arch" type="xml" create="false">
-            	<tree>
+            <field name="arch" type="xml" >
+            	<tree create="false">
 					<field name="partner_id"/>
 					<field name="name" string="Assignment"/>
 					<field name="subsidiary_id"/>
@@ -19,12 +19,14 @@
 					<field name="user_id"/>
 					<field name="project_general_manager"/>
 					<field name="jd_us_name_id"/>
-					<!-- <field name="partner_id"/> Feedback-->
-					<!-- <field name="partner_id"/> Employee Shift Timing (US & India)-->
+					<field name="is_feedback"/>
+					<field name="timezone_id"/>
+                    <field name="from_timezone_id"/>
+                    <field name="to_timezone_id"/>
 					<field name="nature" /> 
 					<field name="invoicing_type_id"/>
 					<!-- <field name="partner_id"/> E - Code-->
-					<!-- <field name="partner_id"/> Attention-->
+					<field name="client_priority"/>
 				</tree>	
             </field>
         </record>

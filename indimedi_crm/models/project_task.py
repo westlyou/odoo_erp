@@ -49,6 +49,21 @@ class Project(models.Model):
     nature = fields.Selection([('expired', 'Expired'),
                                ('notice', 'On Notice'),
                                ('active', 'Active')], compute='_get_nature',  string="Nature")
+    feedback_ids = fields.One2many('project.feedback', 'project_id', string="Feedback")
+    is_feedback = fields.Boolean(compute="_check_feedback", string="Feedback")
+    
+    timezone_id = fields.Many2one('working.timezone', string="Working Timezone")
+    from_timezone_id = fields.Many2one('from.timezone', string="Time From")
+    to_timezone_id = fields.Many2one('to.timezone', string="Time To")
+    
+    
+    @api.multi
+    def _check_feedback(self):
+        for rec in self:
+            if rec.feedback_ids:
+                rec.is_feedback = True
+            else:
+                rec.is_feedback = False
     
     @api.multi
     def _get_nature(self):
@@ -242,3 +257,13 @@ class CredentialsTimsheet(models.Model):
     cred_description = fields.Text(name="Description")
     credential_task_id = fields.Many2one('project.task', string='Tasks')
     attachment = fields.Binary(string='File')
+
+class ProjectFeedback(models.Model):
+    _name = 'project.feedback'
+
+
+    project_id = fields.Many2one('project.proejct')
+    date = fields.Date(string="Date")
+    note = fields.Char(string="Feedback")
+
+
