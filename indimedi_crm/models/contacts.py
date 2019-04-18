@@ -77,6 +77,19 @@ class Partner(models.Model):
     #new fields
     category = fields.Selection([('accounting','ACCOUNTING FIRM'),('business','Business'),('government','Government/Colleges/Others')], string="Category")
     data_lable_ids = fields.Many2many('crm.lead.tag', string='Data Label', help="Classify and analyze your lead/opportunity categories like: Training, Service")
+    contact_type = fields.Selection([('primary', 'Decision Maker'),
+                                     ('influencer', 'Influencer'),
+                                     ('reporting', 'Reporting Manager')], string="Type")
+    
+    
+    
+    @api.onchange('contact_type')
+    def onchange_contact_type(self):
+        if self.contact_type:
+            if self.contact_type == 'primary':
+                self.primary_contact = True
+            else:
+                self.primary_contact = False
     
     @api.model
     def create(self, vals):
