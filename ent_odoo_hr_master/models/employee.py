@@ -114,9 +114,10 @@ class Employee(models.Model):
 	@api.depends('birthday')
 	def _compute_emp_age(self):
 		for rec in self:
-			days_in_year = 365.2425
-			age= int((fields.Date.from_string(fields.Date.today()) - fields.Date.from_string(rec.birthday)).days / days_in_year)
-    		rec.age = age
+			if rec.birthday:
+				days_in_year = 365.2425
+				age= int((fields.Date.from_string(fields.Date.today()) - fields.Date.from_string(rec.birthday)).days / days_in_year)
+				rec.age = age
 	#@api.model
 	#def create(self, vals):
 	#	emp_number = self.env['ir.sequence'].next_by_code('hr.employee.ent.code')	
