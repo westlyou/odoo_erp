@@ -15,6 +15,7 @@
 	],
     'data': [
     	'data/hr_applicant_data.xml',
+    	'data/applicant_confirmation_email_template.xml',
     	'views/hr_applicant_view.xml',
     	'views/edu_detail_view.xml',
     	'views/web_hr_applicant_template_view.xml',
