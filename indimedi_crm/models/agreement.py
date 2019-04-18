@@ -405,7 +405,10 @@ class JobDescription(models.Model):
                     'date_of_join': self.start_date_billing,
                     'client_priority': self.client_priority,
                     'client_firm': self.client_firm,
-                    'subsidiary_id': self.subsidiary_id.id
+                    'subsidiary_id': self.subsidiary_id.id,
+                    'timezone_id': self.timezone_id.id,
+                    'from_timezone_id': self.from_timezone_id.id,
+                    'to_timezone_id': self.to_timezone_id.id,
                 })
             
             bill_obj = self.env['billing.history']
