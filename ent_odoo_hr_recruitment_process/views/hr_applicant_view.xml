@@ -4,15 +4,20 @@
 		<field name="model">hr.applicant</field>
 		<field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
 		<field name="arch" type="xml">
+			<xpath expr="//header" position="inside">
+				<button type="object" string="Send Email COnfirmation" name="send_applicant_email_confirmation" attrs="{'invisible':[('is_mail_sent', '=', True)]}"/>
+			</xpath>
 			<xpath expr="//div[@class='oe_title']" position="before">
 				<field name="applicant_image" widget="image" class="oe_avatar"/>
+				<field name="is_mail_sent" invisible="1"/>
+				<field name="is_hr_round_interview" invisible="1"/>
 			</xpath>
 			<xpath expr="//field[@name='partner_mobile']" position="after">
-				<field name="known_language_ids" widget="many2many_tags"/>
+				<field name="known_language_ids" widget="many2many_tags" invisible="1"/>
 				<field name="marital_status"/>
 			</xpath>
 			<xpath expr="//div[@class='oe_title']/h2" position="after">
-				<h2 class="o_row">
+				<h2 class="o_row" invisible="1">
 					<field name="applicant_title"/>
 					<field name="first_name"/>
 					<field name="middle_name"/>
@@ -20,12 +25,12 @@
 				</h2>
 			</xpath>
 			<xpath expr="//field[@name='email_from']" position="before">
-				<field name="date_of_birth"/>
-				<field name="applicant_age"/>
-				<field name="nationality"/>
+				<field name="date_of_birth" invisible="1"/>
+				<field name="applicant_age" invisible="1"/>
+				<field name="nationality" invisible="1"/>
 			</xpath>
 			<xpath expr="//form/sheet/group/group[2]" position="after">
-				<group string="Present Address">
+				<group string="Present Address" invisible="1" name="present_add_grp">
 					<field name="present_f_add"/>
 					<field name="present_s_add"/>
 					<field name="present_area"/>
@@ -34,7 +39,7 @@
 					<field name="present_country_id"/>
 					<field name="present_zip"/>
 				</group>
-				<group string="Permanent Address">
+				<group string="Permanent Address" invisible="1" name="perm_add_grp">
 					<field name="same_as_above"/>
 					<field name="perma_f_add"/>
 					<field name="perma_s_add"/>
@@ -47,7 +52,7 @@
 			</xpath>
 			<xpath expr="//form/sheet/group" position="after">
 				<notebook>
-					<page name="edu_details_page" string="Education Details">
+					<page name="edu_details_page" string="Education Details" attrs="{'invisible': [('is_hr_round_interview','=',False)]}">
 						<field name="edu_applicant_detail_ids">
 							<tree editable="bottom">
 								<field name="qualification_id"/>
@@ -58,7 +63,7 @@
 							</tree>
 						</field>
 					</page>
-					<page name="empl_history_page" string="Employeement History Details">
+					<page name="empl_history_page" string="Employeement History Details" attrs="{'invisible': [('is_hr_round_interview','=',False)]}">
 						<field name="employeement_history_ids">
 							<tree editable="bottom">
 								<field name="name"/>
@@ -69,13 +74,62 @@
 							</tree>
 						</field>
 					</page>
+					<page name="candidate_evaluation" string="Candidate Evaluation" attrs="{'invisible': [('is_hr_round_interview','=',False)]}">
+						<group>
+							<field name="presentation_skill" widget="priority"/>
+							<field name="understanding_position" widget="priority"/>
+							<field name="background_skill_set" widget="priority"/>
+							<field name="professionla_impression" widget="priority"/>
+							<field name="motivation_initiative" widget="priority"/>
+							<field name="interpersonal_skill" widget="priority"/>
+							<field name="applicant_flexibility" widget="priority"/>
+							<field name="organizational_fit" widget="priority"/>
+							<field name="overall_evaluation" widget="priority"/>
+							<field name="test_marks" widget="priority"/>
+							<field name="email_communication" widget="priority"/>
+							<field name="quickbook_tax_evaluation" widget="priority"/>
+						</group>
+						<group>
+							<group>
+								<field name="agreement_sign_ask"/>
+								<field name="notice_period"/>
+								<field name="three_month_training"/>
+							</group>
+							<group>
+								<field name="applicant_communication"/>
+								<field name="expexted_joining_date"/>
+							</group>
+						</group>
+						<group string="Reasion For Change">
+							<field name="reason_for_change" nolabel="1"/>
+						</group>
+						<group string="Family Background">
+							<field name="family_background" nolabel="1" />
+						</group>
+						<group string="Comments">
+							<field name="special_comment" nolabel="1" />
+						</group>
+					</page>
 				</notebook>
 			</xpath>
 			<xpath expr="//field[@name='availability']" position="after">
-				<field name="is_need_skype"/>
+				<field name="availability_to" attrs="{'invisible': [('is_hr_round_interview','=',False)]}"/>
+				<field name="availability_time_from" widget="float_time" invisible="1"/>
+				<field name="availability_time_to" widget="float_time" invisible="1"/>
+				<field name="is_need_skype" invisible="1"/>
 				<field name="skype_id" attrs="{'invisible': [('is_need_skype', '=', False)], 'required': [('is_need_skype', '=', True)]}"/>
 				<field name="skype_availability" attrs="{'invisible': [('is_need_skype', '=', False)], 'required': [('is_need_skype', '=', True)]}"/>
 			</xpath>
+			
+			<!--Hide For us odoo's Fields-->
+			<xpath expr="//field[@name='partner_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			
+			<xpath expr="//group/group[last()]" position="attributes">
+				<attribute name="attrs">{'invisible': [('is_hr_round_interview','=',False)]}</attribute>
+			</xpath>
+			
 		</field>
 	</record>
 </odoo>

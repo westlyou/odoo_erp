@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from datetime import date
 
 
 class Employee(models.Model):
@@ -75,6 +76,8 @@ class Employee(models.Model):
 	)
 	age = fields.Integer(
 		string='Age',
+		compute='_compute_emp_age',
+		store=True,
 	)
 	experience = fields.Char(
 		string='Experience',
@@ -108,7 +111,12 @@ class Employee(models.Model):
 		string="Permanent Country",
 	)
 	
-	
+	@api.depends('birthday')
+	def _compute_emp_age(self):
+		for rec in self:
+			days_in_year = 365.2425
+			age= int((fields.Date.from_string(fields.Date.today()) - fields.Date.from_string(rec.birthday)).days / days_in_year)
+    		rec.age = age
 	#@api.model
 	#def create(self, vals):
 	#	emp_number = self.env['ir.sequence'].next_by_code('hr.employee.ent.code')	
