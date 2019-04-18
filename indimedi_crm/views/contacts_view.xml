@@ -162,6 +162,7 @@
                         <field name="state_id"/>
                         <field name="image"/>
                         <field name="lang"/>
+                        <field name="contact_type"/>
                         <templates>
                             <t t-name="kanban-box">
                                 <t t-set="color" t-value="kanban_color(record.color.raw_value)"/>
@@ -181,6 +182,7 @@
                                     <div class="oe_kanban_details">
                                         <field name="name"/>
                                         <div style="color: blue;" t-if="record.primary_contact.raw_value">Primary Contact<label for="primary_contact"/></div>
+                                        <div style="color: green;" t-if="record.contact_type.raw_value != 'primary'"><field name="contact_type"/></div>
                                         <div t-if="record.designation_id.raw_value"><field name="designation_id"/></div>
                                         <div t-if="record.email.raw_value"><field name="email"/></div>
                                         <div t-if="record.type.raw_value != 'contact'">
@@ -219,7 +221,8 @@
                                 </group>
                                 <group>
                                     <field name="name" string="Contact Name" attrs="{'required' : [('type', '=', 'contact')]}"/>
-                                    <field name="primary_contact"/>
+                                    <field name="contact_type"/>
+                                    <field name="primary_contact" invisible="1"/>
                                     <field name="title" placeholder="e.g. Mr."
                                         attrs="{'invisible': [('type','&lt;&gt;', 'contact')]}"/>
                                     <field name="designation_id" placeholder="e.g. Sales Director"
