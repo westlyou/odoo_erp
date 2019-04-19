@@ -103,6 +103,10 @@
             <field name="model">project.task</field>
             <field name="inherit_id" ref="project.view_task_form2"/>
             <field name="arch" type="xml">
+            	<header>
+            		<button name="send_day_start_email" string="Day Start Email" type="object" class="btn-primary"/>
+            		<button name="send_day_end_email" string="Day End Email" type="object" class="btn-primary"/>
+            	</header>
                 <xpath expr="//button[@name='toggle_active']" position="replace">
                     <button name="toggle_active" type="object" groups="base.group_user" 
                         class="oe_stat_button" icon="fa-archive" invisible="1">
@@ -356,6 +360,8 @@
                     	<field name="feedback_ids">
                     		<tree editable="bottom">
                     			<field name="date" required="1"/>
+                    			<field name="category" required="1"/>
+                    			<field name="file"/>
                     			<field name="note" required="1"/>
                     		</tree>
                     	</field>
