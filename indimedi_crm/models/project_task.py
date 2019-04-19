@@ -3,7 +3,7 @@
 from odoo import api, fields, models, tools, _
 from datetime import datetime
 from odoo.exceptions import ValidationError
-
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 class Project(models.Model):
     _inherit = 'project.project'
@@ -44,18 +44,43 @@ class Project(models.Model):
     dummy_start_date = fields.Date(string="Dummy Start Date")
     last_invoice_id = fields.Many2one('timesheet.invoice', string="Last Invoice")
     permenant_or_not = fields.Selection([('temporary', 'Temporary'),
-                                         ('permanent', 'Permanent')], compute='_check_on_notice', string="Temporary/Permanent")
+                                         ('permanent', 'Permanent')], compute='_check_on_notice', string="Temporary/Permanent", search='_value_permenant_or_not')
     name_of_contact_id = fields.Char(compute='_get_name_of_person', string="Name of the Person")
     nature = fields.Selection([('expired', 'Expired'),
                                ('notice', 'On Notice'),
-                               ('active', 'Active')], compute='_get_nature',  string="Nature")
+                               ('active', 'Active')], compute='_get_nature',  string="Nature", search='_value_nature')
     feedback_ids = fields.One2many('project.feedback', 'project_id', string="Feedback")
-    is_feedback = fields.Boolean(compute="_check_feedback", string="Feedback")
+    is_feedback = fields.Boolean(compute="_check_feedback", string="Feedback", search='_value_feedback')
     
     timezone_id = fields.Many2one('working.timezone', string="Working Timezone")
     from_timezone_id = fields.Many2one('from.timezone', string="Time From")
     to_timezone_id = fields.Many2one('to.timezone', string="Time To")
+    working_days = fields.Float(compute='_compute_days', string="Working Day")
     
+    
+    @api.multi
+    def _compute_days(self):
+        for rec in self:
+            if rec.invoicing_type_id.name in ['Weekly', 'Weekly Advance']:
+                daily_hours = (float(rec.hour_selection) / 5) / 8
+            if rec.invoicing_type_id.name in ['Monthly', 'Monthly Advance']:
+                daily_hours = ((float(rec.hour_selection) / 4) / 5) / 8
+            rec.working_days = daily_hours
+    
+    def _value_permenant_or_not(self, operator, value):
+        recs = self.search([]).filtered(lambda x : x.permenant_or_not == value )
+        if recs:
+            return [('id', 'in', [x.id for x in recs])]
+        
+    def _value_feedback(self, operator, value):
+        recs = self.search([]).filtered(lambda x : x.is_feedback == value )
+        if recs:
+            return [('id', 'in', [x.id for x in recs])]
+        
+    def _value_nature(self, operator, value):
+        recs = self.search([]).filtered(lambda x : x.nature == value )
+        if recs:
+            return [('id', 'in', [x.id for x in recs])]
     
     @api.multi
     def _check_feedback(self):
@@ -187,6 +212,17 @@ class ProjectTask(models.Model):
     comm_on_phone = fields.Boolean(string="Phone")
     comm_on_chat = fields.Boolean(string="Chat")
         
+    
+    @api.multi
+    def send_day_start_email(self):
+        pass
+    
+    @api.multi
+    def send_end_start_email(self):
+        pass
+    
+    
+        
     @api.model
     def create(self, vals):
         client = super(ProjectTask, self).create(vals)
@@ -264,6 +300,10 @@ class ProjectFeedback(models.Model):
 
     project_id = fields.Many2one('project.proejct')
     date = fields.Date(string="Date")
+    category = fields.Selection([('positive', 'Positive'),
+                                 ('negative', 'Negative'),
+                                 ('mode', 'Moderate')], string="Category")
+    file = fields.Binary(string="FIle")
     note = fields.Char(string="Feedback")
 
 

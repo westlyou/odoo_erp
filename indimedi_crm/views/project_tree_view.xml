@@ -15,10 +15,11 @@
 					<field name="date_of_join"/>
 					<field name="invoice_end_date"/>
 					<field name="name_of_contact_id"/>
-					<!-- <field name="partner_id"/>Person Actually Working Currently-->
 					<field name="user_id"/>
 					<field name="project_general_manager"/>
 					<field name="jd_us_name_id"/>
+					<field name="jd_ea_working_id"/>
+					<field name="working_days"/>
 					<field name="is_feedback"/>
 					<field name="timezone_id"/>
                     <field name="from_timezone_id"/>
@@ -36,13 +37,59 @@
 	         <field name="type">ir.actions.act_window</field>
 	         <field name="res_model">project.project</field>
 	         <field name="view_id" ref="indimedi_crm.project_tree_view2"/>
-	         <field name="view_mode">tree</field>
+	         <field name="view_mode">tree,form</field>
 	     </record>
 	     
 	     <menuitem id="menu_project_tree_second" 
 	     			name="Assignment Tree"
 				 	action="action_project_tree_view_second" 
 				 	parent="project.menu_main_pm" />        
+	                
+	    <!-- editable tree view -->           
+		<record id="project_tree_view3" model="ir.ui.view">
+            <field name="name">project.project.tree</field>
+            <field name="model">project.project</field>
+            <field name="priority">60</field>
+            <field name="groups_id" eval="[(6, 0, [ref('indimedi_crm.group_project_general_manager'), ref('project.group_project_manager')])]"/>
+            <field name="arch" type="xml" >
+            	<tree create="false" editable="true">
+					<field name="partner_id" readonly="1"/>
+					<field name="name" string="Assignment" readonly="1"/>
+					<field name="subsidiary_id" readonly="1"/>
+					<field name="permenant_or_not" readonly="1"/>
+					<field name="client_firm" />
+					<field name="date_of_join" readonly="1"/>
+					<field name="invoice_end_date"/>
+					<field name="name_of_contact_id" readonly="1"/>
+					<field name="user_id" />
+					<field name="project_general_manager"/>
+					<field name="jd_us_name_id"/>
+					<field name="working_days"/>
+					<field name="is_feedback" readonly="1"/>
+					<field name="timezone_id" readonly="1"/>
+                    <field name="from_timezone_id" readonly="1"/>
+                    <field name="to_timezone_id" readonly="1"/>
+					<field name="nature" readonly="1"/> 
+					<field name="invoicing_type_id" readonly="1"/>
+					<!-- <field name="partner_id"/> E - Code-->
+					<field name="client_priority"/>
+				</tree>	
+            </field>
+        </record>
+        
+		<record id="action_project_tree_view_second2" model="ir.actions.act_window">
+	         <field name="name">Assignment Editable</field>
+	         <field name="type">ir.actions.act_window</field>
+	         <field name="res_model">project.project</field>
+	         <field name="view_id" ref="indimedi_crm.project_tree_view3"/>
+	         <field name="view_mode">tree</field>
+	     </record>
+	     
+	     <menuitem id="menu_project_tree_second2" 
+	     			name="Assignment Tree Editable"
+				 	action="action_project_tree_view_second2" 
+				 	parent="project.menu_main_pm" />        
+	                	                
 	                
       </data> 
 </odoo>
