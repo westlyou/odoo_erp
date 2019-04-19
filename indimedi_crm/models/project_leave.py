@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from datetime import datetime
 
@@ -25,6 +25,20 @@ class ProjectLeave(models.Model):
                               default='draft', copy=False)
     local_start_date = fields.Char(compute='_convert_to_new_date_formate')
     
+    
+    @api.constrains('start_date', 'end_date')
+    def _check_date(self):
+        for holiday in self:
+            domain = [
+                ('start_date', '<=', holiday.end_date),
+                ('end_date', '>=', holiday.start_date),
+                ('name', '=', holiday.name.id),
+                ('id', '!=', holiday.id),
+            ]
+            nholidays = self.search(domain)
+            if nholidays:
+                raise ValidationError(_('You can not have 2 leaves that overlaps on same day!'))
+
     
     @api.multi
     @api.depends('start_date', 'end_date')

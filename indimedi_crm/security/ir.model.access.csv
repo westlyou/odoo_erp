@@ -103,7 +103,7 @@ access_billing_history_user,billing.history.user,model_billing_history,,1,0,0,0
 access_project_leave_gm,project.leave.gm,model_project_leave,group_project_general_manager,1,1,1,1
 access_subsidiary_master,subsidiary.master,model_subsidiary_master,group_project_general_manager,1,1,1,1
 access_subsidiary_master_user,subsidiary.master.user,model_subsidiary_master,hr.group_hr_user,1,0,0,0
-,,,,,,,
+access_subsidiary_master_u,subsidiary.master.u,model_subsidiary_master,,1,0,0,0
 ,,,,,,,
 access_job_description_portal,job.description.portal,model_job_description,indimedi_crm.group_agreement_portal_user,1,1,0,0
 access_accounting_software_portal,accounting.software.portal,model_accounting_software,indimedi_crm.group_agreement_portal_user,1,0,0,0
