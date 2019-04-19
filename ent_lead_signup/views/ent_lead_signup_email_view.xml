@@ -114,17 +114,17 @@
 						        			<td><input type="text" name="" t-att-value="job_desc.rate_per_hour"/></td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="Season Non season"/></td><!--Which field value should be here-->
-					        				<td rowspan="4"><input type="text" name="" placeholder="Season Non Season Rate"/></td><!--Which rate should be here-->
+					        				<td><input type="text" name="" placeholder="Season Non season" t-att-value="job_desc.permanent_hour_selection"/></td><!--Which field value should be here-->
+					        				<td rowspan="4"><input type="text" name="" placeholder="Season Non Season Rate" t-att-value="job_desc.rate_per_hour"/></td><!--Which rate should be here-->
 					        			</tr>
 					        			<tr>
 					        				<td>SEASON PERIOD</td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="PERMANENT Season from"/></td><!--Which field value should be here-->
+					        				<td><input type="text" name="" placeholder="PERMANENT Season from" t-att-value="job_desc.perm_season_date_from"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="PERMANENT Season to"/></td><!--Which field value should be here-->
+					        				<td><input type="text" name="" placeholder="PERMANENT Season to" t-att-value="job_desc.perm_season_date_to"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
 						        			<td>
@@ -139,7 +139,7 @@
 						        				<input type="checkbox" t-att-checked="job_desc.hiring_model == 'On Demand'"/>
 						        				ONDEMAND	
 					        				</td>
-						        			<td><input type="text" name="" placeholder="NUMBER OF HOUR/MONTH"/></td><!--Which field value should be here-->
+						        			<td><input type="text" name="" placeholder="NUMBER OF HOUR/MONTH" t-att-value="job_desc.permanent_hour_selection" t-if="job_desc.hiring_model == 'On Demand'"/><input type="text" name="" placeholder="NUMBER OF HOUR/MONTH" t-if="job_desc.hiring_model != 'On Demand'"/></td><!--Which field value should be here-->
 						        			<td><input type="text" name="" placeholder="$10"/></td><!--Which field should be here-->
 					        			</tr>
 						        	</tbody>
@@ -169,17 +169,17 @@
 					        	
 					        	<div class="col-sm-12">
 					        		<label class="placeholdercontrol-label" for="task_tobe_done2">Task to be Done2</label>
-					        		<input type="text" class="form-control" name="task_tobe_done2" placeholder="Task Tobe Done2"/><!--Which field value would be here-->
+					        		<input type="text" class="form-control" name="task_tobe_done2" placeholder="Task Tobe Done2" t-att-value="job_desc.task_to_be_done2"/>
 					        	</div>
 					        	
 					        	<div class="col-sm-12">
 					        		<label class="placeholdercontrol-label" for="task_tobe_done3">Task to be Done3</label>
-					        		<input type="text" class="form-control" name="task_tobe_done3" placeholder="Task Tobe Done3"/><!--Which field value would be here-->
+					        		<input type="text" class="form-control" name="task_tobe_done3" placeholder="Task Tobe Done3" t-att-value="job_desc.task_to_be_done3"/>
 					        	</div>
 					        	
 					        	<div class="col-sm-12">
 					        		<label class="placeholdercontrol-label" for="task_tobe_done4">Task to be Done4</label>
-					        		<input type="text" class="form-control" name="task_tobe_done4" placeholder="Task Tobe Done4"/><!--Which field value would be here-->
+					        		<input type="text" class="form-control" name="task_tobe_done4" placeholder="Task Tobe Done4" t-att-value="job_desc.task_to_be_done4"/><!--Which field value would be here-->
 					        	</div>
 					        	
 					        	<div class="col-sm-12">
