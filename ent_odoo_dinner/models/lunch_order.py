@@ -38,7 +38,7 @@ class Order(models.Model):
 			today_date = pytz.UTC.localize(today_date)
 			today_date = today_date.astimezone(timezone)
 			if not self.env.user.has_group("lunch.group_lunch_manager"):
-				if today_date.time().strftime("%H:%M:%S") < time.strftime("09:30:00") or today_date.time().strftime("%H:%M:%S") > time.strftime("22:30:00"):
+				if today_date.time().strftime("%H:%M:%S") < time.strftime("09:30:00") or today_date.time().strftime("%H:%M:%S") > time.strftime("06:30:00"):
 					raise ValidationError("It's too let for order your food")
 			if lunch_order:
 				raise ValidationError("Cannot create new order for same date")
