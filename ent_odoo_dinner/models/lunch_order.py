@@ -12,20 +12,20 @@ class Order(models.Model):
 	@api.onchange('user_id')
 	def _onchange_user_id(self):
 		if self.user_id and self.user_id.id != self.env.uid and not self.env.user.has_group("lunch.group_lunch_manager"):
-			raise ValidationError("You are not allow to create another user's dinner")
+			raise ValidationError("You are not allowed to create another user's dinner")
 	
 	@api.model
 	def create(self, vals):
 		if 'user_id' in vals and vals.get('user_id'):
 			if vals.get('user_id') != self.env.uid and not self.env.user.has_group("lunch.group_lunch_manager"):
-				raise ValidationError("You are not allow to create another user's dinner")
+				raise ValidationError("You are not allowed to create another user's dinner")
 		return super(Order, self).create(vals)
 	
 	@api.multi
 	def write(self, vals):
 		if 'user_id' in vals and vals.get('user_id'):
 			if vals.get('user_id') != self.env.uid and not self.env.user.has_group("lunch.group_lunch_manager"):
-				raise ValidationError("You are not allow to create another user's dinner")
+				raise ValidationError("You are not allowed to create another user's dinner")
 		return super(Order, self).write(vals)
 		
 	
@@ -39,7 +39,7 @@ class Order(models.Model):
 			today_date = today_date.astimezone(timezone)
 			if not self.env.user.has_group("lunch.group_lunch_manager"):
 				if today_date.time().strftime("%H:%M:%S") < time.strftime("09:30:00") or today_date.time().strftime("%H:%M:%S") > time.strftime("06:30:00"):
-					raise ValidationError("It's too let for order your food")
+					raise ValidationError("It's too late to order your food")
 			if lunch_order:
 				raise ValidationError("Cannot create new order for same date")
 
