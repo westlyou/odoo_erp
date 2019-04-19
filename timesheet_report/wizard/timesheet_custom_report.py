@@ -113,6 +113,13 @@ class TimesheetReportWizard(models.TransientModel):
             if minutes:
                 min_hour_only, working_min = divmod(minutes, 60)
                 min_hour_str = "%02d:%02d"%(min_hour_only, working_min)
+            
+            l_hour_str = ''
+            if leave_hours:
+                l_minutes = float(leave_hours) * 60
+                l_hour_only, l_min = divmod(l_minutes, 60)
+                l_hour_str = "%02d:%02d"%(l_hour_only, l_min)
+            
             value = {
                     'client_name': task.client_reporting_id.name,
                     'manager_name': task.manager_id.name,
@@ -120,9 +127,9 @@ class TimesheetReportWizard(models.TransientModel):
                     'ea_working': task.user_id.name,
                     'us_name': task.jd_us_name_id.name,
                     'min_hour': min_hour_str or '00:00',
+                    'leave_hours': l_hour_str,
                     'project_name': project_name,
                     }
-            
             #find actual hour worked without training and dev. this week and last week
             email = 0
             phone = 0
@@ -226,15 +233,16 @@ class TimesheetReportWizard(models.TransientModel):
         sheet.write(0, 3, 'General Manager', format1)
         sheet.write(0, 4, 'Employee working (EA)', format1)        
         sheet.write(0, 5, 'US Name', format1)        
-        sheet.write(0, 6, 'Minimum Hours Required to be worked', format1)        
-        sheet.write(0, 7, 'Actual Hours Worked this week', format1)
-        sheet.write(0, 8, 'Actual Hours Worked last week', format1) 
-        sheet.write(0, 9, 'Productivity against last week', format1)
-        sheet.write(0, 10, 'Productivity to Minimum Bill', format1)
-        sheet.write(0, 11, 'Email', format1)
-        sheet.write(0, 12, 'Chat',format1)
-        sheet.write(0, 13, 'Phone', format1)
-        sheet.write(0, 14, 'Last Feedback Call',format1)
+        sheet.write(0, 6, 'Minimum Hours Required to be worked', format1)  
+        sheet.write(0, 7, 'Leave Hours', format1)        
+        sheet.write(0, 8, 'Actual Hours Worked this week', format1)
+        sheet.write(0, 9, 'Actual Hours Worked last week', format1) 
+        sheet.write(0, 10, 'Productivity against last week', format1)
+        sheet.write(0, 11, 'Productivity to Minimum Bill', format1)
+        sheet.write(0, 12, 'Email', format1)
+        sheet.write(0, 13, 'Chat',format1)
+        sheet.write(0, 14, 'Phone', format1)
+#         sheet.write(0, 15, 'Last Feedback Call',format1)
         
         sheet.col(0).width = int(30*350)
         sheet.col(1).width = int(30*260)
@@ -245,11 +253,13 @@ class TimesheetReportWizard(models.TransientModel):
         sheet.col(6).width = int(30*280)
         sheet.col(7).width = int(30*260)
         sheet.col(8).width = int(30*260)
-        sheet.col(9).width = int(30*260)
+        
+        sheet.col(9).width = int(30*220)
         sheet.col(10).width = int(30*260)
-        sheet.col(11).width = int(30*100)
+        sheet.col(11).width = int(30*260)
         sheet.col(12).width = int(30*100)
         sheet.col(13).width = int(30*100)
+        sheet.col(14).width = int(30*100)
         
         
         row = 1
@@ -261,15 +271,16 @@ class TimesheetReportWizard(models.TransientModel):
             sheet.write(row, col + 3, data['gm_manager'])
             sheet.write(row, col + 4, data['ea_working'])        
             sheet.write(row, col + 5, data['us_name'])        
-            sheet.write(row, col + 6, data['min_hour'])        
-            sheet.write(row, col + 7, data['this_week_working_hour'])
-            sheet.write(row, col + 8, data['last_week_working_hour']) 
-            sheet.write(row, col + 9, data['pructivity_against_last_week'])
-            sheet.write(row, col + 10, data['productivity_to_min_bill'])
-            sheet.write(row, col + 11, data['email'])
-            sheet.write(row, col + 12, data['chat'])
-            sheet.write(row, col + 13, data['phone'])
-            sheet.write(row, col + 14, 'pending')
+            sheet.write(row, col + 6, data['min_hour']) 
+            sheet.write(row, col + 7, data['leave_hours'])        
+            sheet.write(row, col + 8, data['this_week_working_hour'])
+            sheet.write(row, col + 9, data['last_week_working_hour']) 
+            sheet.write(row, col + 10, data['pructivity_against_last_week'])
+            sheet.write(row, col + 11, data['productivity_to_min_bill'])
+            sheet.write(row, col + 12, data['email'])
+            sheet.write(row, col + 13, data['chat'])
+            sheet.write(row, col + 14, data['phone'])
+#             sheet.write(row, col + 14, 'pending')
             
             row += 1
         #create xls file
