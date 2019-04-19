@@ -1,0 +1,12 @@
+<odoo>
+	<record id="lunch_order_view_form_inherit_ent_dinner" model="ir.ui.view">
+	    <field name="name">lunch.order.view.form.inherit.ent_dinner</field>
+	    <field name="model">lunch.order</field>
+	    <field name="inherit_id" ref="lunch.lunch_order_view_form"/>
+	    <field name="arch" type="xml">
+	    	<xpath expr="//field[@name='date']" position="attributes">
+	    		<attribute name="readonly">1</attribute>
+	    	</xpath>
+	    </field>
+    </record>
+</odoo>
