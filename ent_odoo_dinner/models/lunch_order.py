@@ -38,8 +38,6 @@ class Order(models.Model):
 # 			today_date = pytz.UTC.localize(today_date)
 # 			today_date = today_date.astimezone(timezone)
 			if not self.env.user.has_group("lunch.group_lunch_manager"):
-				print"first================",today_date.time().strftime("%H:%M:%S") , time.strftime("04:00:00")
-				print"=============================",today_date.time().strftime("%H:%M:%S"), time.strftime("13:00:00")
 				if today_date.time().strftime("%H:%M:%S") < time.strftime("04:00:00") or today_date.time().strftime("%H:%M:%S") > time.strftime("1:00:59"):
 					raise ValidationError("It's too late to order your food")
 			if lunch_order:
