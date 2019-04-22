@@ -220,6 +220,8 @@
                		<field name="comm_on_chat"/>
                     <field name="name"/>
                     <field name="client_name_sheet" invisible="1"/>
+                    <field name="total_transaction"/>
+                    <field name="is_reportable"/>
                     <field name="start_time" widget="float_time" required="1"/>
                     <field name="stop_time" widget="float_time" required="1"/>
                     <field name="active" invisible="1"/>

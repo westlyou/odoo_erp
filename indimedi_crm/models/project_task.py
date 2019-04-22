@@ -215,14 +215,60 @@ class ProjectTask(models.Model):
     
     @api.multi
     def send_day_start_email(self):
-        pass
+        template_id = self.env.ref('indimedi_crm.email_task_day_start')
+        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form')
+        ctx = dict(self.env.context or {})
+        server_id = self.env.user.mail_server_id.id
+        ctx.update({
+            'default_model': 'project.task',
+            'default_res_id': self.ids[0],
+            'default_partner_ids':[(6,0,self.partner_ids.ids)],
+            'default_email_cc':[(6,0,self.cc_partner_ids.ids)],
+            'default_use_template': bool(template_id.id),
+            'default_template_id': template_id.id,
+            'default_composition_mode': 'comment',
+            'default_mail_server_id': server_id,
+        })
+        return {
+            'name': _('Day Start Email'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(compose_form_id.id, 'form')],
+            'view_id': compose_form_id.id,
+            'target': 'new',
+            'context': ctx,
+        }
     
     @api.multi
-    def send_end_start_email(self):
-        pass
+    def send_day_end_email(self):
+        template_id = self.env.ref('indimedi_crm.email_task_day_end')
+        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form')
+        ctx = dict(self.env.context or {})
+        server_id = self.env.user.mail_server_id.id
+        ctx.update({
+            'default_model': 'project.task',
+            'default_res_id': self.ids[0],
+            'default_partner_ids':[(6,0,self.partner_ids.ids)],
+            'default_email_cc':[(6,0,self.cc_partner_ids.ids)],
+            'default_use_template': bool(template_id.id),
+            'default_template_id': template_id.id,
+            'default_composition_mode': 'comment',
+            'default_mail_server_id': server_id,
+        })
+        return {
+            'name': _('Day End Email'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(compose_form_id.id, 'form')],
+            'view_id': compose_form_id.id,
+            'target': 'new',
+            'context': ctx,
+        }
     
-    
-        
     @api.model
     def create(self, vals):
         client = super(ProjectTask, self).create(vals)
@@ -303,7 +349,7 @@ class ProjectFeedback(models.Model):
     category = fields.Selection([('positive', 'Positive'),
                                  ('negative', 'Negative'),
                                  ('mode', 'Moderate')], string="Category")
-    file = fields.Binary(string="FIle")
+    file = fields.Binary(string="File")
     note = fields.Char(string="Feedback")
 
 
