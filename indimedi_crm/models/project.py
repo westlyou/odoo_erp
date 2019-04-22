@@ -30,6 +30,8 @@ class AccountAnalyticLine(models.Model):
     comm_on_email = fields.Boolean(string="Email")
     comm_on_phone = fields.Boolean(string="Phone")
     comm_on_chat = fields.Boolean(string="Chat")
+    total_transaction = fields.Integer(string="Total Transaction")
+    is_reportable = fields.Boolean(string="Reportable?")
 
     @api.multi
     def unlink(self):

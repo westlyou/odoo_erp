@@ -41,6 +41,7 @@
              'data/mail_data.xml',
              'data/email_aggrement_template.xml',
              'data/employee_selected_mail.xml',
+             'data/day_start_end_email.xml',
              
              'views/crm_lead_views.xml',
              'views/calender_views.xml',
