@@ -26,20 +26,20 @@
 				<div id="wrap">
 					<div class="container mt16">
 						<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+						<input type="hidden" name="lead_id" t-att-value="crm_lead_id.id"/>
 						<div class="clearfix"/>
 			            <div class="bg-primary col-md-8">
 			            	<h2> SIGNUP FORM </h2>
 		            	</div>
 		            	<div class="clearfix"/>
-		            	
 						<div class="form-group form-field o_website_form_required_custom col-md-8">
 							<div class="col-md-6 col-sm-4">
 				                <label for="name" string="Lead Name"/>
-				                <input type="text" class="form-control o_website_form_input" name="name" t-att-value="lead_primary_contact.name" required="" placeholder="Name"/>
+				                <input type="text" class="form-control o_website_form_input" name="primary_name" t-att-value="lead_primary_contact.name" required="" placeholder="Name"/>
 				            </div>
 				            <div class="col-md-6 col-sm-8">
 				            	<label for="s_name" string="Lead S Name"/>
-				                <input type="text" class="form-control o_website_form_input" name="title" t-att-value="lead_primary_contact.title.name" required="" placeholder="Title"/>
+				                <input type="text" class="form-control o_website_form_input" name="primary_title" t-att-value="lead_primary_contact.title.name" required="" placeholder="Title"/>
 				            </div>
 				            
 				            <div class="col-md-12 col-sm-4">
@@ -53,7 +53,7 @@
 				            </div>
 				            <div class="col-md-7 col-sm-8">
 				            	<label for="email_from" string="Email"/>
-				                <input type="text" class="form-control o_website_form_input" name="name" t-att-value="crm_lead_id.c_street3" required="" placeholder="Suit No./Room No."/>
+				                <input type="text" class="form-control o_website_form_input" name="c_street3" t-att-value="crm_lead_id.c_street3" required="" placeholder="Suit No./Room No."/>
 				            </div>
 				            
 				            <div class="col-md-4 col-sm-4">
@@ -61,11 +61,11 @@
 				                <input type="text" class="form-control o_website_form_input" name="c_city" t-att-value="crm_lead_id.c_city" required="" placeholder="City"/>
 				            </div>
 				            <div class="col-md-4 col-sm-8">
-				            	<label for="email_from" string="Email"/>
+				            	<label for="c_state_id" string="State"/>
 				                <input type="text" class="form-control o_website_form_input" name="c_state_id" t-att-value="crm_lead_id.c_state_id.name" required="" placeholder="State"/>
 				            </div>
 				            <div class="col-md-4 col-sm-8">
-				            	<label for="email_from" string="Email"/>
+				            	<label for="c_zip" string="Zip"/>
 				                <input type="text" class="form-control o_website_form_input" name="c_zip" t-att-value="crm_lead_id.c_zip" required="" placeholder="Zip"/>
 				            </div>
 				            
@@ -74,21 +74,21 @@
 				                <input type="text" class="form-control o_website_form_input" name="phone" t-att-value="crm_lead_id.phone" required="" placeholder="Phone"/>
 				            </div>
 				            <div class="col-md-4 col-sm-8">
-				            	<label for="email_from" string="Email"/>
-				                <input type="text" class="form-control o_website_form_input" name="ext" required="" placeholder="Ext"/><!--Which Ext should be here-->
+				            	<label for="lead_ext" string="Ext"/>
+				                <input type="text" class="form-control o_website_form_input" name="lead_ext" required="" placeholder="Ext" t-att-value="crm_lead_id.lead_ext"/>
 				            </div>
 				            <div class="col-md-4 col-sm-8">
 				            	<label for="email_from" string="Email"/>
-				                <input type="text" class="form-control o_website_form_input" name="mobile" required="" t-att-value="lead_primary_contact.mobile" placeholder="Mobile"/>
+				                <input type="text" class="form-control o_website_form_input" name="primary_mobile" required="" t-att-value="lead_primary_contact.mobile" placeholder="Mobile"/>
 				            </div>
 				            
 				            <div class="col-md-5 col-sm-4">
 				            	<label for="lead_website" string="Website"/>
-				                <input type="text" class="form-control o_website_form_input" name="direct_phone" required="" placeholder="Direct Phone" t-att-value="lead_primary_contact.phone"/>
+				                <input type="text" class="form-control o_website_form_input" name="primary_direct_phone" required="" placeholder="Direct Phone" t-att-value="lead_primary_contact.phone"/>
 				            </div>
 				            <div class="col-md-7 col-sm-8">
 				            	<label for="email_from" string="Email"/>
-				                <input type="text" class="form-control o_website_form_input" name="name" t-att-value="crm_lead_id.email_from" required="" placeholder="Email From"/>
+				                <input type="text" class="form-control o_website_form_input" name="email_from" t-att-value="crm_lead_id.email_from" required="" placeholder="Email From"/>
 				            </div>
 				            
 				            <div class="clearfix"/>
@@ -107,40 +107,40 @@
 						        	<tbody>
 						        		<tr>
 						        			<td rowspan="5">
-						        				<input type="checkbox" t-att-checked="job_desc.hiring_model == 'permanent'"/>
+						        				<input type="checkbox" name="hiring_perm" t-att-checked="job_desc.hiring_model == 'permanent'"/>
 						        				PERMANENT	
 					        				</td>
-						        			<td><input type="text" name="" t-att-value="job_desc.permanent_hour_selection"/></td>
-						        			<td><input type="text" name="" t-att-value="job_desc.rate_per_hour"/></td>
+						        			<td><input type="text" name="permanent_hour_selection" t-att-value="job_desc.permanent_hour_selection"/></td>
+						        			<td><input type="text" name="rate_per_hour" t-att-value="job_desc.rate_per_hour"/></td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="Season Non season" t-att-value="job_desc.permanent_hour_selection"/></td><!--Which field value should be here-->
-					        				<td rowspan="4"><input type="text" name="" placeholder="Season Non Season Rate" t-att-value="job_desc.rate_per_hour"/></td><!--Which rate should be here-->
+					        				<td><input type="text" name="" placeholder="Season Non season" t-att-value="job_desc.seasonal_hour"/></td><!--Which field value should be here-->
+					        				<td rowspan="4"><input type="text" name="" placeholder="Season Non Season Rate" t-att-value="job_desc.seasonal_rate_per_hour"/></td><!--Which rate should be here-->
 					        			</tr>
 					        			<tr>
 					        				<td>SEASON PERIOD</td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="PERMANENT Season from" t-att-value="job_desc.perm_season_date_from"/></td><!--Which field value should be here-->
+					        				<td><input type="text" name="perm_season_date_from" placeholder="PERMANENT Season from" t-att-value="job_desc.perm_season_date_from"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="PERMANENT Season to" t-att-value="job_desc.perm_season_date_to"/></td><!--Which field value should be here-->
+					        				<td><input type="text" name="perm_season_date_to" placeholder="PERMANENT Season to" t-att-value="job_desc.perm_season_date_to"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
 						        			<td>
-						        				<input type="checkbox" t-att-checked="job_desc.hiring_model == 'temporary'"/>
+						        				<input type="checkbox" name="hiring_model_temporary" t-att-checked="job_desc.hiring_model == 'temporary'"/>
 						        				TEMPORARY	
 					        				</td>
-						        			<td><input type="text" name="" t-att-value="job_desc.temporary_hour_selection"/></td>
-						        			<td><input type="text" name="" t-att-value="job_desc.rate_per_hour"/></td>
+						        			<td><input type="text" name="temporary_hour_selection" t-att-value="job_desc.temporary_hour_selection"/></td>
+						        			<td><input type="text" name="rate_per_hour" t-att-value="job_desc.rate_per_hour"/></td>
 					        			</tr>
 					        			<tr>
 						        			<td>
-						        				<input type="checkbox" t-att-checked="job_desc.hiring_model == 'On Demand'"/>
+						        				<input type="checkbox" name="hiring_model_ondemand" t-att-checked="job_desc.hiring_model == 'On Demand'"/>
 						        				ONDEMAND	
 					        				</td>
-						        			<td><input type="text" name="" placeholder="NUMBER OF HOUR/MONTH" t-att-value="job_desc.permanent_hour_selection" t-if="job_desc.hiring_model == 'On Demand'"/><input type="text" name="" placeholder="NUMBER OF HOUR/MONTH" t-if="job_desc.hiring_model != 'On Demand'"/></td><!--Which field value should be here-->
-						        			<td><input type="text" name="" placeholder="$10"/></td><!--Which field should be here-->
+						        			<td><input type="text" name="number_of_hour_on_demand" placeholder="NUMBER OF HOUR/MONTH" t-att-value="job_desc.permanent_hour_selection" t-if="job_desc.hiring_model == 'On Demand'"/><input type="text" name="number_of_hour_on_demand_update" placeholder="NUMBER OF HOUR/MONTH" t-if="job_desc.hiring_model != 'On Demand'"/></td><!--Which field value should be here-->
+						        			<td><input type="text" name="rate_per_hour" placeholder="$10" t-att-value="job_desc.rate_per_hour"/></td><!--Which field should be here-->
 					        			</tr>
 						        	</tbody>
 						        </table>
@@ -152,7 +152,7 @@
 					        	
 					        	<div class="clearfix"/>
 					        	<div class="col-sm-6">
-					        		<label class="placeholdercontrol-label" for="task_tobe_done">Profile</label>
+					        		<label class="placeholdercontrol-label" for="profile">Profile</label>
 					        		<input type="text" class="form-control" name="profile" placeholder="Profile" t-att-value="job_desc.job_profile_id.name"/>
 					        	</div>
 					        	
@@ -184,7 +184,7 @@
 					        	
 					        	<div class="col-sm-12">
 					        		<label class="placeholdercontrol-label" for="nature_experience">Software Experience</label>
-					        		<input type="text" class="form-control" name="nature_experience" t-att-value="', '.join([nature_expr.name for nature_expr in job_desc.nature_experience_ids])" placeholder="Nature Experience"/>
+					        		<input type="text" class="form-control" name="nature_experience" t-att-value="', '.join([nature_expr.name for nature_expr in job_desc.nature_experience_ids])" placeholder="Nature Experience"/><!--remain to add to the controller-->
 					        	</div>
 					        	
 					        	<div class="clearfix"/>

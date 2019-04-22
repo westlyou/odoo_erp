@@ -13,6 +13,13 @@
 				<field name="task_to_be_done3"/>
 				<field name="task_to_be_done4"/>
 			</xpath>
+			<xpath expr="//field[@name='phone']" position="after">
+				<field name="lead_ext"/>
+			</xpath>
+			<xpath expr="//field[@name='permanent_hour_selection']" position="after">
+				<field name="seasonal_hour"/>
+				<field name="seasonal_rate_per_hour"/>
+			</xpath>
 		</field>
 	</record>
 </odoo>
