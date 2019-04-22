@@ -33,12 +33,14 @@ class Order(models.Model):
 	def _check_uniq_for_date(self):
 		for order in self:
 			lunch_order = self.env['lunch.order'].search([('user_id', '=', self.env.uid), ('date', '=', order.date),('id', '!=', order.id)])
-			today_date = fields.Datetime.from_string(fields.Datetime.now())
-			timezone = pytz.timezone(self.env.user.tz or 'UTC')
-			today_date = pytz.UTC.localize(today_date)
-			today_date = today_date.astimezone(timezone)
+			today_date = datetime.now()
+# 			timezone = pytz.timezone('UTC')
+# 			today_date = pytz.UTC.localize(today_date)
+# 			today_date = today_date.astimezone(timezone)
 			if not self.env.user.has_group("lunch.group_lunch_manager"):
-				if today_date.time().strftime("%H:%M:%S") < time.strftime("09:30:00") or today_date.time().strftime("%H:%M:%S") > time.strftime("06:30:00"):
+				print"first================",today_date.time().strftime("%H:%M:%S") , time.strftime("04:00:00")
+				print"=============================",today_date.time().strftime("%H:%M:%S"), time.strftime("13:00:00")
+				if today_date.time().strftime("%H:%M:%S") < time.strftime("04:00:00") or today_date.time().strftime("%H:%M:%S") > time.strftime("1:00:59"):
 					raise ValidationError("It's too late to order your food")
 			if lunch_order:
 				raise ValidationError("Cannot create new order for same date")
