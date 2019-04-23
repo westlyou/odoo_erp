@@ -1,4 +1,10 @@
 <odoo>
+
+    <template id="assets_backend_lead_signup" name="crm lead signup" inherit_id="web.assets_frontend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/ent_lead_signup/static/src/js/lead_signup.js"></script>
+        </xpath>
+    </template>
 	<template id="ent_lead_signup_email" name="Email Signup">
 		<t t-call="website.layout">
 			<form action="/return/lead/signup" method="post">
@@ -114,8 +120,8 @@
 						        			<td><input type="text" name="rate_per_hour" t-att-value="job_desc.rate_per_hour"/></td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="" placeholder="Season Non season" t-att-value="job_desc.seasonal_hour"/></td><!--Which field value should be here-->
-					        				<td rowspan="4"><input type="text" name="" placeholder="Season Non Season Rate" t-att-value="job_desc.seasonal_rate_per_hour"/></td><!--Which rate should be here-->
+					        				<td><input type="text" name="seasonal_hour" placeholder="Season Non season" t-att-value="job_desc.seasonal_hour"/></td><!--Which field value should be here-->
+					        				<td rowspan="4"><input type="text" name="seasonal_rate_per_hour" placeholder="Season Non Season Rate" t-att-value="job_desc.seasonal_rate_per_hour"/></td><!--Which rate should be here-->
 					        			</tr>
 					        			<tr>
 					        				<td>SEASON PERIOD</td>
@@ -216,18 +222,30 @@
 					        </t>
 					        <div class="clearfix"/>
 					        <div class="col-sm-4">
-					        	<input name="agree_terms_and_con" class="accept_tc_js" type="checkbox" string="Accept T&amp;C"/> Accept T&amp;C
+					        	<input name="agree_terms_and_con"  class="accept_tc_js" type="checkbox" string="Accept T&amp;C"/> Accept T&amp;C
+					        	<a class="signup_tc_pdf" href="/accept/lead/signup/http">Download</a>
 					        </div>
 				        </div>
-				        
 				        <div class="form-group">
 				            <div class="col-sm-8 col-md-7 mt16">
-				                <input type="submit" class="btn btn-primary pull-left" string="Submit"/>
+				                <input type="submit" class="btn btn-primary pull-left signup_submit" disabled="True" string="Submit"/>
 				            </div>
 				        </div>
 			        </div>
 	            </div>
 			</form>
+		</t>
+	</template>
+	
+	<template id="sugnup_success_sent" name="Signup Success">
+		<t t-call="website.layout">
+			<div id="wrap">
+				<div class="container">
+					<div class="col-md-6 alert alert-success">
+						Sign up process successfully!
+					</div>
+				</div>
+			</div>
 		</t>
 	</template>
 </odoo>

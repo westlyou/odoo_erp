@@ -1,5 +1,6 @@
 from odoo import http
 from odoo.http import request
+import base64
 
 
 class LeadSignup(http.Controller):
@@ -35,7 +36,7 @@ class LeadSignup(http.Controller):
 		values = self._prepare_lead_agreement_signup_values(values)
 		return request.render("ent_lead_signup.ent_lead_agreement_signup",values)
 
-	def _prepare_primary_contact_vals(kw):
+	def _prepare_primary_contact_vals(self, kw):
 		prim_contact_vals={}
 		if 'primary_name' in kw and kw.get('primary_name'):
 			prim_contact_vals.update({
@@ -43,17 +44,19 @@ class LeadSignup(http.Controller):
 			})
 		if 'primary_title' in kw and kw.get('primary_title'):
 			partner_title = request.env['res.partner.title'].search([('name', '=', kw.get('primary_title'))], limit=1)
+			print ("********************",partner_title)
 			prim_contact_vals.update({
 				'title': partner_title.id,
 			})
 		if 'primary_mobile' in kw and kw.get('primary_mobile'):
 			prim_contact_vals.update({
-				'primary_mobile': kw.get('primary_mobile'),
+				'mobile': kw.get('primary_mobile'),
 			})
 		if 'primary_direct_phone' in kw and kw.get('primary_direct_phone'):
 			prim_contact_vals.update({
-				'primary_direct_phone': kw.get('primary_direct_phone'),
+				'phone': kw.get('primary_direct_phone'),
 			})
+		return prim_contact_vals
 
 	def _prepare_job_desc_vals(self, kw):
 		job_desc_vals = {}
@@ -64,6 +67,10 @@ class LeadSignup(http.Controller):
 		if 'seasonal_hour' in kw and kw.get('seasonal_hour'):
 			job_desc_vals.update({
 				'seasonal_hour': kw.get('seasonal_hour'),
+			})
+		if 'seasonal_rate_per_hour' in kw and kw.get('seasonal_rate_per_hour'):
+			job_desc_vals.update({
+				'seasonal_rate_per_hour': kw.get('seasonal_rate_per_hour'),
 			})
 		if 'permanent_hour_selection' in kw and kw.get('permanent_hour_selection'):
 			job_desc_vals.update({
@@ -103,9 +110,9 @@ class LeadSignup(http.Controller):
 				'job_profile_id': profile_id.id,
 			})
 		if 'experiance' in kw and kw.get('experiance'):
-			experiance_id = request.env['job.experiance'].search([('name', '=', kw.get('experiance'))])
+			experience_id = request.env['job.experience'].search([('name', '=', kw.get('experiance'))])
 			job_desc_vals.update({
-				'experiance_id': experiance_id.id,
+				'experience_id': experience_id.id,
 			})
 		if 'task_tobe_done' in kw and kw.get('task_tobe_done'):
 			job_desc_vals.update({
@@ -113,15 +120,15 @@ class LeadSignup(http.Controller):
 			})
 		if 'task_tobe_done2' in kw and kw.get('task_tobe_done2'):
 			job_desc_vals.update({
-				'task_tobe_done2': kw.get('task_tobe_done2'),
+				'task_to_be_done2': kw.get('task_tobe_done2'),
 			})
 		if 'task_tobe_done3' in kw and kw.get('task_tobe_done3'):
 			job_desc_vals.update({
-				'task_tobe_done3': kw.get('task_tobe_done3'),
+				'task_to_be_done3': kw.get('task_tobe_done3'),
 			})
 		if 'task_tobe_done4' in kw and kw.get('task_tobe_done4'):
 			job_desc_vals.update({
-				'task_tobe_done4': kw.get('task_tobe_done4'),
+				'task_to_be_done4': kw.get('task_tobe_done4'),
 			})
 		if 'reporting_id' in kw and kw.get('reporting_id'):
 			reporting_id = request.env['res.partner'].search([('name', '=', kw.get('reporting_id'))])
@@ -191,11 +198,6 @@ class LeadSignup(http.Controller):
 				'email_from': kw.get('email_from'),
 			})
 		return lead_vals
-		
-		
-		
-		
-		
 
 	@http.route(['/submit/lead/signup'], type='http', auth="public", website=True)
 	def submit_lead_signup(self, **kw):
@@ -205,8 +207,39 @@ class LeadSignup(http.Controller):
 		if 'lead_id' in kw and kw.get('lead_id'):
 			lead_id = request.env['crm.lead'].search([('id', '=', kw.get('lead_id'))])
 			#lead_primary_contact_id = lead_id.child_ids.filtered(lambda ch:ch.primary_contact).sorted()[0]
-			#prim_contact_vals = self._prepare_primary_contact_vals(kw)
-			#lead_primary_contact_id.write(prim_contact_vals)
+			lead_primary_contact = lead_id.child_ids.filtered(lambda ch:ch.primary_contact).sorted()[0]
+			if lead_primary_contact:
+				prim_contact_vals = self._prepare_primary_contact_vals(kw)
+				lead_primary_contact.write(prim_contact_vals)
 			lead_id.write(lead_vals)
 			if lead_id.job_description_ids:
 				lead_id.job_description_ids[0].write(job_description_vals)
+		return request.render("ent_lead_signup.sugnup_success_sent")
+
+	@http.route(['/accept/lead/signup'], type='json', auth="public", website=True)
+	def payment_transaction(self, **kwargs):
+		print ("????????????????????????????",kwargs)
+		if 'lead_id' in kwargs and kwargs.get("lead_id"):
+			lead_id = request.env['crm.lead'].search([('id', '=', kwargs.get("lead_id"))])
+			
+			pdf = lead_id.company_id.signup_tc
+			pdfhttpheaders = [
+				('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)),
+				('Content-Disposition', 'attachment; filename=Invoice.pdf;')
+			]
+			print ("::::::::::::::::::::::::http.reque",http.request.make_response(pdf, headers=pdfhttpheaders))
+			return http.request.make_response(pdf, headers=pdfhttpheaders)
+		return {"crm_url":True}
+	
+	@http.route(['/accept/lead/signup/http'], type='http', auth="public", website=True)
+	def payment_transaction_accept(self, **kwargs):
+		print ("????????????????????????????",kwargs)
+		lead_id = request.env['crm.lead'].search([('id', '=', '28')])
+		print (";;;;;;;;;;;;;;;;;;;;",lead_id)
+		pdf = base64.b64decode(lead_id.company_id.signup_tc)
+		pdfhttpheaders = [
+			('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)),
+			('Content-Disposition', 'attachment; filename=Invoice.pdf;')
+		]
+		print "?????????????????pdf",pdf
+		return request.make_response(pdf, headers=pdfhttpheaders)
