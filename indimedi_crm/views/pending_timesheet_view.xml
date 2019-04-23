@@ -1,0 +1,38 @@
+<odoo>
+	
+	<record id="pending_timesheet_tree" model="ir.ui.view">
+		<field name="name">Pending Timesheet Form</field>
+		<field name="model">pending.timesheet.report</field>
+		<field name="arch" type="xml">
+			<tree string="Pending Timesheet Report" create="false">
+				<field name="start_date"/>
+				<field name="end_date"/>
+				<field name="project_id"/>
+				<field name="task_id"/>
+				<field name="manager_id"/>
+				<field name="us_name_id"/>
+				<field name="ea_name"/>
+				<field name="working_hour"/>
+				<field name="timesheet_hour"/>
+				<field name="leave_hour"/>
+				<field name="pending_hour"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="action_pending_timesheet" model="ir.actions.server">
+           <field name="name">Pending Timesheet Report</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_pending_timesheet_report"/>
+            <field name="state">code</field>
+            <field name="code">
+    action = env['pending.timesheet.report'].get_pending_timesheet_report()
+            </field>
+        </record>
+	
+	<menuitem id="menu_action_pending_timesheet" 
+					name="Pending Timesheet Report"
+				 	action="action_pending_timesheet" 
+				 	parent="project.menu_main_pm" />
+	
+</odoo>

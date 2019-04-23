@@ -132,3 +132,5 @@ access_timesheet_invoice_payment,timesheet.invoice.payment,model_timesheet_invoi
 access_payment_method_custom,payment.method.custom,model_payment_method_custom,base.group_system,1,1,1,1
 access_payment_method_custom_user,payment.method.custom.user,model_payment_method_custom,,1,0,0,0
 access_project_feedback,project.feedback,model_project_feedback,,1,1,1,1
+,,,,,,,
+access_pending_timesheet_report,pending.timesheet.report,model_pending_timesheet_report,,1,1,1,1
