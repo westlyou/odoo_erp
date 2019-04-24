@@ -31,7 +31,7 @@ class AccountAnalyticLine(models.Model):
     comm_on_phone = fields.Boolean(string="Phone")
     comm_on_chat = fields.Boolean(string="Chat")
     total_transaction = fields.Integer(string="Total Transaction")
-    is_reportable = fields.Boolean(string="Reportable?")
+    is_reportable = fields.Boolean(string="Reportable?", default=True)
 
     @api.multi
     def unlink(self):
