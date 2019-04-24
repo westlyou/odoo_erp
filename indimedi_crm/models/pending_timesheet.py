@@ -73,3 +73,57 @@ class PendingTimesheetReport(models.Model):
             else:
                 min_hour = float(hour_selection)
             
+#             holidays_hours = 0
+#             if holidays_count > 0:
+#                 daily_hours = float(min_hour) / 5
+#                 holidays_hours = daily_hours * holidays_count
+#              
+#             min_hour -= holidays_hours
+            
+            
+            timesheet_ids = timesheet_obj.search(domain + [('task_id', '=', task.id)])
+            this_week_working_hour = 0
+            for timesheet in timesheet_ids:
+#                 if timesheet.type_of_view.billable:
+                this_week_working_hour += timesheet.unit_amount
+                    
+            leave = self.env['project.leave'].sudo().search([
+                            ('start_date', '>=', start_date),
+                            ('end_date', '<=', end_date),
+                            ('project_id', '=', task.project_id.id),
+                            ('us_name_id', '=', task.project_id.jd_us_name_id.id),
+                            ('state', '=', 'sent')])
+            
+            leave_hours = abs(sum(leave.mapped('leave_duration')))
+            
+#             if leave_hours >= 1.00:
+#                 min_hour =  round((min_hour - leave_hours),2)
+            pending_hours = min_hour - (leave_hours + this_week_working_hour)
+            if pending_hours > 0:
+                new_id = self.env['pending.timesheet.report'].create({
+                                                            'start_date': start_date,
+                                                            'end_date': end_date,
+                                                            'project_id': task.project_id.id,
+                                                            'task_id': task.id,
+                                                            'manager_id': task.project_id.project_general_manager.id,
+                                                            'us_name_id': task.project_id.jd_us_name_id.id,
+                                                            'ea_name': task.project_id.jd_ea_working_id.id,
+                                                            'working_hour': min_hour,
+                                                            'timesheet_hour': this_week_working_hour,
+                                                            'leave_hour': leave_hours,
+                                                            'pending_hour' : pending_hours if pending_hours > 0 else 0
+                                                            })
+                line_ids.append(new_id.id)
+        
+                
+        return {
+            'name': 'Pending Timesheet Report',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree',
+            'res_id': line_ids,
+            'res_model': 'pending.timesheet.report',
+            'view_id': self.env.ref('indimedi_crm.pending_timesheet_tree').id,
+            'target': 'current',
+            'context': {
+            }
+        }
