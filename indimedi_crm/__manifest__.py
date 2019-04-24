@@ -60,7 +60,7 @@
              'views/invoice_views.xml',
              'views/hide_menus_customer.xml',
              'views/template.xml',
-             
+             'views/pending_timesheet_view.xml',
             #new file added
             'wizard/change_billing_info_wizard.xml',
             'views/project_leave_view.xml',
