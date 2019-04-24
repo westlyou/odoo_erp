@@ -1,0 +1,289 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <data noupdate="0">
+        <!--Email template -->
+        <record id="email_template_lead_signup_confirmation" model="mail.template">
+            <field name="name">Lead Signup Confirmation Mail Template</field>
+            <field name="email_from">inquiry.entigrity@gmail.com</field>
+            <field name="subject">Thanks for signing up with Entigrity Remote Staffing</field>
+            <field name="email_to">${object.email_from|safe}</field>
+            <field name="email_cc">recruitment@entigrity.com, chris@entigrity.com, ted@entigrity.com, abhinav.shrivastav@entigrity.com</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="lang">${object.user_id.lang}</field>
+            <field name="body_html"><![CDATA[
+				<p>Dear Applicant_name,
+				<p>Thanks for Signing Up with Entigrity Solutions LLC. We look forward to work with you. following are your details as per sign up.
+				</p>
+
+				<br/>
+				<table class="text-center" border="0" style="vertical-align:middle;width:75%; ">
+					<tbody class="tbody" border="0">
+		            	<tr>
+		            		<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+		            			CLIENT DETAILS
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Name:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+	            				${ctx['lead_primary_contact'].name or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Company Name:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${object.name or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Address Line 1:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${object.c_street or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Suite No/Room No:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${object.c_street3 or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			City:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${object.c_city or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			State:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${object.c_state_id.name or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Zip:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${object.c_zip or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Phone:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${object.phone or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Email:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${object.email_from or ''}
+		            		</td>
+		            	</tr>
+		            	
+		            	<tr>
+		            		<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+		            			HIRING OPTIONS
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Hiring Model:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].hiring_model or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Numbers Of Hours Per Week:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].permanent_hour_selection or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Hourly Rate:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].rate_per_hour or ''}
+		            		</td>
+		            	</tr>
+		            	
+		            	<tr>
+		            		<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+		            			SEASON-NON SEASON
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Hourly Rate:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].rate_per_hour or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Numbers Of Hours Per Week:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].seasonal_hour or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			To :
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].perm_season_date_to or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			From:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].perm_season_date_from or ''}
+		            		</td>
+		            	</tr>
+		            	
+		            	<tr>
+		            		<td colspan="2" align="left" valign="top" bgcolor="#7B7B7B" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:15px;line-height:18px;color:#ffffff;text-transform: uppercase;">
+		            			JOB DESCRIPTION
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Profile:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].job_profile_id.name or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Experience in years
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].experience_id.name or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Tasks to be done 1
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].task_tobe_done or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Tasks to be done 2
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].task_to_be_done2 or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Tasks to be done 3
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].task_to_be_done3 or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Tasks to be done 4
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].task_to_be_done4 or ''}
+		            		</td>
+		            	</tr>
+		            	<!--tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Software Experience:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			
+		            		</td>
+		            	</tr-->
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Reporting:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].reporting_id.name or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Tentative Start Date:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].tentative_date or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Working Time Zone:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].timezone_id.name or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Working Time From:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].from_timezone_id.name or ''}
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			Working Time To:
+		            		</td>
+		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
+		            			${ctx['job_description'].to_timezone_id.name or ''}
+		            		</td>
+		            	</tr>
+	            	</tbody>
+		        </table>
+
+				<p>
+					We have enclosed herewith terms and conditions of sign up in pdf. Your account manager will get in touch with you soon.
+
+In case of any correction or for further assistance please reach out to your account manager or email us at inquiry.entigrity@gmail.com
+				</p>
+				<p>
+					Regards,
+				</p>
+				% if object.user_id and object.user_id.signature:
+					<p>${object.user_id.signature | safe}</p>
+				% endif
+				]]></field>
+			</record>
+
+
+    </data>
+</odoo>
+

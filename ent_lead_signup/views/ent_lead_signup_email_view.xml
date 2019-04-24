@@ -45,7 +45,13 @@
 				            </div>
 				            <div class="col-md-6 col-sm-8">
 				            	<label for="s_name" string="Lead S Name"/>
-				                <input type="text" class="form-control o_website_form_input" name="primary_title" t-att-value="lead_primary_contact.title.name" required="" placeholder="Title"/>
+				            	<select class="form-control" name="primary_title">
+				            		<option></option>
+				            		<t t-foreach="title_ids" t-as="title">
+				            			<option t-value="title.id" t-att-selected="title.id == lead_primary_contact.title.id"><span t-field="title.name"/></option>
+				            		</t>
+				            	</select>
+				                <!--input type="text" class="form-control o_website_form_input" name="primary_title" t-att-value="lead_primary_contact.title.name" required="" placeholder="Title"/-->
 				            </div>
 				            
 				            <div class="col-md-12 col-sm-4">
@@ -68,7 +74,13 @@
 				            </div>
 				            <div class="col-md-4 col-sm-8">
 				            	<label for="c_state_id" string="State"/>
-				                <input type="text" class="form-control o_website_form_input" name="c_state_id" t-att-value="crm_lead_id.c_state_id.name" required="" placeholder="State"/>
+				            	<select class="form-control" name="c_state_id">
+				            		<option></option>
+				            		<t t-foreach="state_ids" t-as="state">
+				            			<option t-value="state.id" t-att-selected="state.id == crm_lead_id.c_state_id.id"><span t-field="state.name"/></option>
+				            		</t>
+				            	</select>
+				                <!--input type="text" class="form-control o_website_form_input" name="c_state_id" t-att-value="crm_lead_id.c_state_id.name" required="" placeholder="State"/-->
 				            </div>
 				            <div class="col-md-4 col-sm-8">
 				            	<label for="c_zip" string="Zip"/>
@@ -84,7 +96,7 @@
 				                <input type="text" class="form-control o_website_form_input" name="lead_ext" required="" placeholder="Ext" t-att-value="crm_lead_id.lead_ext"/>
 				            </div>
 				            <div class="col-md-4 col-sm-8">
-				            	<label for="email_from" string="Email"/>
+				            	<label for="email_from" string="Mobile"/>
 				                <input type="text" class="form-control o_website_form_input" name="primary_mobile" required="" t-att-value="lead_primary_contact.mobile" placeholder="Mobile"/>
 				            </div>
 				            
@@ -116,37 +128,72 @@
 						        				<input type="checkbox" name="hiring_perm" t-att-checked="job_desc.hiring_model == 'permanent'"/>
 						        				PERMANENT	
 					        				</td>
-						        			<td><input type="text" name="permanent_hour_selection" t-att-value="job_desc.permanent_hour_selection"/></td>
-						        			<td><input type="text" name="rate_per_hour" t-att-value="job_desc.rate_per_hour"/></td>
+						        			<td>
+						        				<select class="form-control perm_input" name="permanent_hour_selection">
+								    				<option value='10' t-att-selected="job_desc.permanent_hour_selection == '10'">10 Hours</option>
+													<option value='20' t-att-selected="job_desc.permanent_hour_selection == '20'">20 Hours</option>
+													<option value='30' t-att-selected="job_desc.permanent_hour_selection == '30'">30 Hours</option>
+													<option value='40' t-att-selected="job_desc.permanent_hour_selection == '40'">40 Hours</option>
+													<option value='80' t-att-selected="job_desc.permanent_hour_selection == '80'">80 Hours</option>
+													<option value='90' t-att-selected="job_desc.permanent_hour_selection == '90'">90 Hours</option>
+													<option value='100' t-att-selected="job_desc.permanent_hour_selection == '100'">100 Hours</option>
+													<option value='160' t-att-selected="job_desc.permanent_hour_selection == '160'">160 Hours</option>
+													<option value='180' t-att-selected="job_desc.permanent_hour_selection == '180'">180 Hours</option>
+													<option value='200' t-att-selected="job_desc.permanent_hour_selection == '200'">200 Hours</option>
+													<option value='40_20' t-att-selected="job_desc.permanent_hour_selection == '40_20'">40-20 Hours</option>
+													<option value='20_10' t-att-selected="job_desc.permanent_hour_selection == '20_10'">20-10 Hours</option>
+								    			</select>
+						        			<!--input type="text" class="perm_input" name="permanent_hour_selection" t-att-value="job_desc.permanent_hour_selection"/--></td>
+						        			<td><input type="text" class="form-control perm_input" name="rate_per_hour" t-att-value="job_desc.rate_per_hour"/></td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="seasonal_hour" placeholder="Season Non season" t-att-value="job_desc.seasonal_hour"/></td><!--Which field value should be here-->
-					        				<td rowspan="4"><input type="text" name="seasonal_rate_per_hour" placeholder="Season Non Season Rate" t-att-value="job_desc.seasonal_rate_per_hour"/></td><!--Which rate should be here-->
+					        				<td><input type="text" class="form-control" name="seasonal_hour" placeholder="Season Non season" t-att-value="job_desc.seasonal_hour"/></td><!--Which field value should be here-->
+					        				<td rowspan="4"><input type="text" class="form-control" name="seasonal_rate_per_hour" placeholder="Season Non Season Rate" t-att-value="job_desc.seasonal_rate_per_hour"/></td><!--Which rate should be here-->
 					        			</tr>
 					        			<tr>
 					        				<td>SEASON PERIOD</td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="perm_season_date_from" placeholder="PERMANENT Season from" t-att-value="job_desc.perm_season_date_from"/></td><!--Which field value should be here-->
+					        				<td><input type="text" class="form-control" name="perm_season_date_from" placeholder="PERMANENT Season from" t-att-value="job_desc.perm_season_date_from"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" name="perm_season_date_to" placeholder="PERMANENT Season to" t-att-value="job_desc.perm_season_date_to"/></td><!--Which field value should be here-->
+					        				<td><input type="text" class="form-control" name="perm_season_date_to" placeholder="PERMANENT Season to" t-att-value="job_desc.perm_season_date_to"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
 						        			<td>
 						        				<input type="checkbox" name="hiring_model_temporary" t-att-checked="job_desc.hiring_model == 'temporary'"/>
 						        				TEMPORARY	
 					        				</td>
-						        			<td><input type="text" name="temporary_hour_selection" t-att-value="job_desc.temporary_hour_selection"/></td>
-						        			<td><input type="text" name="rate_per_hour" t-att-value="job_desc.rate_per_hour"/></td>
+						        			<td>
+						        				<select class="form-control tempor_input" name="temporary_hour_selection">
+								    				<option value='20' t-att-selected="job_desc.temporary_hour_selection == '20'">20 Hours</option>
+													<option value='40' t-att-selected="job_desc.temporary_hour_selection == '40'">40 Hours</option>
+												</select>
+						        			<!--input type="text" class="tempor_input" name="temporary_hour_selection" t-att-value="job_desc.temporary_hour_selection"/--></td>
+						        			<td><input type="text" class="form-control tempor_input" name="rate_per_hour" t-att-value="job_desc.rate_per_hour"/></td>
 					        			</tr>
 					        			<tr>
 						        			<td>
 						        				<input type="checkbox" name="hiring_model_ondemand" t-att-checked="job_desc.hiring_model == 'On Demand'"/>
 						        				ONDEMAND	
 					        				</td>
-						        			<td><input type="text" name="number_of_hour_on_demand" placeholder="NUMBER OF HOUR/MONTH" t-att-value="job_desc.permanent_hour_selection" t-if="job_desc.hiring_model == 'On Demand'"/><input type="text" name="number_of_hour_on_demand_update" placeholder="NUMBER OF HOUR/MONTH" t-if="job_desc.hiring_model != 'On Demand'"/></td><!--Which field value should be here-->
-						        			<td><input type="text" name="rate_per_hour" placeholder="$10" t-att-value="job_desc.rate_per_hour"/></td><!--Which field should be here-->
+						        			<td>
+						        				<select class="form-control ondemand_input" name="number_of_hour_on_demand">
+								    				<option value='10' t-att-selected="job_desc.permanent_hour_selection == '10'">10 Hours</option>
+													<option value='20' t-att-selected="job_desc.permanent_hour_selection == '20'">20 Hours</option>
+													<option value='30' t-att-selected="job_desc.permanent_hour_selection == '30'">30 Hours</option>
+													<option value='40' t-att-selected="job_desc.permanent_hour_selection == '40'">40 Hours</option>
+													<option value='80' t-att-selected="job_desc.permanent_hour_selection == '80'">80 Hours</option>
+													<option value='90' t-att-selected="job_desc.permanent_hour_selection == '90'">90 Hours</option>
+													<option value='100' t-att-selected="job_desc.permanent_hour_selection == '100'">100 Hours</option>
+													<option value='160' t-att-selected="job_desc.permanent_hour_selection == '160'">160 Hours</option>
+													<option value='180' t-att-selected="job_desc.permanent_hour_selection == '180'">180 Hours</option>
+													<option value='200' t-att-selected="job_desc.permanent_hour_selection == '200'">200 Hours</option>
+													<option value='40_20' t-att-selected="job_desc.permanent_hour_selection == '40_20'">40-20 Hours</option>
+													<option value='20_10' t-att-selected="job_desc.permanent_hour_selection == '20_10'">20-10 Hours</option>
+								    			</select>
+						        			<!--input type="text" class="ondemand_input" name="number_of_hour_on_demand" placeholder="NUMBER OF HOUR/MONTH" t-att-value="job_desc.permanent_hour_selection" t-if="job_desc.hiring_model == 'On Demand'"/><input type="text" name="number_of_hour_on_demand_update" placeholder="NUMBER OF HOUR/MONTH" t-if="job_desc.hiring_model != 'On Demand'"/--></td><!--Which field value should be here-->
+						        			<td><input type="text" class="form-control ondemand_input" name="rate_per_hour" placeholder="$10" t-att-value="job_desc.rate_per_hour"/></td><!--Which field should be here-->
 					        			</tr>
 						        	</tbody>
 						        </table>
@@ -159,12 +206,24 @@
 					        	<div class="clearfix"/>
 					        	<div class="col-sm-6">
 					        		<label class="placeholdercontrol-label" for="profile">Profile</label>
-					        		<input type="text" class="form-control" name="profile" placeholder="Profile" t-att-value="job_desc.job_profile_id.name"/>
+					        		<select class="form-control" name="profile">
+						        		<option></option>
+						        		<t t-foreach="profile_ids" t-as="profile">
+						        			<option t-value="profile.id" t-att-selected="profile.id == job_desc.job_profile_id.id"><span t-field="profile.name"/></option>
+						        		</t>
+						        	</select>
+					        		<!--input type="text" class="form-control" name="profile" placeholder="Profile" t-att-value="job_desc.job_profile_id.name"/-->
 					        	</div>
 					        	
 					        	<div class="col-sm-6">
 					        		<label class="placeholdercontrol-label" for="task_tobe_done">Experiance In Year</label>
-					        		<input type="text" class="form-control" name="experiance" placeholder="Experience" t-att-value="job_desc.experience_id.name"/>
+					        		<select class="form-control" name="experiance">
+						        		<option></option>
+						        		<t t-foreach="experience_ids" t-as="experience">
+						        			<option t-value="experience.id" t-att-selected="experience.id == job_desc.experience_id.id"><span t-field="experience.name"/></option>
+						        		</t>
+						        	</select>
+					        		<!--input type="text" class="form-control" name="experiance" placeholder="Experience" t-att-value="job_desc.experience_id.name"/-->
 					        	</div>
 					        	<div class="clearfix"/>
 					        	
@@ -196,7 +255,13 @@
 					        	<div class="clearfix"/>
 					        	<div class="col-sm-6">
 					        		<label class="placeholdercontrol-label" for="reporting_id">Reporting</label>
-					        		<input type="text" class="form-control" name="reporting_id" t-att-value="job_desc.reporting_id.name" placeholder="Reporting"/>
+					        		<select class="form-control" name="reporting_id">
+						        		<option></option>
+						        		<t t-foreach="reporting_ids" t-as="reporting">
+						        			<option t-value="reporting.id" t-att-selected="reporting.id == job_desc.reporting_id.id"><span t-field="reporting.name"/></option>
+						        		</t>
+						        	</select>
+					        		<!--input type="text" class="form-control" name="reporting_id" t-att-value="job_desc.reporting_id.name" placeholder="Reporting"/-->
 					        	</div>
 					        	<div class="col-sm-6">
 					        		<label class="control-label" for="tentative_date">Tentative Date</label>
@@ -208,15 +273,33 @@
 									<label class="col-md-3 col-sm-4 control-label" for="contact_name">Working Time:</label>
 								    <div class="col-md-3 col-sm-8">
 								    	<label class="control-label" for="timzone">Time Zone:</label>
-								        <input type="text" class="form-control o_website_form_input" name="timezone" t-att-value="job_desc.timezone_id.name" required="" placeholder="Time zone"/>
+								    	<select class="form-control" name="timezone">
+								    		<option></option>
+								    		<t t-foreach="timezone_ids" t-as="timezone">
+								    			<option t-value="timezone.id" t-att-selected="timezone.id == job_desc.timezone_id.id"><span t-field="timezone.name"/></option>
+								    		</t>
+								    	</select>
+								        <!--input type="text" class="form-control o_website_form_input" name="timezone" t-att-value="job_desc.timezone_id.name" required="" placeholder="Time zone"/-->
 								    </div>
 								    <div class="col-md-3 col-sm-8">
 								    	<label class="control-label" for="timefrom">Time From:</label>
-								        <input type="text" class="form-control o_website_form_input" name="timefrom" t-att-value="job_desc.from_timezone_id.name" required="" placeholder="Time from"/>
+								    	<select class="form-control" name="timefrom">
+								    		<option></option>
+								    		<t t-foreach="time_from_ids" t-as="time_from">
+								    			<option t-value="time_from.id" t-att-selected="time_from.id == job_desc.from_timezone_id.id"><span t-field="time_from.name"/></option>
+								    		</t>
+								    	</select>
+								        <!--input type="text" class="form-control o_website_form_input" name="timefrom" t-att-value="job_desc.from_timezone_id.name" required="" placeholder="Time from"/-->
 								    </div>
 								    <div class="col-md-3 col-sm-8">
 								    	<label class="control-label" for="timeto">Time To:</label>
-								        <input type="text" class="form-control o_website_form_input" name="timeto" t-att-value="job_desc.to_timezone_id.name" required="" placeholder="Time to"/>
+								    	<select class="form-control" name="timeto">
+								    		<option></option>
+								    		<t t-foreach="time_to_ids" t-as="time_to_id">
+								    			<option t-value="time_to_id.id" t-att-selected="time_to_id.id == job_desc.to_timezone_id.id"><span t-field="time_to_id.name"/></option>
+								    		</t>
+								    	</select>
+								        <!--input type="text" class="form-control o_website_form_input" name="timeto" t-att-value="job_desc.to_timezone_id.name" required="" placeholder="Time to"/-->
 								    </div>
 								</div>
 					        </t>

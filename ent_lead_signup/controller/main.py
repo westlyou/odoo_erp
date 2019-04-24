@@ -7,6 +7,7 @@ class LeadSignup(http.Controller):
 
 	LEAD_FIELDS = ['']
 	def _prepare_signup_email_val(self, kw):
+		
 		return {}
 
 	@http.route(['/website/lead/signup'], type='http', auth="public", website=True)
@@ -15,6 +16,45 @@ class LeadSignup(http.Controller):
 		return request.render("ent_lead_signup.ent_lead_signup_email",values)
 	
 	def _prepare_lead_agreement_signup_values(self, values):
+		title_ids = request.env['res.partner.title'].sudo().search([])
+		values.update({
+			'title_ids': title_ids,
+		})
+		
+		state_ids = request.env['res.country.state'].sudo().search([])
+		values.update({
+			'state_ids': state_ids,
+		})
+		
+		profile_ids = request.env['job.profile'].sudo().search([])
+		values.update({
+			'profile_ids': profile_ids,
+		})
+		
+		experience_ids = request.env['job.experience'].sudo().search([])
+		values.update({
+			'experience_ids': experience_ids,
+		})
+		
+		reporting_ids = request.env['res.partner'].search([])
+		values.update({
+			'reporting_ids': reporting_ids,
+		})
+		
+		timezone_ids = request.env['working.timezone'].search([])
+		values.update({
+			'timezone_ids': timezone_ids,
+		})
+		
+		time_from_ids = request.env['from.timezone'].search([])
+		values.update({
+			'time_from_ids': time_from_ids,
+		})
+		
+		time_to_ids = request.env['to.timezone'].search([])
+		values.update({
+			'time_to_ids': time_to_ids,
+		})
 		return values
 	
 	@http.route(['/return/lead/signup'], type='http', auth="public", website=True)
@@ -26,8 +66,9 @@ class LeadSignup(http.Controller):
 			crm_lead_ids = cmr_lead_obj.search([('email_from', '=', kw.get("email"))], limit=1)
 		lead_primary_contact = request.env['res.partner']
 		if crm_lead_ids and crm_lead_ids.child_ids:
-			print ("::::::::::::::::::",crm_lead_ids.child_ids)
-			lead_primary_contact = crm_lead_ids.child_ids.filtered(lambda ch:ch.primary_contact).sorted()[0]
+			lead_primary_contact = crm_lead_ids.child_ids.filtered(lambda ch:ch.primary_contact).sorted()
+			if lead_primary_contact:
+				lead_primary_contact = lead_primary_contact[0]
 		if crm_lead_ids:
 			values.update({
 				'crm_lead_id': crm_lead_ids,
@@ -60,7 +101,7 @@ class LeadSignup(http.Controller):
 
 	def _prepare_job_desc_vals(self, kw):
 		job_desc_vals = {}
-		if 'hiring_model' in kw and kw.get('hiring_model'):
+		if 'hiring_perm' in kw and kw.get('hiring_perm') == 'on':
 			job_desc_vals.update({
 				'hiring_model': 'permanent',
 			})
@@ -88,7 +129,7 @@ class LeadSignup(http.Controller):
 			job_desc_vals.update({
 				'perm_season_date_to': kw.get('perm_season_date_to'),
 			})
-		if 'hiring_model_temporary' in kw and kw.get('hiring_model_temporary'):
+		if 'hiring_model_temporary' in kw and kw.get('hiring_model_temporary') == 'on':
 			job_desc_vals.update({
 				'hiring_model': 'temporary',
 			})
@@ -96,7 +137,7 @@ class LeadSignup(http.Controller):
 			job_desc_vals.update({
 				'temporary_hour_selection': kw.get('temporary_hour_selection'),
 			})
-		if 'hiring_model_ondemand' in kw and kw.get('hiring_model_ondemand'):
+		if 'hiring_model_ondemand' in kw and kw.get('hiring_model_ondemand') == 'on':
 			job_desc_vals.update({
 				'hiring_model': 'On Demand',
 			})
@@ -203,17 +244,37 @@ class LeadSignup(http.Controller):
 	def submit_lead_signup(self, **kw):
 		print "kw---------------------------------",kw
 		job_description_vals = self._prepare_job_desc_vals(kw)
+		print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",job_description_vals)
 		lead_vals = self._prepare_lead_vals(kw)
+		email_ctx = request.context.copy()
 		if 'lead_id' in kw and kw.get('lead_id'):
 			lead_id = request.env['crm.lead'].search([('id', '=', kw.get('lead_id'))])
 			#lead_primary_contact_id = lead_id.child_ids.filtered(lambda ch:ch.primary_contact).sorted()[0]
-			lead_primary_contact = lead_id.child_ids.filtered(lambda ch:ch.primary_contact).sorted()[0]
+			lead_primary_contact = lead_id.child_ids
+			email_ctx.update({
+				'lead_primary_contact': request.env['res.partner'],
+			})
+			if lead_id.child_ids:
+				lead_primary_contact = lead_id.child_ids.filtered(lambda ch:ch.primary_contact).sorted()
+				if lead_primary_contact:
+					lead_primary_contact = lead_primary_contact[0]
+					email_ctx.update({
+						'lead_primary_contact': lead_primary_contact,
+					})
 			if lead_primary_contact:
 				prim_contact_vals = self._prepare_primary_contact_vals(kw)
 				lead_primary_contact.write(prim_contact_vals)
 			lead_id.write(lead_vals)
+			email_ctx.update({
+				'job_description': request.env['job.description'],
+			})
 			if lead_id.job_description_ids:
 				lead_id.job_description_ids[0].write(job_description_vals)
+				email_ctx.update({
+					'job_description': lead_id.job_description_ids[0],
+				})
+			email_template_id = request.env.ref("ent_lead_signup.email_template_lead_signup_confirmation")
+			email_template_id.with_context(email_ctx).send_mail(lead_id.id)
 		return request.render("ent_lead_signup.sugnup_success_sent")
 
 	@http.route(['/accept/lead/signup'], type='json', auth="public", website=True)
