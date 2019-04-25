@@ -301,7 +301,6 @@ class LeadSignup(http.Controller):
 				email_ctx.update({
 					'signup_email_cc': sign_up_email_cc,
 				})
-				print ">>>>........................",sign_up_email_cc
 			
 			email_template_id = request.env.ref("ent_lead_signup.email_template_lead_signup_confirmation")
 			email_template_id.with_context(email_ctx).send_mail(lead_id.id)
