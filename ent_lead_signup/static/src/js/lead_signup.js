@@ -4,8 +4,6 @@ odoo.define('ent_lead_signup.lead_signup', function(require) {
     var core = require('web.core');
     var ajax = require('web.ajax');
     $(".signup_tc_pdf").hide()
-	console.log("???????????????????//helloooo call aai gyo")
-	console.log("?/////sa////////",$("input[name='hiring_perm']:checked").length,$("input[name='hiring_perm']").checked)
 
 	if ($("input[name='hiring_perm']:checked").length > 0){
 			$(".perm_input").show()
@@ -36,7 +34,6 @@ odoo.define('ent_lead_signup.lead_signup', function(require) {
 	
 	
 	$(".accept_tc_js").on("change",function(el){
-		console.log(";;;;;;;;;;;;;;;;;;;;;;;;;;;",this.checked)
 		if(this.checked){
 			$(".signup_tc_pdf").show()
 			$(".signup_submit").attr("disabled",false)
@@ -47,7 +44,6 @@ odoo.define('ent_lead_signup.lead_signup', function(require) {
 	});
 	
 	$("input[name='hiring_perm']").on("change", function(ev){
-		console.log("hiring permanent---------------------------")
 		if (this.checked){
 			$(".perm_input").show()
 			$("input[name='hiring_model_temporary']").prop("checked", false)
@@ -64,7 +60,6 @@ odoo.define('ent_lead_signup.lead_signup', function(require) {
 	});
 	
 	$("input[name='hiring_model_temporary']").on("change", function(ev){
-		console.log("hiring permanent---------------------------")
 		if (this.checked){
 			$(".tempor_input").show()
 
@@ -82,7 +77,6 @@ odoo.define('ent_lead_signup.lead_signup', function(require) {
 	});
 	
 	$("input[name='hiring_model_ondemand']").on("change", function(ev){
-		console.log("hiring permanent---------------------------")
 		if (this.checked){
 			$(".ondemand_input").show()
 			$("input[name='hiring_model_temporary']").prop("checked", false)
@@ -96,6 +90,22 @@ odoo.define('ent_lead_signup.lead_signup', function(require) {
 			})
 			$(".ondemand_input").hide()
 		}
+	});
+	
+	$("select[name='s_tax_id_ids']").on("change", function(el){
+		var opts = [], opt, str_opt='';
+		var sel = this
+		for (var i=0, len=sel.options.length; i<len; i++) {
+		    opt = sel.options[i];
+		    
+		    if ( opt.selected ) {
+	        	if (opt.value != ''){
+	        		str_opt += opt.value + ', ';
+	        	}
+		    }
+		}
+		var option_str = str_opt.slice(0, -2);
+		$("textarea[name='s_tax_id_id']").html(option_str)
 	});
 	
 });

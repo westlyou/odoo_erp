@@ -5,10 +5,10 @@
         <!--Email template -->
         <record id="email_template_lead_signup_confirmation" model="mail.template">
             <field name="name">Lead Signup Confirmation Mail Template</field>
-            <field name="email_from">inquiry.entigrity@gmail.com</field>
+            <field name="email_from">${object.user_id.email | safe}</field>
             <field name="subject">Thanks for signing up with Entigrity Remote Staffing</field>
             <field name="email_to">${object.email_from|safe}</field>
-            <field name="email_cc">recruitment@entigrity.com, chris@entigrity.com, ted@entigrity.com, abhinav.shrivastav@entigrity.com</field>
+            <field name="email_cc">${ctx['signup_email_cc']}</field>
             <field name="model_id" ref="crm.model_crm_lead"/>
             <field name="lang">${object.user_id.lang}</field>
             <field name="body_html"><![CDATA[
@@ -218,14 +218,17 @@
 		            			${ctx['job_description'].task_to_be_done4 or ''}
 		            		</td>
 		            	</tr>
-		            	<!--tr>
+		            	<tr>
 		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 		            			Software Experience:
 		            		</td>
 		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
-		            			
+		            			% for s_experience in ctx['job_description'].nature_experience_ids:
+		            				${s_experience.name},
+		            			% endfor
+		            			<!--', '.join([nature_expr.name for nature_expr in job_desc.nature_experience_ids])	-->
 		            		</td>
-		            	</tr-->
+		            	</tr>
 		            	<tr>
 		            		<td width="190" align="left" valign="center" bgcolor="#f15a29" style="padding:5px;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#ffffff;">
 		            			Reporting:

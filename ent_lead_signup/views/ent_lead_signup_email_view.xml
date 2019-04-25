@@ -147,17 +147,17 @@
 						        			<td><input type="text" class="form-control perm_input" name="rate_per_hour" t-att-value="job_desc.rate_per_hour"/></td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" class="form-control" name="seasonal_hour" placeholder="Season Non season" t-att-value="job_desc.seasonal_hour"/></td><!--Which field value should be here-->
-					        				<td rowspan="4"><input type="text" class="form-control" name="seasonal_rate_per_hour" placeholder="Season Non Season Rate" t-att-value="job_desc.seasonal_rate_per_hour"/></td><!--Which rate should be here-->
+					        				<td><input type="text" class="form-control perm_input" name="seasonal_hour" placeholder="Season Non season" t-att-value="job_desc.seasonal_hour"/></td><!--Which field value should be here-->
+					        				<td rowspan="4"><input type="text" class="form-control perm_input" name="seasonal_rate_per_hour" placeholder="Season Non Season Rate" t-att-value="job_desc.seasonal_rate_per_hour"/></td><!--Which rate should be here-->
 					        			</tr>
 					        			<tr>
 					        				<td>SEASON PERIOD</td>
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" class="form-control" name="perm_season_date_from" placeholder="PERMANENT Season from" t-att-value="job_desc.perm_season_date_from"/></td><!--Which field value should be here-->
+					        				<td><input type="text" class="form-control perm_input" name="perm_season_date_from" placeholder="PERMANENT Season from" t-att-value="job_desc.perm_season_date_from"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
-					        				<td><input type="text" class="form-control" name="perm_season_date_to" placeholder="PERMANENT Season to" t-att-value="job_desc.perm_season_date_to"/></td><!--Which field value should be here-->
+					        				<td><input type="text" class="form-control perm_input" name="perm_season_date_to" placeholder="PERMANENT Season to" t-att-value="job_desc.perm_season_date_to"/></td><!--Which field value should be here-->
 					        			</tr>
 					        			<tr>
 						        			<td>
@@ -247,10 +247,20 @@
 					        		<input type="text" class="form-control" name="task_tobe_done4" placeholder="Task Tobe Done4" t-att-value="job_desc.task_to_be_done4"/><!--Which field value would be here-->
 					        	</div>
 					        	
-					        	<div class="col-sm-12">
-					        		<label class="placeholdercontrol-label" for="nature_experience">Software Experience</label>
-					        		<input type="text" class="form-control" name="nature_experience" t-att-value="', '.join([nature_expr.name for nature_expr in job_desc.nature_experience_ids])" placeholder="Nature Experience"/><!--remain to add to the controller-->
-					        	</div>
+					        		<div class="col-sm-6">
+					        			<label class="placeholdercontrol-label" for="s_tax_id_ids">Select Software Experience</label>
+					        			<select class="form-control" name="s_tax_id_ids" multiple="muliple">
+							    			<option value="">Select Software Experience</option>
+							    			<t t-foreach="s_tax_id_ids" t-as="s_tax_id_id">
+							    				<option t-att-selected="s_tax_id_id.id in job_desc.s_tax_id_ids.ids"><span t-field="s_tax_id_id.name"/></option>
+							    			</t>
+							    		</select>
+						    		</div>
+						    		<div class="col-sm-6">
+						    			<label class="placeholdercontrol-label" for="nature_experience">Software Experience</label>
+							    		<!--input type="text" class="form-control" name="nature_experience" t-att-value="','.join([nature_expr.name for nature_expr in job_desc.nature_experience_ids])" placeholder="Nature Experience"/-->
+							    		<textarea class="form-control" name="s_tax_id_id" placeholder="Nature Experience" readonly="readonly"><t t-esc="', '.join([nature_expr.name for nature_expr in job_desc.s_tax_id_ids])"/></textarea>
+						    		</div>
 					        	
 					        	<div class="clearfix"/>
 					        	<div class="col-sm-6">
@@ -306,7 +316,7 @@
 					        <div class="clearfix"/>
 					        <div class="col-sm-4">
 					        	<input name="agree_terms_and_con"  class="accept_tc_js" type="checkbox" string="Accept T&amp;C"/> Accept T&amp;C
-					        	<a class="signup_tc_pdf" href="/accept/lead/signup/http">Download</a>
+					        	<a t-if="crm_lead_id.company_id.signup_tc" class="signup_tc_pdf" href="/accept/lead/signup/http">Download</a>
 					        </div>
 				        </div>
 				        <div class="form-group">
@@ -326,6 +336,25 @@
 				<div class="container">
 					<div class="col-md-6 alert alert-success">
 						Sign up process successfully!
+					</div>
+					<div class="clearfix"/>
+					<div class="col-md-6">
+						<a class="btn btn-primary" href="/">Back</a>
+					</div>
+				</div>
+			</div>
+		</t>
+	</template>
+	
+	<template id="ent_signup_warning_template" name="Signup Warning">
+		<t t-call="website.layout">
+			<div id="wrap">
+				<div class="container">
+					<div class="col-md-6 alert alert-warning">
+						<span t-if="warn_message" t-esc="warn_message"/>
+						<span t-if="not warn_message">
+							Invalid Parameter pass
+						</span>
 					</div>
 				</div>
 			</div>

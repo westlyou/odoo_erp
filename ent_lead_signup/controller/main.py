@@ -55,6 +55,14 @@ class LeadSignup(http.Controller):
 		values.update({
 			'time_to_ids': time_to_ids,
 		})
+		nature_experience_ids = request.env['nature.experience'].search([])
+		values.update({
+			'nature_experience_ids': nature_experience_ids,
+		})
+		s_tax_id_ids = request.env['tax.software'].search([])
+		values.update({
+			's_tax_id_ids': s_tax_id_ids,
+		})
 		return values
 	
 	@http.route(['/return/lead/signup'], type='http', auth="public", website=True)
@@ -74,8 +82,12 @@ class LeadSignup(http.Controller):
 				'crm_lead_id': crm_lead_ids,
 				'lead_primary_contact': lead_primary_contact,
 			})
-		values = self._prepare_lead_agreement_signup_values(values)
-		return request.render("ent_lead_signup.ent_lead_agreement_signup",values)
+			values = self._prepare_lead_agreement_signup_values(values)
+			return request.render("ent_lead_signup.ent_lead_agreement_signup",values)
+		values.update({
+			'warn_message': 'Record Not Found!',
+		})
+		return request.render("ent_lead_signup.ent_signup_warning_template",values)
 
 	def _prepare_primary_contact_vals(self, kw):
 		prim_contact_vals={}
@@ -85,7 +97,6 @@ class LeadSignup(http.Controller):
 			})
 		if 'primary_title' in kw and kw.get('primary_title'):
 			partner_title = request.env['res.partner.title'].search([('name', '=', kw.get('primary_title'))], limit=1)
-			print ("********************",partner_title)
 			prim_contact_vals.update({
 				'title': partner_title.id,
 			})
@@ -191,6 +202,18 @@ class LeadSignup(http.Controller):
 			job_desc_vals.update({
 				'to_timezone_id': time_to_id.id,
 			})
+		if 'nature_experience' in kw and kw.get('nature_experience'):
+			nature_experiance_lst = kw.get('nature_experience').split(', ')
+			nature_experiance_ids = request.env['nature.experience'].search([('name', 'in', nature_experiance_lst)])
+			job_desc_vals.update({
+				'nature_experience_ids': [(6, 0, nature_experiance_ids.ids)],
+			})
+		if 's_tax_id_id' in kw and kw.get('s_tax_id_id'):
+			s_tax_id_lst = kw.get('s_tax_id_id').split(', ')
+			s_tax_id_ids = request.env['tax.software'].search([('name', 'in', s_tax_id_lst)])
+			job_desc_vals.update({
+				's_tax_id_ids': [(6, 0, s_tax_id_ids.ids)],
+			})
 		return job_desc_vals
 
 	def _prepare_lead_vals(self, kw):
@@ -214,7 +237,6 @@ class LeadSignup(http.Controller):
 		
 		if 'c_state_id' in kw and kw.get('c_state_id'):
 			state_id = request.env['res.country.state'].search([('name', '=' , kw.get('c_state_id'))], limit=1)
-			print ("::::::::::::::::state_id",state_id)
 			lead_vals.update({
 				'c_state_id': state_id.id,
 			})
@@ -242,9 +264,7 @@ class LeadSignup(http.Controller):
 
 	@http.route(['/submit/lead/signup'], type='http', auth="public", website=True)
 	def submit_lead_signup(self, **kw):
-		print "kw---------------------------------",kw
 		job_description_vals = self._prepare_job_desc_vals(kw)
-		print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",job_description_vals)
 		lead_vals = self._prepare_lead_vals(kw)
 		email_ctx = request.context.copy()
 		if 'lead_id' in kw and kw.get('lead_id'):
@@ -273,13 +293,26 @@ class LeadSignup(http.Controller):
 				email_ctx.update({
 					'job_description': lead_id.job_description_ids[0],
 				})
+			email_ctx.update({
+				'signup_email_cc': '',
+			})
+			if lead_id.company_id.signup_email_cc:
+				sign_up_email_cc = ', '.join([signup_user_cc.email for signup_user_cc in lead_id.company_id.signup_email_cc])
+				email_ctx.update({
+					'signup_email_cc': sign_up_email_cc,
+				})
+				print ">>>>........................",sign_up_email_cc
+			
 			email_template_id = request.env.ref("ent_lead_signup.email_template_lead_signup_confirmation")
 			email_template_id.with_context(email_ctx).send_mail(lead_id.id)
+		return request.redirect("/submit/signup/success")
+		
+	@http.route(['/submit/signup/success'], type='http', auth="public", website=True)
+	def signup_submit_success(self, **kwargs):
 		return request.render("ent_lead_signup.sugnup_success_sent")
 
 	@http.route(['/accept/lead/signup'], type='json', auth="public", website=True)
 	def payment_transaction(self, **kwargs):
-		print ("????????????????????????????",kwargs)
 		if 'lead_id' in kwargs and kwargs.get("lead_id"):
 			lead_id = request.env['crm.lead'].search([('id', '=', kwargs.get("lead_id"))])
 			
@@ -288,19 +321,16 @@ class LeadSignup(http.Controller):
 				('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)),
 				('Content-Disposition', 'attachment; filename=Invoice.pdf;')
 			]
-			print ("::::::::::::::::::::::::http.reque",http.request.make_response(pdf, headers=pdfhttpheaders))
 			return http.request.make_response(pdf, headers=pdfhttpheaders)
 		return {"crm_url":True}
 	
 	@http.route(['/accept/lead/signup/http'], type='http', auth="public", website=True)
 	def payment_transaction_accept(self, **kwargs):
-		print ("????????????????????????????",kwargs)
 		lead_id = request.env['crm.lead'].search([('id', '=', '28')])
-		print (";;;;;;;;;;;;;;;;;;;;",lead_id)
-		pdf = base64.b64decode(lead_id.company_id.signup_tc)
-		pdfhttpheaders = [
-			('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)),
-			('Content-Disposition', 'attachment; filename=Invoice.pdf;')
-		]
-		print "?????????????????pdf",pdf
+		if lead_id.company_id.signup_tc:
+			pdf = base64.b64decode(lead_id.company_id.signup_tc)
+			pdfhttpheaders = [
+				('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)),
+				('Content-Disposition', 'attachment; filename=Invoice.pdf;')
+			]
 		return request.make_response(pdf, headers=pdfhttpheaders)
