@@ -134,3 +134,4 @@ access_payment_method_custom_user,payment.method.custom.user,model_payment_metho
 access_project_feedback,project.feedback,model_project_feedback,,1,1,1,1
 ,,,,,,,
 access_pending_timesheet_report,pending.timesheet.report,model_pending_timesheet_report,,1,1,1,1
+access_communication_detail,communication.detail,model_communication_detail,,1,1,1,1

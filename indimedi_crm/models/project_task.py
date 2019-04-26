@@ -212,6 +212,9 @@ class ProjectTask(models.Model):
     comm_on_phone = fields.Boolean(string="Phone")
     comm_on_chat = fields.Boolean(string="Chat")
         
+    comm_lines = fields.One2many('communication.detail', 'task_id', string="Task")
+    
+    
     
     @api.multi
     def send_day_start_email(self):
@@ -353,3 +356,22 @@ class ProjectFeedback(models.Model):
     note = fields.Char(string="Feedback")
 
 
+class CommunicationDetail(models.Model):
+    _name = 'communication.detail'
+    
+    task_id = fields.Many2one('project.task', string="Task")
+    partner_id = fields.Many2one(related='task_id.project_id.partner_id', string="Customer", store=True)
+    project_id = fields.Many2one(related='task_id.project_id',string="Assignment", store=True)
+    date = fields.Date(string="Date", default=fields.Datetime.now(), required=True)
+    email = fields.Integer(string="Total Email", default=-1, required=True)
+    chat = fields.Selection([('yes', 'Yes'),
+                             ('no', 'No')], string="Chat")
+    phone = fields.Selection([('yes', 'Yes'),
+                             ('no', 'No')], string="Phone")
+    
+    @api.constrains('email')
+    def check_email(self):
+        if self.email <= 0:
+            raise ValidationError("Number of email must be zero or positive.")
+        
+    
