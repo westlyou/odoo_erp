@@ -68,6 +68,7 @@
             'views/subsidiary_master.xml',
             'wizard/massage_wizard.xml',
             'security/security.xml',
+            'wizard/pending_timesheet_report_view.xml',
             
             #'views/client_agreement_portal.xml',
             'views/res_company_view.xml',

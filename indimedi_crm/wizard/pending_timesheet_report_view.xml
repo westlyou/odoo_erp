@@ -1,0 +1,40 @@
+<odoo>
+
+	<record id="pending_timesheet_wizard" model="ir.ui.view">
+	    <field name="name">pending.timesheet.wizard.form</field>
+	    <field name="model">pending.timesheet.wizard</field>
+	    <field name="arch" type="xml">
+	    	<form string="Pending Timesheet Wizard">
+	    		<group>
+	    			<group>
+	    				<field name="start_date" required="1"/>
+	    				<field name="end_date" required="1"/>
+	    				
+	    			</group>
+	    		</group>
+	    		<footer>
+	    			<button name="get_pending_timesheet_report" string="Generate Report" 
+	    			class="btn-primary" type="object"/> 
+	    			or
+	    			<button string="Cancel" class="btn-default" special="cancel"/>
+	    		</footer>
+	    	</form>
+	    </field>
+	</record>
+	
+	
+	<record id="action_pending_timesheet_wizard" model="ir.actions.act_window">
+	    <field name="name">Pending Timesheet Reprot</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">pending.timesheet.wizard</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">form</field>
+	    <field name="target">new</field>
+	</record>     
+	
+	<menuitem id="menu_action_pending_timesheet" 
+					name="Pending Timesheet Report"
+				 	action="action_pending_timesheet_wizard" 
+				 	parent="project.menu_main_pm" />
+				 	
+</odoo>
