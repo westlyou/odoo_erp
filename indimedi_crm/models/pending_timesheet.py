@@ -1,6 +1,7 @@
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import ValidationError, UserError
 from datetime import datetime, timedelta
+import new
 
 class PendingTimesheetReport(models.Model):
     _name = 'pending.timesheet.report'
@@ -19,9 +20,9 @@ class PendingTimesheetReport(models.Model):
     
     
     @api.multi
-    def get_pending_timesheet_report(self):
+    def get_pending_timesheet_report(self, start_date, end_date):
         self.env['pending.timesheet.report'].search([]).unlink()
-        line_ids = []
+       
         timesheet_obj = self.env['account.analytic.line']
         domain = []
         project_ids = self.env['project.project'].search([])
@@ -29,9 +30,12 @@ class PendingTimesheetReport(models.Model):
         #find last week start and end date
         today = datetime.today().date()
         
-        this_week_start_date = datetime.today() - timedelta(days=datetime.today().isoweekday() % 7)
-        start_date = this_week_start_date- timedelta(days=7)
-        end_date = this_week_start_date- timedelta(days=1)
+#         this_week_start_date = datetime.today() - timedelta(days=datetime.today().isoweekday() % 7)
+#         start_date = this_week_start_date- timedelta(days=7)
+#         end_date = this_week_start_date- timedelta(days=1)
+        
+        start_date = start_date
+        end_date = end_date
         
         if start_date and end_date:
             domain = [('date', '>=', start_date), ('date', '<=', end_date),'|',('active', '=', True),('active', '=', False)]
@@ -99,7 +103,8 @@ class PendingTimesheetReport(models.Model):
 #             if leave_hours >= 1.00:
 #                 min_hour =  round((min_hour - leave_hours),2)
             pending_hours = min_hour - (leave_hours + this_week_working_hour)
-            if pending_hours > 0:
+            line_ids = []
+            if pending_hours > 0.01:
                 new_id = self.env['pending.timesheet.report'].create({
                                                             'start_date': start_date,
                                                             'end_date': end_date,
@@ -111,11 +116,11 @@ class PendingTimesheetReport(models.Model):
                                                             'working_hour': min_hour,
                                                             'timesheet_hour': this_week_working_hour,
                                                             'leave_hour': leave_hours,
-                                                            'pending_hour' : pending_hours if pending_hours > 0 else 0
+                                                            'pending_hour' : round(pending_hours,2)
                                                             })
+                
                 line_ids.append(new_id.id)
         
-                
         return {
             'name': 'Pending Timesheet Report',
             'type': 'ir.actions.act_window',

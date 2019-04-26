@@ -206,11 +206,23 @@
                 <xpath expr="//field[@name='timesheet_ids']" position="before">
                 	<group>
                 		<group string="Communication Type">
-                			<field name="comm_on_phone"/>
-		               		<field name="comm_on_email"/>
-		               		<field name="comm_on_chat"/>
+                			<field name="comm_on_phone" invisible="1"/>
+		               		<field name="comm_on_email" invisible="1"/>
+		               		<field name="comm_on_chat" invisible="1"/>
                 		</group>
                 	</group>
+                </xpath>
+                <xpath expr="//page[last()]" position="after">
+                	<page string="Communication Detail">
+						<field name="comm_lines">
+							<tree editable="bottom">
+								<field name="date"/>
+								<field name="email" />
+								<field name="phone" required="1"/>
+								<field name="chat" required="1"/>
+							</tree>
+						</field>                	
+                	</page>
                 </xpath>
                 <xpath expr="//field[@name='timesheet_ids']/tree/field[@name='user_id']" position="after">
                     <field name="client_client_id" context="{'default_task_client_id': parent.id}" domain="[('task_client_id', '=', parent.id), ('task_client_id', '!=', False)]"/>

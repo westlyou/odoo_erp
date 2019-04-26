@@ -6,6 +6,8 @@ from dateutil.relativedelta import relativedelta
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 import dateutil.relativedelta
 from datetime import date, timedelta, datetime
+from odoo.addons.base.res.res_lang import DEFAULT_DATE_FORMAT
+from odoo.tools.misc import DEFAULT_SERVER_DATE_FORMAT
 
 class ContactMail(models.TransientModel):
     _inherit = 'mail.compose.message'
@@ -111,7 +113,23 @@ class TimeSheets(models.TransientModel):
 
     @api.multi
     def send_mail_timesheets(self):
-
+        #validate date for communication detail
+        if self.start_date > self.stop_date:
+            raise ValidationError("Start date should be not bigger then end date")
+        
+        start_date = datetime.strptime(self.start_date, DEFAULT_SERVER_DATE_FORMAT)
+        end_date = datetime.strptime(self.stop_date, DEFAULT_SERVER_DATE_FORMAT)
+        
+        while(start_date <= end_date):
+            
+            date = datetime.strftime(start_date, DEFAULT_SERVER_DATE_FORMAT)
+            
+            com_id = self.env['communication.detail'].search([('date', '=', date),('task_id', '=', self.project_task.id)])
+            if not com_id:
+                raise ValidationError("Please update communication detail for date %s."%(date))
+            
+            start_date = start_date + timedelta(days=1)
+        
         ir_model_data = self.env['ir.model.data']
 
         template = self.env.ref('indimedi_crm.email_template_worksheets')
