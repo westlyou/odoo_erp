@@ -6,3 +6,4 @@ from . import massage_wizard
 from . import invoice_payment
 from . import update_bill_line
 from . import pending_timesheet_wizard
+from . import invoce_forcast_wizard
