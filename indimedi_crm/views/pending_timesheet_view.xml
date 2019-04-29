@@ -12,15 +12,15 @@
 				<field name="manager_id"/>
 				<field name="us_name_id"/>
 				<field name="ea_name"/>
-				<field name="working_hour"/>
-				<field name="timesheet_hour"/>
-				<field name="leave_hour"/>
-				<field name="pending_hour"/>
+				<field name="working_hour" widget="float_time"/>
+				<field name="timesheet_hour" widget="float_time"/>
+				<field name="leave_hour" widget="float_time"/>
+				<field name="pending_hour" widget="float_time"/>
 			</tree>
 		</field>
 	</record>
 	
-	<record id="action_pending_timesheet" model="ir.actions.server">
+	<!-- <record id="action_pending_timesheet" model="ir.actions.server">
            <field name="name">Pending Timesheet Report</field>
             <field name="type">ir.actions.server</field>
             <field name="model_id" ref="model_pending_timesheet_report"/>
@@ -33,6 +33,6 @@
 	<menuitem id="menu_action_pending_timesheet" 
 					name="Pending Timesheet Report"
 				 	action="action_pending_timesheet" 
-				 	parent="project.menu_main_pm" />
+				 	parent="project.menu_main_pm" /> -->
 	
 </odoo>

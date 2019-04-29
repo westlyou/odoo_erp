@@ -1,0 +1,40 @@
+<odoo>
+
+	<record id="invoice_forecast_wizard" model="ir.ui.view">
+	    <field name="name">invoice.forecast.wizard.form</field>
+	    <field name="model">invoice.forecast.wizard</field>
+	    <field name="arch" type="xml">
+	    	<form string="Invoice Forecast Wizard">
+	    		<group>
+	    			<group>
+	    				<field name="month" required="1"/>
+	    				<field name="start_date" required="1"/>
+	    				<field name="forecast_month" required="1"/>
+	    			</group>
+	    		</group>
+	    		<footer>
+	    			<button name="get_forecast_report" string="Generate Report" 
+	    			class="btn-primary" type="object"/> 
+	    			or
+	    			<button string="Cancel" class="btn-default" special="cancel"/>
+	    		</footer>
+	    	</form>
+	    </field>
+	</record>
+	
+	
+	<record id="action_invoice_forecast_wizard" model="ir.actions.act_window">
+	    <field name="name">Forecast Invoice Report</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">invoice.forecast.wizard</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">form</field>
+	    <field name="target">new</field>
+	</record>     
+	
+	<menuitem id="menu_action_invoice_forecast_wizard" 
+					name="Forecast Invoice Report"
+				 	action="action_invoice_forecast_wizard" 
+				 	parent="project.menu_main_pm" />
+				 	
+</odoo>

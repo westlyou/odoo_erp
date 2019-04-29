@@ -61,6 +61,7 @@
              'views/hide_menus_customer.xml',
              'views/template.xml',
              'views/pending_timesheet_view.xml',
+             'views/communication_detail_tree.xml',
             #new file added
             'wizard/change_billing_info_wizard.xml',
             'views/project_leave_view.xml',
@@ -68,6 +69,7 @@
             'views/subsidiary_master.xml',
             'wizard/massage_wizard.xml',
             'security/security.xml',
+            'wizard/pending_timesheet_report_view.xml',
             
             #'views/client_agreement_portal.xml',
             'views/res_company_view.xml',
@@ -76,7 +78,7 @@
             'views/project_tree_view.xml',
             'wizard/timesheet_invoice_payment.xml',
             'wizard/update_bill_line.xml',
-            
+            'wizard/invoice_forecast_wizard.xml',
         ],
     'qweb': [
         'static/lib/web_calendar/xml/*.xml',
