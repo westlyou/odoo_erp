@@ -7,7 +7,7 @@
 	    	<form string="Invoice Forecast Wizard">
 	    		<group>
 	    			<group>
-	    				<field name="month" required="1"/>
+	    				<field name="month" invisible="1"/>
 	    				<field name="start_date" required="1"/>
 	    				<field name="forecast_month" required="1"/>
 	    			</group>
