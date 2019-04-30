@@ -75,7 +75,17 @@ class Partner(models.Model):
     timesheet_mail = fields.Boolean(string="Timesheet Contact")
 
     #new fields
-    category = fields.Selection([('accounting','ACCOUNTING FIRM'),('business','Business'),('government','Government/Colleges/Others')], string="Category")
+    category = fields.Selection([
+                        ('accounting','ACCOUNTING FIRM'),
+                        ('business','Business'),
+                        ('government','Government/Colleges/Others'),
+                        ('cpa', 'CPA Firm'),
+                        ('Accounting Firm (EA - Tax - Bookkeeping Firm)', 'Accounting Firm (EA - Tax - Bookkeeping Firm)'),
+                        ('Affiliate - Vendor - Partner', 'Affiliate - Vendor - Partner'),
+                        ('Law Firm', 'Law Firm'),
+                        ('Financial Planning Firm', 'Financial Planning Firm'),
+                        ('Staffing Firm', 'Staffing Firm')
+                        ], string="Category")
     data_lable_ids = fields.Many2many('crm.lead.tag', string='Data Label', help="Classify and analyze your lead/opportunity categories like: Training, Service")
     contact_type = fields.Selection([('primary', 'Decision Maker'),
                                      ('influencer', 'Influencer'),
