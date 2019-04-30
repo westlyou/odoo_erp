@@ -22,3 +22,20 @@ class MaintenanceRequest(models.Model):
 				'employee_id': employee_id.id,
 			})
 		return rec
+	
+	#FULLY OVERRIDE FOR CHANGE DOMAIN OF THE EQUIPMENT BASED ON EMPLOYEE
+	@api.onchange('employee_id', 'department_id')
+	def onchange_department_or_employee_id(self):
+		domain = []
+		if self.department_id:
+			domain = [('department_id', '=', self.department_id.id)]
+		if self.employee_id and self.department_id:
+			domain = ['|'] + domain
+		if self.employee_id:
+			#domain = domain + ['|', ('employee_id', '=', self.employee_id.id), ('employee_id', '=', None)]
+			domain = domain + [('employee_id', '=', self.employee_id.id)]
+		equipment = self.env['maintenance.equipment'].search(domain, limit=2)
+		if len(equipment) == 1:
+			self.equipment_id = equipment
+		return {'domain': {'equipment_id': domain}}
+    	

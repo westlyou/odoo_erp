@@ -7,16 +7,12 @@
 			<xpath expr="//field[@name='name']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
-			<xpath expr="//field[@name='equipment_id']" position="attributes">
-				<attribute name="domain">[('employee_id', '=', employee_id)]</attribute>
-			</xpath>
 			<xpath expr="//field[@name='request_date']" position="attributes">
 				<attribute name="readonly">1</attribute>
 			</xpath>
-			<xpath expr="//field[@name='maintenance_team_id']" position="attributes">
+			<!--xpath expr="//field[@name='maintenance_team_id']" position="attributes">
 				<attribute name="required">0</attribute>
-				<attribute name="invisible">1</attribute>
-			</xpath>
+			</xpath-->
 			<xpath expr="//div[@class='o_row']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
