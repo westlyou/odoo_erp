@@ -47,7 +47,17 @@ class CrmLead(models.Model):
     industry_served = fields.Text(string='Industry Served')
     number_of_staff = fields.Selection([('sole propietor','SOLE PROPRIETOR'),('1 to 3','1 to 3'),('4 to 10','4 to 10'),('10 to 20','10 to 20'),('20 +','20+')], string="No. of staff")
     service_provided = fields.Many2many('service.provided','service_provided_id','crm_id', string="Service Provided")
-    category = fields.Selection([('accounting','ACCOUNTING FIRM'),('business','Business'),('government','Government/Colleges/Others')], string="Category")
+    category = fields.Selection([
+                        ('accounting','ACCOUNTING FIRM'),
+                        ('business','Business'),
+                        ('government','Government/Colleges/Others'),
+                        ('cpa', 'CPA Firm'),
+                        ('Accounting Firm (EA - Tax - Bookkeeping Firm)', 'Accounting Firm (EA - Tax - Bookkeeping Firm)'),
+                        ('Affiliate - Vendor - Partner', 'Affiliate - Vendor - Partner'),
+                        ('Law Firm', 'Law Firm'),
+                        ('Financial Planning Firm', 'Financial Planning Firm'),
+                        ('Staffing Firm', 'Staffing Firm')
+                        ], string="Category")
     firm = fields.Selection([('cpa','CPA FIRM'),('ea','EA FIRM'),('tax','TAX PRACTICE'),('back','BACK OFFICE FIRM'),('financial','FINANCIAL PLANNING FIRM')], string="Firm")
     service_provided = fields.Many2many('service.provided', 'service_provided_id', 'crm_id', string="Service Provided")
     #Fields for many2many field allocation relation with tabs...
