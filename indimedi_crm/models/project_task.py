@@ -371,7 +371,7 @@ class CommunicationDetail(models.Model):
     
     @api.constrains('email')
     def check_email(self):
-        if self.email <= 0:
+        if self.email < 0:
             raise ValidationError("Number of email must be zero or positive.")
         
     
