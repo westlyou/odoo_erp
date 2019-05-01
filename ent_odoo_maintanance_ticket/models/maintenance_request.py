@@ -7,6 +7,13 @@ class MaintenanceRequest(models.Model):
 	name = fields.Char(
 		required=False,
 	)
+	request_date_time = fields.Datetime(
+		string='Request Date',
+		default=lambda self:fields.Datetime.now(),
+	)
+	close_date_time = fields.Datetime(
+		string='Close Date',
+	)
 	
 	@api.onchange('category_id')
 	def onchange_category_id(self):
@@ -21,8 +28,20 @@ class MaintenanceRequest(models.Model):
 			rec.update({
 				'employee_id': employee_id.id,
 			})
+		team_id = self.env['maintenance.team'].search([('name', '=', 'Internal Maintenance')], limit=1)
+		if team_id:
+			rec.update({
+				'maintenance_team_id': team_id.id,
+			})
 		return rec
-	
+
+	@api.model
+	def create(self, vals):
+		vals.update({
+			'request_date_time': fields.Datetime.now(),
+		})
+		return super(MaintenanceRequest, self).create(vals)
+
 	#FULLY OVERRIDE FOR CHANGE DOMAIN OF THE EQUIPMENT BASED ON EMPLOYEE
 	@api.onchange('employee_id', 'department_id')
 	def onchange_department_or_employee_id(self):
@@ -38,4 +57,14 @@ class MaintenanceRequest(models.Model):
 		if len(equipment) == 1:
 			self.equipment_id = equipment
 		return {'domain': {'equipment_id': domain}}
+	
+	@api.multi
+	def write(self, vals):
+		# the stage (stage_id) of the Maintenance Request changes.
+		res = super(MaintenanceRequest, self).write(vals)
+		if 'stage_id' in vals:
+		    self.filtered(lambda m: m.stage_id.done).write({'close_date_time': fields.Datetime.now()})
+		if 'stage_id' in vals:
+		    self.filtered(lambda m: not m.stage_id.done).write({'close_date_time': False})
+		return res
     	
