@@ -17,6 +17,7 @@
 		'website',
 	],
     'data': [
+        'security/ent_lead_security.xml',
     	'data/lead_signup_email_data.xml',
     	'views/ent_lead_signup_email_view.xml',
     	'views/crm_lead_opportunity_view.xml',
