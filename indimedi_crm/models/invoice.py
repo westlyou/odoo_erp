@@ -478,11 +478,11 @@ class Project(models.Model):
                             domain.extend([('date', '>=', month_start.strftime(DF)), ('date', '<=', month_end.strftime(DF))])
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
                         
-                        employee_ids = []
-                        for line in timesheet_lines:
-                            employee = self.env['hr.employee'].search([('user_id', '=', line.user_id.id)])
-                            if employee:
-                                employee_ids.append(employee.id)
+                        #employee_ids = []
+                        #for line in timesheet_lines:
+                         #   employee = self.env['hr.employee'].search([('user_id', '=', line.user_id.id)])
+                          #  if employee:
+                           #     employee_ids.append(employee.id)
                       
                         leave = self.env['project.leave'].search([
                             ('start_date', '>=', month_start.strftime(DF)),
@@ -838,11 +838,11 @@ class Project(models.Model):
                             domain.extend([('date', '>=', prev_sunday.strftime(DF)), ('date', '<=', prev_saturday.strftime(DF))])
                         timesheet_lines = self.env['account.analytic.line'].search(domain)
 
-                        employee_ids = []
-                        for line in timesheet_lines:
-                            employee = self.env['hr.employee'].search([('user_id','=', line.user_id.id)])
-                            if employee:
-                                employee_ids.append(employee.id)
+                       # employee_ids = []
+                        #for line in timesheet_lines:
+                         #   employee = self.env['hr.employee'].search([('user_id','=', line.user_id.id)])
+                          #  if employee:
+                           #     employee_ids.append(employee.id)
                         
                         leave = self.env['project.leave'].search([
                             ('start_date', '>=', week_start.strftime(DF)),
