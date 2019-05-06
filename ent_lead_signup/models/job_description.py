@@ -43,8 +43,12 @@ class JobDescription(models.Model):
 
 class Lead(models.Model):
 	_inherit = 'crm.lead'
-	
+
 	lead_ext = fields.Char(
 		string="Ext",
 	)
+	c_zip = fields.Char(
+	    size=8,
+	)
+
 
