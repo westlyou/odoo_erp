@@ -23,12 +23,12 @@ class TimesheetInvoice(models.Model):
     invoicing_type_id = fields.Many2one('job.invoicing', string="Invoicing Type")
     invoice_start_date = fields.Date(string="Start Date")
     invoice_end_date = fields.Date(string="End Date")
-    hour_selection = fields.Selection([('10','10 Hours'),('20','20 Hours'),('30','30 Hours'),
+    hour_selection = fields.Selection([('5','5 Hours'),('10','10 Hours'),('15', '15 Hours'),('20','20 Hours'),('25', '25 Hours'),('30','30 Hours'),
                                        ('40','40 Hours'),('80','80 Hours'),('90','90 Hours'),
                                        ('100','100 Hours'),('40_20','40-20 Hours'),
                                        ('20_10','20-10 Hours'),('160','160 Hours'),
                                        ('180','180 Hours'),('200','200 Hours')],
-                                       string="Working Hours")
+                                       string="Working Hours", track_visibility='onchange')
     custom_work_hours = fields.Char(string="Working Hours")
     rate_per_hour = fields.Float(string="Rate Per Hour")
     min_bill = fields.Float('Min. Bill')
